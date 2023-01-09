@@ -10,10 +10,8 @@
 
 //template css:
 @import 'style';
-@import 'simple-datatables';
 @import 'remixicon';
 @import 'quill.bubble';
-@import 'quill.snow';
 @import 'quill.snow';
 
 //fontawesome:
@@ -21,3 +19,8 @@
 
 //bootstrap icons:
 @import 'bootstrap-icons/font/bootstrap-icons.css';
+
+//datatable:
+@import 'datatables.net-bs5/css/dataTables.bootstrap5';
+@import 'datatables.net-responsive-bs5/css/responsive.bootstrap5.css';
+

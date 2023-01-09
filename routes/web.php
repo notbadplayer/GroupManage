@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,13 @@ use Illuminate\Support\Facades\Route;
 */
 Route::middleware(['auth', 'verified'])->group(function(){
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+    //Users:
+    Route::get('/users', [UserController::class, 'index'])->name('user.index');
+    Route::get('users/data', [UserController::class, 'data'])->name('users.data');
+    Route::get('users/create', [UserController::class, 'create'])->name('users.create');
+    Route::post('users/store', [UserController::class, 'store'])->name('users.store');
+
 });
 
 

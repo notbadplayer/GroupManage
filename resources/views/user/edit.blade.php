@@ -1,0 +1,73 @@
+@extends('layout.layout')
+@section('content')
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <h1>Użytkownicy</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Strona Główna</a></li>
+                    <li class="breadcrumb-item active">Nowy użytkownik</li>
+                </ol>
+            </nav>
+        </div>
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card mw-90">
+                        <div class="card-body">
+                            <div class="d-flex bd-highlight">
+                                <div class="p-2 flex-grow-1 bd-highlight card-title">Dodawanie użytkownika</div>
+                                <div class="p-2 bd-highlight">
+
+                                </div>
+                            </div>
+
+                            <div class="mt-2 ">
+                                <form method="post" action="{{ route('users.store') }}">
+                                    @csrf
+                                    <div class="row mb-3">
+                                        <label for="name" class="col-sm-2 col-form-label">Imię:</label>
+                                        <div class="col-sm-10"> <input type="text"
+                                                class="form-control @error('name')is-invalid @enderror" name="name"
+                                                id="name" value="{{ old('name', $user->name ?? '') }}"></div>
+                                    </div>
+                                    @if ($errors->has('name'))
+                                        <div class="invalid-feedback">{{ $errors->first('name') }}</div>
+                                    @endif
+
+                                    <div class="row mb-3">
+                                        <label for="surname" class="col-sm-2 col-form-label">Nazwisko:</label>
+                                        <div class="col-sm-10 "> <input type="text"
+                                                class="form-control @error('surname')is-invalid @enderror" name="surname"
+                                                id="surname" value="{{ old('surname', $user->surname ?? '') }}"></div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label for="email" class="col-sm-2 col-form-label">Email:</label>
+                                        <div class="col-sm-10"> <input type="email"
+                                                class="form-control @error('email')is-invalid @enderror" name="email"
+                                                id="email" value="{{ old('email', $user->email ?? '') }}"></div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label for="phone" class="col-sm-2 col-form-label">Telefon:</label>
+                                        <div class="col-sm-10"> <input type="text"
+                                                class="form-control @error('phone')is-invalid @enderror" name="phone"
+                                                id="phone" value="{{ old('phone', $user->phone ?? '') }}"></div>
+                                    </div>
+
+                                    <div class="float-end mb-3 mt-3"> <button type="submit" class="btn btn-primary"><i
+                                                class="fa-solid fa-check me-1"></i>Zapisz</button></div>
+
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+@endsection
