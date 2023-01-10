@@ -34,7 +34,7 @@
                                 <form method="post"
                                     action="{{ isset($user) ? route('users.update', $user->id) : route('users.store') }}">
                                     @csrf
-                                    @if (isset($customer))
+                                    @if (isset($user))
                                         @method('PUT')
                                     @endif
 

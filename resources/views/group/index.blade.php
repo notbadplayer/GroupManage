@@ -2,11 +2,11 @@
 @section('content')
     <main id="main" class="main">
         <div class="pagetitle">
-            <h1>Użytkownicy</h1>
+            <h1>Grupy</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('home') }}">Strona Główna</a></li>
-                    <li class="breadcrumb-item active">Lista użytkowników</li>
+                    <li class="breadcrumb-item active">Lista grup</li>
                 </ol>
             </nav>
         </div>
@@ -16,9 +16,9 @@
                     <div class="card mw-90">
                         <div class="card-body">
                             <div class="d-flex bd-highlight">
-                                <div class="p-2 flex-grow-1 bd-highlight card-title">Użytkownicy</div>
+                                <div class="p-2 flex-grow-1 bd-highlight card-title">Grupy</div>
                                 <div class="p-2 bd-highlight">
-                                    <a href="{{ route('users.create') }}"><button type="button"
+                                    <a href="{{ route('groups.create') }}"><button type="button"
                                             class="btn btn-outline-primary"><i
                                                 class="fa-solid fa-plus me-1"></i>Dodaj</button></a>
                                 </div>
@@ -29,10 +29,8 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">#</th>
-                                            <th scope="col">Imię</th>
-                                            <th scope="col">Nazwisko</th>
-                                            <th scope="col">E-mail</th>
-                                            <th scope="col">Telefon</th>
+                                            <th scope="col">Nazwa</th>
+                                            <th scope="col">Opis</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -57,13 +55,11 @@
             details: false
                     },
 
-                    ajax: "{{ route('users.data') }}",
+                    ajax: "{{ route('groups.data') }}",
                     columns: [
                         {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                         {data: 'name', name: 'name', orderable: true,},
-                        {data: 'surname', name: 'surname'},
-                        {data: 'email', name: 'email'},
-                        {data: 'phone', name: 'phone'},
+                        {data: 'description', name: 'description'},
                     ],
                 });
 
@@ -83,7 +79,7 @@
                     htmlText = htmlText + '<div class="container mb-3"><div class="row"><div class="col-1 col-md-2"><i class="fa-solid fa-at"></i></div><div class="col-11 col-md-8">'+data.email+'</div></div></div>'
 
                     Swal.fire({
-                        title: data.name +' '+ data.surname,
+                        title: data.name,
                         html: htmlText,
                         icon: 'info',
                         confirmButtonText: 'Edytuj dane',
@@ -94,8 +90,7 @@
                             {
                                 //console.log(result)
                                 if(result.isConfirmed){
-                                    //window.location.href = "{{route('users.index')}}";
-                                    window.location.href = "/users/edit/"+data.id;
+                                    window.location.href = "/groups/edit/"+data.id;
                                 }
                             }
                         );

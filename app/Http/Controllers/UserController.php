@@ -7,7 +7,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -42,7 +41,7 @@ class UserController extends Controller
                 //     $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
                 //     return $actionBtn;
                 // })
-                ->rawColumns(['action'])
+                // ->rawColumns(['action'])
                 ->make(true);
         }
     }

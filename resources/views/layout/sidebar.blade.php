@@ -9,12 +9,10 @@
           </ul>
        </li>
        <li class="nav-item">
-          <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#"> <i class="bi bi-journal-text"></i><span>Forms</span><i class="bi bi-chevron-down ms-auto"></i> </a>
+          <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#"> <i class="fa-solid fa-user-group"></i><span>Grupy</span><i class="bi bi-chevron-down ms-auto"></i> </a>
           <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-             <li> <a href="{{ route('users.index') }}"> <i class="bi bi-circle"></i><span>Form Elements</span> </a></li>
-             <li> <a href="forms-layouts.html"> <i class="bi bi-circle"></i><span>Form Layouts</span> </a></li>
-             <li> <a href="forms-editors.html"> <i class="bi bi-circle"></i><span>Form Editors</span> </a></li>
-             <li> <a href="forms-validation.html"> <i class="bi bi-circle"></i><span>Form Validation</span> </a></li>
+             <li> <a href="{{ route('groups.index') }}"> <i class="bi bi-circle"></i><span>Lista grup</span> </a></li>
+             <li> <a href="{{ route('groups.create') }}"> <i class="bi bi-circle"></i><span>Dodaj grupę</span> </a></li>
           </ul>
        </li>
        <li class="nav-item">
