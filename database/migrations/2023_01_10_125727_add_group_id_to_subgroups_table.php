@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Group;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,11 +14,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('subgroups', function (Blueprint $table) {
-            $table->id();
-            $table->string('name', 50);
-            $table->string('description', 150)->nullable();
-            $table->timestamps();
+        Schema::table('subgroups', function (Blueprint $table) {
+            $table->foreignIdFor(Group::class)->after('name')->nullable();
         });
     }
 
@@ -28,6 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subgroups');
+        Schema::table('subgroups', function (Blueprint $table) {
+            $table->dropColumn('group_id');
+        });
     }
 };

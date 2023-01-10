@@ -6,7 +6,7 @@
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('home') }}">Strona Główna</a></li>
-                    <li class="breadcrumb-item active">Lista grup</li>
+                    <li class="breadcrumb-item active">Grupy</li>
                 </ol>
             </nav>
         </div>
@@ -16,7 +16,7 @@
                     <div class="card mw-90">
                         <div class="card-body">
                             <div class="d-flex bd-highlight">
-                                <div class="p-2 flex-grow-1 bd-highlight card-title">Grupy</div>
+                                <div class="p-2 flex-grow-1 bd-highlight card-title">Lista grup</div>
                                 <div class="p-2 bd-highlight">
                                     <a href="{{ route('groups.create') }}"><button type="button"
                                             class="btn btn-outline-primary"><i
@@ -100,7 +100,7 @@
             });
         </script>
     </main>
-    {{-- Wyświetlenie paska statusu - pomyślna aktualizacja/ dodanie użytkownika --}}
+    {{-- Wyświetlenie paska statusu --}}
     @if (Session::has('success'))
         @include('other.statusSuccess')
     @endif

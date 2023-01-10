@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\SubgroupController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,10 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::post('groups/store', [GroupController::class, 'store'])->name('groups.store');
     Route::get('groups/edit/{Group}', [GroupController::class, 'edit'])->name('groups.edit');
     Route::put('groups/update/{Group}', [GroupController::class, 'update'])->name('groups.update');
+
+    //Subgroups:
+    Route::get('groups/{Group}/createSubgroup', [SubgroupController::class, 'create'])->name('subgroups.create');
+    Route::post('subgroups/store', [SubgroupController::class, 'store'])->name('subgroups.store');
 
 
 });
