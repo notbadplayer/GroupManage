@@ -38,9 +38,7 @@
                                     <tbody>
                                     </tbody>
                                 </table>
-
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -81,26 +79,34 @@
                     var data = table.row( this ).data()
 
                     var htmlText = "";
-                    htmlText = htmlText + '<div class="float-start"><i class="fa-solid fa-phone me-5"></i>'+data.phone+'</div></br>'
-                    htmlText = htmlText + '<p align="left">E-mail:</p><p align="right">'+data.email+'</br>'
+                    htmlText = htmlText + '<div class="container mb-3"><div class="row"><div class="col-1 col-md-2"><i class="fa-solid fa-phone"></i></div><div class="col-11 col-md-8">'+data.phone+'</div></div></div>'
+                    htmlText = htmlText + '<div class="container mb-3"><div class="row"><div class="col-1 col-md-2"><i class="fa-solid fa-at"></i></div><div class="col-11 col-md-8">'+data.email+'</div></div></div>'
 
                     Swal.fire({
                         title: data.name +' '+ data.surname,
                         html: htmlText,
                         icon: 'info',
-                        confirmButtonText: 'Cool'
-                        })
+                        confirmButtonText: 'Edytuj dane',
+                        confirmButtonColor: '#0d6efd',
+                        showCancelButton: 'true',
+                        cancelButtonText: 'Anuluj',
+                        }).then((result) =>
+                            {
+                                //console.log(result)
+                                if(result.isConfirmed){
+                                    //window.location.href = "{{route('users.index')}}";
+                                    window.location.href = "/users/edit/"+data.id;
+                                }
+                            }
+                        );
 
                 } );
 
             });
-
-
         </script>
-
-
-
-
-
     </main>
+    {{-- Wyświetlenie paska statusu - pomyślna aktualizacja/ dodanie użytkownika --}}
+    @if (Session::has('success'))
+        @include('other.statusSuccess')
+    @endif
 @endsection

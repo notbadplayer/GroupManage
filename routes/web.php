@@ -21,6 +21,8 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::get('users/data', [UserController::class, 'data'])->name('users.data');
     Route::get('users/create', [UserController::class, 'create'])->name('users.create');
     Route::post('users/store', [UserController::class, 'store'])->name('users.store');
+    Route::get('users/edit/{User}', [UserController::class, 'edit'])->name('users.edit');
+    Route::post('users/update/{User}', [UserController::class, 'update'])->name('users.update');
 
 });
 

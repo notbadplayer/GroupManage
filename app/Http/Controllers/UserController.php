@@ -63,8 +63,28 @@ class UserController extends Controller
             'email' => $data['email'],
         ]);
 
-        return redirect()->route('user.index')
+        return redirect()->route('users.index')
                 ->with('success','Użytkownik został dodany');
+    }
+
+    public function edit(User $User): View
+    {
+        return view('user.edit', ['user' => $User]);
+    }
+
+    public function update(User $User, UpdateUser $request): RedirectResponse
+    {
+        $data = $request->validated();
+
+        $User->update([
+            'name' => $data['name'],
+            'surname' => $data['surname'],
+            'phone' => $data['phone'],
+            'email' => $data['email'],
+        ]);
+
+        return redirect()->route('users.index')
+        ->with('success','Dane użytkownika zostały aktualizowane');
     }
 
 

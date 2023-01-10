@@ -6,7 +6,7 @@
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('home') }}">Strona Główna</a></li>
-                    <li class="breadcrumb-item active">Nowy użytkownik</li>
+                    <li class="breadcrumb-item active"><a href="{{ route('users.index') }}">Użytkownicy</a></li>
                 </ol>
             </nav>
         </div>
@@ -16,7 +16,13 @@
                     <div class="card mw-90">
                         <div class="card-body">
                             <div class="d-flex bd-highlight">
-                                <div class="p-2 flex-grow-1 bd-highlight card-title">Dodawanie użytkownika</div>
+                                <div class="p-2 flex-grow-1 bd-highlight card-title">
+                                    @if (isset($user))
+                                        Edycja Użytkownika
+                                    @else
+                                        Dodawanie użytkownika
+                                    @endif
+                                </div>
                                 <div class="p-2 bd-highlight">
                                     <a href="{{ route('users.index') }}"><button type="button"
                                             class="btn btn-outline-primary"><i
@@ -25,8 +31,13 @@
                             </div>
 
                             <div class="mt-2 profile">
-                                <form method="post" action="{{ route('users.store') }}">
+                                <form method="post"
+                                    action="{{ isset($user) ? route('users.update', $user->id) : route('users.store') }}">
                                     @csrf
+                                    @if (isset($customer))
+                                        @method('PUT')
+                                    @endif
+
                                     <div class="row mb-3 profile-edit">
                                         <label for="name" class="col-sm-2 col-form-label fw-bold">Imię:</label>
                                         <div class="col-sm-10"> <input type="text"
@@ -85,19 +96,4 @@
         </section>
 
     </main>
-
-
-    <script type="module">
-        // $(function () {
-
-        //     Swal.fire({
-        //         title: 'Error!',
-        //         text: 'Do you want to continue',
-        //         icon: 'error',
-        //         confirmButtonText: 'Cool'
-        //         })
-
-        //    });
-
-       </script>
 @endsection

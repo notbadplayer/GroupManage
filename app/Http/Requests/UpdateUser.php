@@ -26,16 +26,10 @@ class UpdateUser extends FormRequest
      */
     public function rules()
     {
-        $userId = Auth::id();
-
         return [
             'name' => 'required|max:50',
             'surname' => 'required|max:100',
-            'email' => [
-                'nullable',
-                Rule::unique('users')->ignore($userId),
-                'email'
-            ],
+            'email' => 'required|email|unique:users,email,'.$this->User?->id ?? null,
             'phone' => 'nullable'
 
 
@@ -46,6 +40,7 @@ class UpdateUser extends FormRequest
     {
         return [
                 'email.unique' => 'Podany adres email jest zajęty',
+                'email.required' => 'Adres mailowy jest wymagany',
                 'name.max' =>' Maksymalna ilość znaków to: :max',
                 'name.required' =>' Imię jest wymagane',
                 'surname.max' =>' Maksymalna ilość znaków to: :max',
