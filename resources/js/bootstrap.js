@@ -8,8 +8,9 @@ window.$ = $;
 
 import DataTable from "datatables.net-responsive-bs5";
 window.DataTable = DataTable;
-// DataTable($);
 
+import Swal from 'sweetalert2'
+window.Swal = Swal;
 
 
 

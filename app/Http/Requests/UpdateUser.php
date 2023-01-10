@@ -48,7 +48,8 @@ class UpdateUser extends FormRequest
                 'email.unique' => 'Podany adres email jest zajęty',
                 'name.max' =>' Maksymalna ilość znaków to: :max',
                 'name.required' =>' Imię jest wymagane',
-                'surname.max' =>' Maksymalna ilość znaków to: :max'
+                'surname.max' =>' Maksymalna ilość znaków to: :max',
+                'surname.required' =>' Nazwisko jest wymagane',
         ];
     }
 

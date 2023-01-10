@@ -18,42 +18,57 @@
                             <div class="d-flex bd-highlight">
                                 <div class="p-2 flex-grow-1 bd-highlight card-title">Dodawanie użytkownika</div>
                                 <div class="p-2 bd-highlight">
-
+                                    <a href="{{ route('users.index') }}"><button type="button"
+                                            class="btn btn-outline-primary"><i
+                                                class="fa-solid fa-rotate-left me-2"></i>Powrót</button></a>
                                 </div>
                             </div>
 
-                            <div class="mt-2 ">
+                            <div class="mt-2 profile">
                                 <form method="post" action="{{ route('users.store') }}">
                                     @csrf
-                                    <div class="row mb-3">
-                                        <label for="name" class="col-sm-2 col-form-label">Imię:</label>
+                                    <div class="row mb-3 profile-edit">
+                                        <label for="name" class="col-sm-2 col-form-label fw-bold">Imię:</label>
                                         <div class="col-sm-10"> <input type="text"
                                                 class="form-control @error('name')is-invalid @enderror" name="name"
-                                                id="name" value="{{ old('name', $user->name ?? '') }}"></div>
+                                                id="name" value="{{ old('name', $user->name ?? '') }}">
+                                            @if ($errors->has('name'))
+                                                <div class="invalid-feedback">{{ $errors->first('name') }}</div>
+                                            @endif
+                                        </div>
                                     </div>
-                                    @if ($errors->has('name'))
-                                        <div class="invalid-feedback">{{ $errors->first('name') }}</div>
-                                    @endif
 
-                                    <div class="row mb-3">
-                                        <label for="surname" class="col-sm-2 col-form-label">Nazwisko:</label>
+                                    <div class="row mb-3 profile-edit">
+                                        <label for="surname" class="col-sm-2 col-form-label fw-bold">Nazwisko:</label>
                                         <div class="col-sm-10 "> <input type="text"
                                                 class="form-control @error('surname')is-invalid @enderror" name="surname"
-                                                id="surname" value="{{ old('surname', $user->surname ?? '') }}"></div>
+                                                id="surname" value="{{ old('surname', $user->surname ?? '') }}">
+                                            @if ($errors->has('surname'))
+                                                <div class="invalid-feedback">{{ $errors->first('surname') }}</div>
+                                            @endif
+                                        </div>
                                     </div>
 
-                                    <div class="row mb-3">
-                                        <label for="email" class="col-sm-2 col-form-label">Email:</label>
+                                    <div class="row mb-3 profile-edit">
+                                        <label for="email" class="col-sm-2 col-form-label fw-bold">Email:</label>
                                         <div class="col-sm-10"> <input type="email"
                                                 class="form-control @error('email')is-invalid @enderror" name="email"
-                                                id="email" value="{{ old('email', $user->email ?? '') }}"></div>
+                                                id="email" value="{{ old('email', $user->email ?? '') }}">
+                                            @if ($errors->has('email'))
+                                                <div class="invalid-feedback">{{ $errors->first('email') }}</div>
+                                            @endif
+                                        </div>
                                     </div>
 
-                                    <div class="row mb-3">
-                                        <label for="phone" class="col-sm-2 col-form-label">Telefon:</label>
+                                    <div class="row mb-3 profile-edit">
+                                        <label for="phone" class="col-sm-2 col-form-label fw-bold">Telefon:</label>
                                         <div class="col-sm-10"> <input type="text"
                                                 class="form-control @error('phone')is-invalid @enderror" name="phone"
-                                                id="phone" value="{{ old('phone', $user->phone ?? '') }}"></div>
+                                                id="phone" value="{{ old('phone', $user->phone ?? '') }}">
+                                            @if ($errors->has('phone'))
+                                                <div class="invalid-feedback">{{ $errors->first('phone') }}</div>
+                                            @endif
+                                        </div>
                                     </div>
 
                                     <div class="float-end mb-3 mt-3"> <button type="submit" class="btn btn-primary"><i
@@ -70,4 +85,19 @@
         </section>
 
     </main>
+
+
+    <script type="module">
+        // $(function () {
+
+        //     Swal.fire({
+        //         title: 'Error!',
+        //         text: 'Do you want to continue',
+        //         icon: 'error',
+        //         confirmButtonText: 'Cool'
+        //         })
+
+        //    });
+
+       </script>
 @endsection

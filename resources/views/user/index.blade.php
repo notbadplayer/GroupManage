@@ -18,18 +18,21 @@
                             <div class="d-flex bd-highlight">
                                 <div class="p-2 flex-grow-1 bd-highlight card-title">Użytkownicy</div>
                                 <div class="p-2 bd-highlight">
-                                    <a href="{{ route('users.create') }}"><button type="button" class="btn btn-outline-primary"><i class="fa-solid fa-plus me-1"></i>Dodaj</button></a>
+                                    <a href="{{ route('users.create') }}"><button type="button"
+                                            class="btn btn-outline-primary"><i
+                                                class="fa-solid fa-plus me-1"></i>Dodaj</button></a>
                                 </div>
-                              </div>
+                            </div>
 
                             <div class="mt-2 ">
-                                <table class="table tabela" style="width:100%">
+                                <table class="table tabela table-hover" id="tabela" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th scope="col">#</th>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Surname</th>
-                                            <th scope="col">email</th>
+                                            <th scope="col">Imię</th>
+                                            <th scope="col">Nazwisko</th>
+                                            <th scope="col">E-mail</th>
+                                            <th scope="col">Telefon</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -46,24 +49,54 @@
         </section>
 
         <script type="module">
-                 $(function () {
+            //generowanie tabeli
+            $(function () {
+                var table = $('.tabela').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    responsive: true,
+                    responsive: {
+            details: false
+                    },
 
-                    var table = $('.tabela').DataTable({
-                        processing: true,
-                        serverSide: true,
-                        responsive: true,
-                        ajax: "{{ route('users.data') }}",
-                        columns: [
-                            {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                            {data: 'name', name: 'name', orderable: true,},
-                            {data: 'surname', name: 'surname'},
-                            {data: 'email', name: 'email'},
-                        ]
-                    });
+                    ajax: "{{ route('users.data') }}",
+                    columns: [
+                        {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                        {data: 'name', name: 'name', orderable: true,},
+                        {data: 'surname', name: 'surname'},
+                        {data: 'email', name: 'email'},
+                        {data: 'phone', name: 'phone'},
+                    ],
+                });
 
-                    });
+            });
 
-                </script>
+            //kliknięcie w wiersz
+            $(document).ready(function () {
+
+                var table = $('#tabela').DataTable();
+
+                $('#tabela tbody').on( 'click', 'tr', function () {
+                    console.log( table.row( this ).data().id );
+                    var data = table.row( this ).data()
+
+                    var htmlText = "";
+                    htmlText = htmlText + '<div class="float-start"><i class="fa-solid fa-phone me-5"></i>'+data.phone+'</div></br>'
+                    htmlText = htmlText + '<p align="left">E-mail:</p><p align="right">'+data.email+'</br>'
+
+                    Swal.fire({
+                        title: data.name +' '+ data.surname,
+                        html: htmlText,
+                        icon: 'info',
+                        confirmButtonText: 'Cool'
+                        })
+
+                } );
+
+            });
+
+
+        </script>
 
 
 
