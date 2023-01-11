@@ -57,7 +57,7 @@
                                                 class="form-select members @error('members')is-invalid @enderror" name="members[]" multiple="multiple"
                                                 id="members" value="{{ old('members', $group->members ?? '') }}" style="width: 100%">
                                      @foreach($users as $user)
-                                            <option value="{{ $user->id }}">{{ $user->name }} {{$user->surname }}</option>
+                                            <option value="{{ $user->id }}" @if(isset($members) && (in_array($user->id, $members))) selected @endif>{{ $user->name }} {{$user->surname }}</option>
                                      @endforeach
                                         </select>
 

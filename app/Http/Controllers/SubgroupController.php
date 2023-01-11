@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class SubgroupController extends Controller
 {
@@ -44,6 +45,9 @@ class SubgroupController extends Controller
             'group_id' => $groupId,
         ]);
 
+        //dodanie użytkowników do podgrupy: tabela subgroup_user
+        $subgroup->users()->attach($request->members);
+
         return redirect()->route('groups.edit', $groupId)
                 ->with('success',"$group->name : dodano podgrupę: $subgroup->name");
     }
@@ -53,19 +57,19 @@ class SubgroupController extends Controller
     {
         $group = Group::find($Subgroup->group_id);
         $users = User::get();
+        $members = $Subgroup->members();
 
         return view('subgroup.edit', [
             'subgroup' => $Subgroup,
             'group' => $group,
-            'users' => $users
+            'users' => $users,
+            'members' => $members
         ]);
     }
 
 
     public function update(Subgroup $Subgroup, UpdateGroup $request)
     {
-        dd($request);
-
         $groupId = $request->groupId;
         $group = Group::find($groupId);
 
@@ -75,6 +79,9 @@ class SubgroupController extends Controller
             'name' => $data['name'],
             'group_id' => $groupId,
         ]);
+
+        //synchronizacja użytkowników w grupie: tabela subgroup_user
+        $Subgroup->users()->sync($request->members);
 
         return redirect()->route('groups.edit', $groupId)
                 ->with('success',"Zapisano zmiany");
