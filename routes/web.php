@@ -37,6 +37,8 @@ Route::middleware(['auth', 'verified'])->group(function(){
     //Subgroups:
     Route::get('groups/{Group}/createSubgroup', [SubgroupController::class, 'create'])->name('subgroups.create');
     Route::post('subgroups/store', [SubgroupController::class, 'store'])->name('subgroups.store');
+    Route::get('subgroups/edit/{Subgroup}', [SubgroupController::class, 'edit'])->name('subgroups.edit');
+    Route::put('subgroups/update/{Subgroup}', [SubgroupController::class, 'update'])->name('subgroups.update');
 
 
 });

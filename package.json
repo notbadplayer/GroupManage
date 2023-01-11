@@ -19,6 +19,7 @@
         "bootstrap-icons": "^1.10.3",
         "datatables.net-responsive-bs5": "^2.4.0",
         "jquery": "^3.6.3",
+        "select2": "^4.1.0-rc.0",
         "sweetalert2": "^11.4.8"
     }
 }

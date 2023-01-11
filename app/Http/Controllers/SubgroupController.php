@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UpdateGroup;
 use App\Models\Group;
 use App\Models\Subgroup;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -23,7 +24,11 @@ class SubgroupController extends Controller
 
     public function create(Group $Group): View
     {
-        return view('subgroup.edit', ['group' => $Group]);
+        $users = User::get();
+        return view('subgroup.edit', [
+            'group' => $Group,
+            'users' => $users
+        ]);
     }
 
 
@@ -44,21 +49,35 @@ class SubgroupController extends Controller
     }
 
 
-    public function show(Subgroup $subgroup)
+    public function edit(Subgroup $Subgroup)
     {
-        //
+        $group = Group::find($Subgroup->group_id);
+        $users = User::get();
+
+        return view('subgroup.edit', [
+            'subgroup' => $Subgroup,
+            'group' => $group,
+            'users' => $users
+        ]);
     }
 
 
-    public function edit(Subgroup $subgroup)
+    public function update(Subgroup $Subgroup, UpdateGroup $request)
     {
-        //
-    }
+        dd($request);
 
+        $groupId = $request->groupId;
+        $group = Group::find($groupId);
 
-    public function update(Request $request, Subgroup $subgroup)
-    {
-        //
+        $data = $request->validated();
+
+        $Subgroup->update([
+            'name' => $data['name'],
+            'group_id' => $groupId,
+        ]);
+
+        return redirect()->route('groups.edit', $groupId)
+                ->with('success',"Zapisano zmiany");
     }
 
 

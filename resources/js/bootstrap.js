@@ -6,11 +6,16 @@ import 'bootstrap';
 import $ from 'jquery';
 window.$ = $;
 
+import Select2 from 'select2'
+Select2();
+
 import DataTable from "datatables.net-responsive-bs5";
 window.DataTable = DataTable;
 
 import Swal from 'sweetalert2'
 window.Swal = Swal;
+
+
 
 
 

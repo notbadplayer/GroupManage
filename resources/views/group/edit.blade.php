@@ -66,7 +66,7 @@
                                                 podległe:</label>
                                             <div class="col-sm-10 ">
                                                 @foreach($group->subgroups as $subgroup)
-                                                <a href="{{ route('subgroups.create', $group->id) }}"><button type="button" class="btn btn-success mb-2 me-2"> {{ $subgroup->name }} <span class="badge bg-white text-success ms-1">4</span></button></a>
+                                                <a href="{{ route('subgroups.edit', $subgroup->id) }}"><button type="button" class="btn btn-success mb-2 me-2"> {{ $subgroup->name }} <span class="badge bg-white text-success ms-1">4</span></button></a>
                                                 @endforeach
                                                 <a href="{{ route('subgroups.create', $group->id) }}"><button type="button"
                                                         class="btn btn-outline-success mb-2 me-2"><i

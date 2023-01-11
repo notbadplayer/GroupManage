@@ -7,7 +7,8 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('home') }}">Strona Główna</a></li>
                     <li class="breadcrumb-item"><a href="{{ route('groups.index') }}">Grupy</a></li>
-                    <li class="breadcrumb-item active"><a href="{{ route('groups.edit', $group->id) }}">{{ $group->name }}</a></li>
+                    <li class="breadcrumb-item active"><a
+                            href="{{ route('groups.edit', $group->id) }}">{{ $group->name }}</a></li>
                 </ol>
             </nav>
         </div>
@@ -51,13 +52,18 @@
                                     </div>
 
                                     <div class="row mb-3 profile-edit">
-                                        <label for="description" class="col-sm-2 col-form-label fw-bold">Uczestnicy:</label>
-                                        <div class="col-sm-10 "> <input type="text"
-                                                class="form-control @error('description')is-invalid @enderror" name="description"
-                                                id="description" value="{{ old('description', $group->description ?? '') }}">
+                                        <label for="members" class="col-sm-2 col-form-label fw-bold">Uczestnicy:</label>
+                                        <div class="col-sm-10 "> <select
+                                                class="form-select members @error('members')is-invalid @enderror" name="members[]" multiple="multiple"
+                                                id="members" value="{{ old('members', $group->members ?? '') }}" style="width: 100%">
+                                     @foreach($users as $user)
+                                            <option value="{{ $user->id }}">{{ $user->name }} {{$user->surname }}</option>
+                                     @endforeach
+                                        </select>
 
                                         </div>
                                     </div>
+
 
 
                                     <input type="hidden" name="groupId" value="{{ $group->id }}">
@@ -76,4 +82,25 @@
         </section>
 
     </main>
+
+{{-- Select2 --}}
+<script type="module">
+
+
+    $('#members').select2({
+        placeholder: "Brak uczestników"
+    });
+
+
+
+
+
+
+    </script>
+
+
+
 @endsection
+
+
+

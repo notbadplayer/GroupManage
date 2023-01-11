@@ -45,6 +45,7 @@
         </section>
 
         <script type="module">
+
             //generowanie tabeli
             $(function () {
                 var table = $('.tabela').DataTable({
@@ -98,6 +99,8 @@
                 } );
 
             });
+
+
         </script>
     </main>
     {{-- Wyświetlenie paska statusu --}}
