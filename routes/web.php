@@ -34,6 +34,9 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::get('groups/edit/{Group}', [GroupController::class, 'edit'])->name('groups.edit');
     Route::put('groups/update/{Group}', [GroupController::class, 'update'])->name('groups.update');
 
+    //members of group:
+    Route::get('groups/members/{Group}', [GroupController::class, 'members'])->name('groups.members');
+
     //Subgroups:
     Route::get('groups/{Group}/createSubgroup', [SubgroupController::class, 'create'])->name('subgroups.create');
     Route::post('subgroups/store', [SubgroupController::class, 'store'])->name('subgroups.store');

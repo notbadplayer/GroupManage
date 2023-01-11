@@ -18,7 +18,7 @@
                             <div class="d-flex bd-highlight">
                                 <div class="p-2 flex-grow-1 bd-highlight card-title">
                                     @if (isset($group))
-                                        Edycja Grupę
+                                        Edycja Grupy
                                     @else
                                         Dodawanie grupy
                                     @endif
@@ -76,6 +76,29 @@
                                         </div>
                                     @endif
 
+                                    <div class="p-2 flex-grow-1 bd-highlight card-title">
+                                        Lista uczestników
+                                    </div>
+                                    <div class="mt-2 ">
+                                        <table class="table tabela table-hover" id="tabela" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Imię</th>
+                                                    <th scope="col">Nazwisko</th>
+                                                    <th scope="col">Grupa</th>
+                                                    <th scope="col">E-mail</th>
+                                                    <th scope="col">Telefon</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+
+
                                     <div class="float-end mb-3 mt-3"> <button type="submit" class="btn btn-primary"><i
                                                 class="fa-solid fa-check me-1"></i>Zapisz</button></div>
 
@@ -95,4 +118,32 @@
     @if (Session::has('success'))
         @include('other.statusSuccess')
     @endif
+
+
+    {{-- Generowanie tabeli uczestników --}}
+    <script type="module">
+    //generowanie tabeli
+    let ajaxUrl = "{{ route('groups.members', $group->id) }}"
+    console.log(ajaxUrl);
+            $(function () {
+                var table = $('.tabela').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    responsive: true,
+                    responsive: {
+            details: false
+                    },
+
+                    ajax: ajaxUrl,
+                    columns: [
+                        {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                        {data: 'name', name: 'name', orderable: true,},
+                        {data: 'surname', name: 'surname'},
+                        {data: 'email', name: 'email'},
+                        {data: 'phone', name: 'phone'},
+                    ],
+                });
+
+            });
+    </script>
 @endsection

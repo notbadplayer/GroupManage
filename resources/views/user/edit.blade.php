@@ -82,6 +82,23 @@
                                         </div>
                                     </div>
 
+                                    <div class="row mb-3 profile-edit">
+                                        <label for="phone" class="col-sm-2 col-form-label fw-bold">Członek grupy:</label>
+                                        <div class="col-sm-10">
+                                            @if (isset($user))
+                                                @foreach ($user->subgroups as $subgroup)
+                                                    <a href="{{ route('subgroups.edit', $subgroup->id) }}"><button
+                                                            type="button" class="btn btn-success mb-2 me-2">
+                                                            {{ $subgroup->group->name }} <span
+                                                                class="badge bg-white text-success ms-1">{{ $subgroup->name }}</span></button></a>
+                                                @endforeach
+                                            @endif
+                                            <a href=""><button type="button"
+                                                class="btn btn-outline-success mb-2 me-2"><i
+                                                    class="fa-solid fa-people-group me-2"></i>Dodaj do grupy</button></a>
+                                        </div>
+                                    </div>
+
                                     <div class="float-end mb-3 mt-3"> <button type="submit" class="btn btn-primary"><i
                                                 class="fa-solid fa-check me-1"></i>Zapisz</button></div>
 

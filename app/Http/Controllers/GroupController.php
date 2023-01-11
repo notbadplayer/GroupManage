@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UpdateGroup;
 use App\Models\Group;
 use App\Models\User;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Http\RedirectResponse;
@@ -86,5 +87,59 @@ class GroupController extends Controller
     public function destroy(Group $group)
     {
         //
+    }
+
+    public function members(Group $Group, Request $request)
+    {
+        if ($request->ajax()) {
+            //$data = User::latest()->get();
+            // $data = User::whereHas('subgroups', function($q) use($Group){
+            //     $q->whereIn('id', $Group->subgroupsIds());
+            // })->with('subgroups')->get();
+
+            // $data = User::whereHas('subgroups', function($q) use($Group){
+            //     $q->whereIn('id', $Group->subgroupsIds());
+            // })->with('subgroups')->get();
+
+            // $data = User::with('subgroups.group')
+            // ->whereHas('subgroups', function($q) use($Group){
+            //         $q->whereIn('id', $Group->subgroupsIds());
+            //     })->where('user.subgroups.group', '=', $Group->id)
+            //     ->get();
+            // $data = User::with('subgroups.group')
+            // ->whereHas('subgroups', function($q) use($Group){
+            //         $q->whereIn('id', $Group->subgroupsIds());
+            //     })->whereHas('group', function($w) use($Group){
+            //         $w->where('id', $Group->id);
+            //     })
+            //     ->get();
+
+
+
+            // $data = User::with('subgroups.group')
+            // ->whereHas('subgroups', function($q) use($Group){
+            //         $q->whereIn('id', $Group->subgroupsIds());
+            //     })->get();
+
+
+             $data = User::with(['subgroups' => function($w) use($Group){
+                $w->where('group_id', $Group->id);
+             }])
+            ->whereHas('subgroups', function($q) use($Group){
+                    $q->whereIn('id', $Group->subgroupsIds());
+                })->get();
+
+
+
+            Debugbar::error($data[0]['subgroups']);
+            return Datatables::of($data)
+                ->addIndexColumn()
+                // ->addColumn('action', function($row){
+                //     $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
+                //     return $actionBtn;
+                // })
+                // ->rawColumns(['action'])
+                ->make(true);
+        }
     }
 }

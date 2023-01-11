@@ -24,4 +24,9 @@ class Group extends Model
     {
         return $this->hasMany(Subgroup::class);
     }
+
+    public function subgroupsIds()
+    {
+        return $this->subgroups->pluck('id')->toArray();
+    }
 }
