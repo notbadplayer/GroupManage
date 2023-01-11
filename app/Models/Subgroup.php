@@ -28,14 +28,16 @@ class Subgroup extends Model
         return $this->belongsTo(Group::class);
     }
 
-
+    //członkowie podgrupy
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'group_user')->withPivot('group_id');
     }
 
+    //członkowie podgrupy: same ID
     public function members()
     {
+        //return $this->group->users()->wherePivot('subgroup_id', $this->id)->get()->pluck('id')->toArray();
         return $this->users->pluck('id')->toArray();
     }
 }

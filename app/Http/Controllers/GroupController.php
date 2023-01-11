@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateGroup;
 use App\Models\Group;
+use App\Models\GroupUser;
 use App\Models\User;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\Request;
@@ -50,13 +51,13 @@ class GroupController extends Controller
     {
         $data = $request->validated();
 
-        $group=Group::create([
+        $group = Group::create([
             'name' => $data['name'],
             'description' => $data['description'],
         ]);
 
         return redirect()->route('groups.index')
-                ->with('success','Grupa została dodana');
+            ->with('success', 'Grupa została dodana');
     }
 
 
@@ -75,7 +76,7 @@ class GroupController extends Controller
         ]);
 
         return redirect()->route('groups.index')
-        ->with('success','Dane grupy zostały aktualizowane');
+            ->with('success', 'Dane grupy zostały aktualizowane');
     }
 
     /**
@@ -92,46 +93,10 @@ class GroupController extends Controller
     public function members(Group $Group, Request $request)
     {
         if ($request->ajax()) {
-            //$data = User::latest()->get();
-            // $data = User::whereHas('subgroups', function($q) use($Group){
-            //     $q->whereIn('id', $Group->subgroupsIds());
-            // })->with('subgroups')->get();
 
-            // $data = User::whereHas('subgroups', function($q) use($Group){
-            //     $q->whereIn('id', $Group->subgroupsIds());
-            // })->with('subgroups')->get();
+            $data = GroupUser::with(['user', 'subgroup'])->where('group_id', $Group->id)
+                ->get()->toArray();
 
-            // $data = User::with('subgroups.group')
-            // ->whereHas('subgroups', function($q) use($Group){
-            //         $q->whereIn('id', $Group->subgroupsIds());
-            //     })->where('user.subgroups.group', '=', $Group->id)
-            //     ->get();
-            // $data = User::with('subgroups.group')
-            // ->whereHas('subgroups', function($q) use($Group){
-            //         $q->whereIn('id', $Group->subgroupsIds());
-            //     })->whereHas('group', function($w) use($Group){
-            //         $w->where('id', $Group->id);
-            //     })
-            //     ->get();
-
-
-
-            // $data = User::with('subgroups.group')
-            // ->whereHas('subgroups', function($q) use($Group){
-            //         $q->whereIn('id', $Group->subgroupsIds());
-            //     })->get();
-
-
-             $data = User::with(['subgroups' => function($w) use($Group){
-                $w->where('group_id', $Group->id);
-             }])
-            ->whereHas('subgroups', function($q) use($Group){
-                    $q->whereIn('id', $Group->subgroupsIds());
-                })->get();
-
-
-
-            Debugbar::error($data[0]['subgroups']);
             return Datatables::of($data)
                 ->addIndexColumn()
                 // ->addColumn('action', function($row){

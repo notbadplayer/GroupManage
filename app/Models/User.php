@@ -47,6 +47,11 @@ class User extends Authenticatable
 
     public function subgroups(): BelongsToMany
     {
-        return $this->belongsToMany(Subgroup::class);
+        return $this->belongsToMany(Subgroup::class, 'group_user');
+    }
+
+    public function groups(): BelongsToMany
+    {
+        return $this->belongsToMany(Group::class)->withPivot('subgroup_id');
     }
 }

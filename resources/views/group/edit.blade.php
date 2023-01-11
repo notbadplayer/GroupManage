@@ -65,36 +65,41 @@
                                             <label for="description" class="col-sm-2 col-form-label fw-bold">Grupy
                                                 podległe:</label>
                                             <div class="col-sm-10 ">
-                                                @foreach($group->subgroups as $subgroup)
-                                                <a href="{{ route('subgroups.edit', $subgroup->id) }}"><button type="button" class="btn btn-success mb-2 me-2"> {{ $subgroup->name }} <span class="badge bg-white text-success ms-1">{{ count($subgroup->members()) }}</span></button></a>
+                                                @foreach ($group->subgroups as $subgroup)
+                                                    <a href="{{ route('subgroups.edit', $subgroup->id) }}"><button
+                                                            type="button" class="btn btn-success mb-2 me-2">
+                                                            {{ $subgroup->name }} <span
+                                                                class="badge bg-white text-success ms-1">{{ count($subgroup->members()) }}</span></button></a>
                                                 @endforeach
-                                                <a href="{{ route('subgroups.create', $group->id) }}"><button type="button"
-                                                        class="btn btn-outline-success mb-2 me-2"><i
+                                                <a href="{{ route('subgroups.create', $group->id) }}"><button
+                                                        type="button" class="btn btn-outline-success mb-2 me-2"><i
                                                             class="fa-solid fa-people-group me-2"></i>Dodaj</button></a>
 
                                             </div>
                                         </div>
                                     @endif
 
-                                    <div class="p-2 flex-grow-1 bd-highlight card-title">
-                                        Lista uczestników
-                                    </div>
-                                    <div class="mt-2 ">
-                                        <table class="table tabela table-hover" id="tabela" style="width:100%">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">#</th>
-                                                    <th scope="col">Imię</th>
-                                                    <th scope="col">Nazwisko</th>
-                                                    <th scope="col">Grupa</th>
-                                                    <th scope="col">E-mail</th>
-                                                    <th scope="col">Telefon</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    @if (isset($group))
+                                        <div class="p-2 flex-grow-1 bd-highlight card-title">
+                                            Lista uczestników
+                                        </div>
+                                        <div class="mt-2 ">
+                                            <table class="table tabela table-hover" id="tabela" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Imię</th>
+                                                        <th scope="col">Nazwisko</th>
+                                                        <th scope="col">Grupa</th>
+                                                        <th scope="col">E-mail</th>
+                                                        <th scope="col">Telefon</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
 
 
 
@@ -123,7 +128,7 @@
     {{-- Generowanie tabeli uczestników --}}
     <script type="module">
     //generowanie tabeli
-    let ajaxUrl = "{{ route('groups.members', $group->id) }}"
+    let ajaxUrl = "{{ route('groups.members', $group->id ?? 1) }}"
     console.log(ajaxUrl);
             $(function () {
                 var table = $('.tabela').DataTable({
@@ -137,11 +142,15 @@
                     ajax: ajaxUrl,
                     columns: [
                         {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                        {data: 'name', name: 'name', orderable: true,},
-                        {data: 'surname', name: 'surname'},
-                        {data: 'email', name: 'email'},
-                        {data: 'phone', name: 'phone'},
+                        {data: 'user.name', name: 'user.name', orderable: true,},
+                        {data: 'user.surname', name: 'user.surname'},
+                        {data: 'subgroup.name'},
+                        {data: 'user.email', name: 'user.email'},
+                        {data: 'user.phone', name: 'user.phone'},
                     ],
+                    rowGroup: {
+                        dataSrc: 'subgroup.name'
+                    }
                 });
 
             });

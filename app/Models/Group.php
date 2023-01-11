@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Group extends Model
@@ -29,4 +30,15 @@ class Group extends Model
     {
         return $this->subgroups->pluck('id')->toArray();
     }
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class)->withPivot('subgroup_id');
+    }
+    // public function members()
+    // {
+    //     return $this->users->pluck('id')->toArray();
+    // }
+
+
 }

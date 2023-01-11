@@ -6,6 +6,7 @@ use App\Http\Requests\UpdateGroup;
 use App\Models\Group;
 use App\Models\Subgroup;
 use App\Models\User;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -46,7 +47,8 @@ class SubgroupController extends Controller
         ]);
 
         //dodanie użytkowników do podgrupy: tabela subgroup_user
-        $subgroup->users()->attach($request->members);
+        //$subgroup->users()->attach($request->members);
+        $subgroup->group->users()->attach($request->members, ['subgroup_id' => $subgroup->id ?? null]);
 
         return redirect()->route('groups.edit', $groupId)
                 ->with('success',"$group->name : dodano podgrupę: $subgroup->name");
@@ -80,8 +82,7 @@ class SubgroupController extends Controller
             'group_id' => $groupId,
         ]);
 
-        //synchronizacja użytkowników w grupie: tabela subgroup_user
-        $Subgroup->users()->sync($request->members);
+        $Subgroup->users()->syncWithPivotValues($request->members, ['group_id' => $groupId ?? null]);
 
         return redirect()->route('groups.edit', $groupId)
                 ->with('success',"Zapisano zmiany");

@@ -64,8 +64,6 @@
                                         </div>
                                     </div>
 
-
-
                                     <input type="hidden" name="groupId" value="{{ $group->id }}">
 
                                     <div class="float-end mb-3 mt-3"> <button type="submit" class="btn btn-primary"><i

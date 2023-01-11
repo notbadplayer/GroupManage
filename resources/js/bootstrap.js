@@ -12,6 +12,10 @@ Select2();
 import DataTable from "datatables.net-responsive-bs5";
 window.DataTable = DataTable;
 
+import RowGroup from 'datatables.net-rowgroup-bs5';
+window.RowGroup = RowGroup;
+
+
 import Swal from 'sweetalert2'
 window.Swal = Swal;
 
