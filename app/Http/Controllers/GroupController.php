@@ -63,7 +63,11 @@ class GroupController extends Controller
 
     public function edit(Group $Group): View
     {
-        return view('group.edit', ['group' => $Group]);
+        $users = User::get();
+        return view('group.edit', [
+            'group' => $Group,
+            'users' => $users,
+        ]);
     }
 
     public function update(Group $Group, UpdateGroup $request): RedirectResponse
@@ -97,6 +101,8 @@ class GroupController extends Controller
             $data = GroupUser::with(['user', 'subgroup'])->where('group_id', $Group->id)
                 ->get()->toArray();
 
+                Debugbar::info($data);
+
             return Datatables::of($data)
                 ->addIndexColumn()
                 // ->addColumn('action', function($row){
@@ -106,5 +112,34 @@ class GroupController extends Controller
                 // ->rawColumns(['action'])
                 ->make(true);
         }
+    }
+
+    public function addMember(Request $request)
+    {
+        Debugbar::info($request);
+        // $member = new GroupUser();
+        // $member->group_id = $request->member;
+        // $member->user_id = $request->member;
+        // $member->save();
+
+        // $member = GroupUser::create([
+        //     'group_id' => $request->group,
+        //     'user_id' => $request->member,
+        // ]);
+
+        // $member->subgroups()->attach($request->subGroups);
+
+        $group = Group::find($request->group);
+
+        if($request->subgoups){
+
+            foreach($request->subgroups as $subgroup){
+                $group->users()->attach($request->member, ['subgroup_id' => $subgroup]);
+            }
+        } else {
+            $group->users()->attach($request->member);
+        }
+
+
     }
 }

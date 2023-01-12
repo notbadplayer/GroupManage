@@ -102,6 +102,7 @@
                                     @endif
 
 
+                                    <div class="float-start mb-3 mt-3"> <div class="btn btn-outline-success" id="button-addToGroup"><i class="fa-solid fa-user-plus me-1"></i>Dopisz do grupy</div></div>
 
 
                                     <div class="float-end mb-3 mt-3"> <button type="submit" class="btn btn-primary"><i
@@ -128,8 +129,7 @@
     {{-- Generowanie tabeli uczestników --}}
     <script type="module">
     //generowanie tabeli
-    let ajaxUrl = "{{ route('groups.members', $group->id ?? 1) }}"
-    console.log(ajaxUrl);
+    let ajaxUrl = "{{ route('groups.members', $group->id ?? null) }}"
             $(function () {
                 var table = $('.tabela').DataTable({
                     processing: true,
@@ -139,20 +139,131 @@
             details: false
                     },
 
+
                     ajax: ajaxUrl,
                     columns: [
                         {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                        {data: 'user.name', name: 'user.name', orderable: true,},
-                        {data: 'user.surname', name: 'user.surname'},
-                        {data: 'subgroup.name'},
-                        {data: 'user.email', name: 'user.email'},
-                        {data: 'user.phone', name: 'user.phone'},
+                        {data: 'user.name', name: 'user.name', orderable: false,},
+                        {data: 'user.surname', name: 'user.surname', orderable: false,},
+                        {data: 'subgroup.name', defaultContent: 'brak'},
+                        {data: 'user.email', name: 'user.email',orderable: false,},
+                        {data: 'user.phone', name: 'user.phone',orderable: false,},
+
                     ],
                     rowGroup: {
-                        dataSrc: 'subgroup.name'
+                        dataSrc: 'subgroup.name',
+                        emptyDataGroup: 'Brak przypisanej grupy'
                     }
                 });
 
             });
+
+
+            //kliknięcie w wiersz
+            $(document).ready(function () {
+
+            var table = $('#tabela').DataTable();
+
+            $('#tabela tbody').on( 'click', 'tr', function () {
+                //console.log( table.row( this ).data().id );
+                var data = table.row( this ).data()
+
+                var htmlText = "";
+                htmlText = htmlText + '<div class="container mb-3"><div class="row"><div class="col-1 col-md-2"><i class="fa-solid fa-phone"></i></div><div class="col-11 col-md-8">'+data.user.phone+'</div></div></div>'
+                htmlText = htmlText + '<div class="container mb-3"><div class="row"><div class="col-1 col-md-2"><i class="fa-solid fa-at"></i></div><div class="col-11 col-md-8">'+data.user.email+'</div></div></div>'
+
+                Swal.fire({
+                    title: data.user.name +' '+ data.user.surname,
+                    html: htmlText,
+                    icon: 'info',
+                    confirmButtonText: 'Edytuj dane',
+                    confirmButtonColor: '#0d6efd',
+                    showCancelButton: 'true',
+                    cancelButtonText: 'Anuluj',
+                    }).then((result) =>
+                        {
+                            //console.log(result)
+                            if(result.isConfirmed){
+                                //window.location.href = "{{route('users.index')}}";
+                                window.location.href = "/users/edit/"+data.id;
+                            }
+                        }
+                    );
+
+} );
+
+
+//Kliknięciee przycisku "dopisz do grupy":
+$('#button-addToGroup').on( 'click', function () {
+
+    let htmlAddToGroupText = '<select class="form-select members" name="newMember" id="newMember" value="" style="width: 80%"><option value="null">Wybierz Użytkownika</option>@foreach($users as $user)<option value="{{ $user->id }}">{{ $user->name }} {{$user->surname }}</option>@endforeach</select></br>';
+    htmlAddToGroupText = htmlAddToGroupText + '<div class="mt-5">Dodaj również do podgrupy:</div>';
+    htmlAddToGroupText = htmlAddToGroupText + '<select class="form-select subgroups" name="newMemberSubgroups[]" multiple="multiple" id="newMemberSubgroups" value="" style="width: 80%">@foreach($group->subgroups as $subgroup)<option value="{{ $subgroup->id }}">{{ $subgroup->name }}</option>@endforeach</select></br>';
+
+    Swal.fire({
+                    title: 'Dopisz użytkownika do grupy: {{$group->name}}',
+                    html: htmlAddToGroupText,
+                    iconHtml: '<i class="bi bi-person-add"></i>',
+                    iconColor: '#0d6efd',
+                    confirmButtonText: 'Edytuj dane',
+                    confirmButtonColor: '#0d6efd',
+                    showCancelButton: 'true',
+                    cancelButtonText: 'Anuluj',
+                    didOpen: (q) => {
+                        console.log('otwarty swal');
+                        $('#newMember').select2({
+                        });
+                        $('#newMemberSubgroups').select2({
+                            placeholder: "Nie wybrano"
+                        });
+
+                    }
+
+                    }).then((result) =>
+                        {
+                            //console.log(result)
+                            if(result.isConfirmed){
+                                addMemberToGroup();
+                            }
+                        }
+                    );
+});
+
+
+function addMemberToGroup(){
+    var group = "{{ $group->id }}";
+    var newMember = $('#newMember').val();
+    var newMemberSubgroups = $('#newMemberSubgroups').val();
+
+    console.log(newMember);
+    console.log(newMemberSubgroups);
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        }
+    });
+
+    $.ajax({
+            url: "{{ route('groups.addMember') }}",
+            method: 'POST',
+            data: {
+                group: group,
+                member: newMember,
+                subgoups: newMemberSubgroups
+            },
+            success: function(data) {
+                console.log('dodano');
+            },
+            error: function(data) {
+                console.log('nie dodano');
+            }
+        })
+
+}
+
+
+
+});
     </script>
 @endsection

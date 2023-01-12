@@ -44,7 +44,7 @@
                                         <label for="name" class="col-sm-2 col-form-label fw-bold">Nazwa:</label>
                                         <div class="col-sm-10"> <input type="text"
                                                 class="form-control @error('name')is-invalid @enderror" name="name"
-                                                id="name" value="{{ old('name', $subgroup->name ?? '') }}">
+                                                id="name" value="{{ old('name', $subgroup->name ?? '') }}" required>
                                             @if ($errors->has('name'))
                                                 <div class="invalid-feedback">{{ $errors->first('name') }}</div>
                                             @endif

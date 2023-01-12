@@ -1080,3 +1080,8 @@
 .select2-selection__arrow {
     height: 34px !important;
 }
+
+/* A to jest potrzebne, żeby select2 poprawnie wyświetlał się wewnątrz sweetalerta */
+.select2-container--open {
+    z-index: 99999999999999;
+    }
