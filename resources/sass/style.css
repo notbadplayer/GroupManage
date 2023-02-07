@@ -1085,3 +1085,8 @@
 .select2-container--open {
     z-index: 99999999999999;
     }
+
+
+.ck-editor__editable {
+    min-height: 400px !important;
+}

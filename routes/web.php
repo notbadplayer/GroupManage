@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\SubgroupController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -44,6 +45,17 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::post('subgroups/store', [SubgroupController::class, 'store'])->name('subgroups.store');
     Route::get('subgroups/edit/{Subgroup}', [SubgroupController::class, 'edit'])->name('subgroups.edit');
     Route::put('subgroups/update/{Subgroup}', [SubgroupController::class, 'update'])->name('subgroups.update');
+
+
+    //Publications
+    Route::get('/publications', [PublicationController::class, 'index'])->name('publications.index');
+    Route::get('publications/data', [PublicationController::class, 'data'])->name('publications.data');
+    Route::get('publications/create', [PublicationController::class, 'create'])->name('publications.create');
+    Route::post('publications/store', [PublicationController::class, 'store'])->name('publications.store');
+    Route::get('publications/edit/{Publication}', [PublicationController::class, 'edit'])->name('grpublicationsoups.edit');
+    Route::put('publications/update/{Publication}', [PublicationController::class, 'update'])->name('publications.update');
+
+
 
 
 });
