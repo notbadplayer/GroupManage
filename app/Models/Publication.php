@@ -29,4 +29,20 @@ class Publication extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
+    //grupy do publikacji: samo ID
+    public function groupsIDs()
+    {
+        return $this->groups->pluck('id')->toArray();
+    }
+     //podgrupy do publikacji: samo ID
+     public function subgroupsIDs()
+     {
+         return $this->subgroups->pluck('id')->toArray();
+     }
+       //użytkownicy do publikacji: samo ID
+       public function usersIDs()
+       {
+           return $this->users->pluck('id')->toArray();
+       }
 }

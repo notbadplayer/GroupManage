@@ -113,38 +113,69 @@ class PublicationController extends Controller
             ->with('success', 'Wpis został dodany');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Publication  $publication
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Publication $publication)
+    public function edit(Publication $Publication)
     {
-        //
+        $users = User::get();
+        $groups = Group::get();
+        $subgroups = Subgroup::get();
+
+        $visibleGroups = $Publication->groupsIDs();
+        $visibleSubgroups = $Publication->subgroupsIDs();
+        $visibleUsers = $Publication->usersIDs();
+
+
+        return view('publication.edit', [
+            'publication' => $Publication,
+            'users' => $users,
+            'groups' => $groups,
+            'subgroups' => $subgroups,
+            'visibleGroups' => $visibleGroups,
+            'visibleSubgroups' => $visibleSubgroups,
+            'visibleUsers' => $visibleUsers,
+
+        ]);
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Publication  $publication
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Publication $publication)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Publication  $publication
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Publication $publication)
+    public function update(Publication $Publication, UpdatePublication $request)
     {
-        //
+        $visibilityData = $request->visibility;
+
+        $groups = [];
+        $subgroups = [];
+        $users = [];
+
+        foreach ($visibilityData as $entry)
+        {
+            $separatedEntry = explode(":", $entry);
+            switch($separatedEntry[0]){
+                case 'group':
+                $groups [] = (int) $separatedEntry[1];
+                break;
+                case 'subgroup':
+                $subgroups [] = (int) $separatedEntry[1];
+                break;
+                case 'user':
+                $users [] = (int) $separatedEntry[1];
+                break;
+            }
+        }
+
+        $data = $request->validated();
+
+        $Publication->update([
+            'name' => $data['name'],
+            'content' => $data['content'],
+            'restrictedVisibility' => (empty($groups) || empty($subgroups) || empty($users)) ? true : false,
+        ]);
+
+        $Publication->groups()->sync($groups);
+        $Publication->subgroups()->sync($subgroups);
+        $Publication->users()->sync($users);
+
+        return redirect()->route('publications.index')
+            ->with('success', 'Wpis został aktualizowany');
     }
 
     /**

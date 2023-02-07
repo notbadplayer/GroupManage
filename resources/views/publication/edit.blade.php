@@ -31,7 +31,7 @@
                             </div>
 
                             <div class="mt-2 profile">
-                                <form method="post" action="{{ route('publications.store') }}">
+                                <form method="post" action="{{ isset($publication) ? route('publications.update', $publication->id) : route('publications.store') }}">
                                     @csrf
                                     @if (isset($publication))
                                         @method('PUT')
@@ -39,7 +39,7 @@
                                     <div class="col-md-12 profile-edit mb-3">
                                         <label for="name" class="form-label">Tytuł:</label> <input type="text"
                                             class="form-control @error('name')is-invalid @enderror" id="name"
-                                            name="name">
+                                            name="name" value="{{ old('name', $publication->name ?? '') }}">
                                         @if ($errors->has('name'))
                                             <div class="invalid-feedback">{{ $errors->first('name') }}</div>
                                         @endif
@@ -52,17 +52,17 @@
                                             value="{{ old('members', $group->members ?? '') }}" style="width: 100%">
                                             @foreach ($groups ?? [] as $group)
                                             <option value="group:{{ $group->id }}"
-                                                @if (isset($members) && in_array($group->id, $members)) selected @endif>{{ $group->name }}</option>
+                                                @if (isset($visibleGroups) && in_array($group->id, $visibleGroups)) selected @endif>{{ $group->name }}</option>
                                             @endforeach
 
                                             @foreach ($subgroups ?? [] as $subgroup)
                                             <option value="subgroup:{{ $subgroup->id }}"
-                                                    @if (isset($members) && in_array($user->id, $members)) selected @endif>{{ $subgroup->name }}</option>
+                                                    @if (isset($visibleSubgroups) && in_array($subgroup->id, $visibleSubgroups)) selected @endif>{{ $subgroup->name }}</option>
                                             @endforeach
 
                                             @foreach ($users ?? [] as $user)
                                             <option value="user:{{ $user->id }}"
-                                                    @if (isset($members) && in_array($user->id, $members)) selected @endif>{{ $user->name }}
+                                                    @if (isset($visibleUsers) && in_array($user->id, $visibleUsers)) selected @endif>{{ $user->name }}
                                                     {{ $user->surname }}</option>
                                             @endforeach
                                         </select>
@@ -70,7 +70,9 @@
 
                                     <div class="col-md-12 profile-edit">
                                         <label for="editor" class="form-label">Treść:</label>
-                                        <textarea id="editor" class="block w-full mt-1 rounded-md @error('content')is-invalid @enderror" name="content"></textarea>
+                                        <textarea id="editor" class="block w-full mt-1 rounded-md @error('content')is-invalid @enderror" name="content">
+                                            {!! $publication->content ?? ''  !!}
+                                        </textarea>
                                         @if ($errors->has('content'))
                                             <div class="invalid-feedback">{{ $errors->first('content') }}</div>
                                         @endif

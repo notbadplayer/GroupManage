@@ -52,7 +52,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::get('publications/data', [PublicationController::class, 'data'])->name('publications.data');
     Route::get('publications/create', [PublicationController::class, 'create'])->name('publications.create');
     Route::post('publications/store', [PublicationController::class, 'store'])->name('publications.store');
-    Route::get('publications/edit/{Publication}', [PublicationController::class, 'edit'])->name('grpublicationsoups.edit');
+    Route::get('publications/edit/{Publication}', [PublicationController::class, 'edit'])->name('publications.edit');
     Route::put('publications/update/{Publication}', [PublicationController::class, 'update'])->name('publications.update');
 
 
