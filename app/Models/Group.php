@@ -40,5 +40,10 @@ class Group extends Model
     //     return $this->users->pluck('id')->toArray();
     // }
 
+    public function publications()
+    {
+        return $this->belongsToMany(Publication::class);
+    }
+
 
 }

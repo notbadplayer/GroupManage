@@ -101,9 +101,9 @@
                                         </div>
                                     @endif
 
-
+                                    @if (isset($group))
                                     <div class="float-start mb-3 mt-3"> <div class="btn btn-outline-success" id="button-addToGroup"><i class="fa-solid fa-user-plus me-1"></i>Dopisz do grupy</div></div>
-
+                                    @endif
 
                                     <div class="float-end mb-3 mt-3"> <button type="submit" class="btn btn-primary"><i
                                                 class="fa-solid fa-check me-1"></i>Zapisz</button></div>
@@ -196,12 +196,12 @@
 //Kliknięciee przycisku "dopisz do grupy":
 $('#button-addToGroup').on( 'click', function () {
 
-    let htmlAddToGroupText = '<select class="form-select members" name="newMember" id="newMember" value="" style="width: 80%"><option value="null">Wybierz Użytkownika</option>@foreach($users as $user)<option value="{{ $user->id }}">{{ $user->name }} {{$user->surname }}</option>@endforeach</select></br>';
+    let htmlAddToGroupText = '<select class="form-select members" name="newMember" id="newMember" value="" style="width: 80%"><option value="null">Wybierz Użytkownika</option>@foreach($users ?? [] as $user)<option value="{{ $user->id }}">{{ $user->name }} {{$user->surname }}</option>@endforeach</select></br>';
     htmlAddToGroupText = htmlAddToGroupText + '<div class="mt-5">Dodaj również do podgrupy:</div>';
-    htmlAddToGroupText = htmlAddToGroupText + '<select class="form-select subgroups" name="newMemberSubgroups[]" multiple="multiple" id="newMemberSubgroups" value="" style="width: 80%">@foreach($group->subgroups as $subgroup)<option value="{{ $subgroup->id }}">{{ $subgroup->name }}</option>@endforeach</select></br>';
+    htmlAddToGroupText = htmlAddToGroupText + '<select class="form-select subgroups" name="newMemberSubgroups[]" multiple="multiple" id="newMemberSubgroups" value="" style="width: 80%">@foreach($group->subgroups ??[] as $subgroup)<option value="{{ $subgroup->id }}">{{ $subgroup->name }}</option>@endforeach</select></br>';
 
     Swal.fire({
-                    title: 'Dopisz użytkownika do grupy: {{$group->name}}',
+                    title: 'Dopisz użytkownika do grupy: {{$group->name ?? ''}}',
                     html: htmlAddToGroupText,
                     iconHtml: '<i class="bi bi-person-add"></i>',
                     iconColor: '#0d6efd',
@@ -231,7 +231,7 @@ $('#button-addToGroup').on( 'click', function () {
 
 
 function addMemberToGroup(){
-    var group = "{{ $group->id }}";
+    var group = "{{ $group->id ?? ''}}";
     var newMember = $('#newMember').val();
     var newMemberSubgroups = $('#newMemberSubgroups').val();
 

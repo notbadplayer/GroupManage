@@ -43,7 +43,10 @@ class GroupController extends Controller
 
     public function create(): View
     {
-        return view('group.edit');
+        $users = User::get();
+        return view('group.edit',[
+            'users' => $users,
+        ]);
     }
 
 

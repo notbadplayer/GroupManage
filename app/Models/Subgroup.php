@@ -40,4 +40,9 @@ class Subgroup extends Model
         //return $this->group->users()->wherePivot('subgroup_id', $this->id)->get()->pluck('id')->toArray();
         return $this->users->pluck('id')->toArray();
     }
+
+    public function publications()
+    {
+        return $this->belongsToMany(Publication::class);
+    }
 }

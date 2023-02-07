@@ -2,22 +2,22 @@
     <ul class="sidebar-nav" id="sidebar-nav">
        <li class="nav-item"> <a class="nav-link " href="{{route('home') }}"> <i class="bi bi-grid"></i> <span>Strona Główna</span> </a></li>
        <li class="nav-item">
-          <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#"> <i class="fa-regular fa-user"></i><span>Użytkownicy</span><i class="bi bi-chevron-down ms-auto"></i> </a>
-          <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <a class="nav-link collapsed" data-bs-target="#users-nav" data-bs-toggle="collapse" href="#"> <i class="fa-regular fa-user"></i><span>Użytkownicy</span><i class="bi bi-chevron-down ms-auto"></i> </a>
+          <ul id="users-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
              <li> <a href="{{ route('users.index') }}"> <i class="bi bi-circle"></i><span>Lista użytkowników</span> </a></li>
              <li> <a href="{{ route('users.create') }}"> <i class="bi bi-circle"></i><span>Dodaj użytkownika</span> </a></li>
           </ul>
        </li>
        <li class="nav-item">
-          <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#"> <i class="fa-solid fa-user-group"></i><span>Grupy</span><i class="bi bi-chevron-down ms-auto"></i> </a>
-          <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <a class="nav-link collapsed" data-bs-target="#groups-nav" data-bs-toggle="collapse" href="#"> <i class="fa-solid fa-user-group"></i><span>Grupy</span><i class="bi bi-chevron-down ms-auto"></i> </a>
+          <ul id="groups-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
              <li> <a href="{{ route('groups.index') }}"> <i class="bi bi-circle"></i><span>Lista grup</span> </a></li>
              <li> <a href="{{ route('groups.create') }}"> <i class="bi bi-circle"></i><span>Dodaj grupę</span> </a></li>
           </ul>
        </li>
        <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#"> <i class="fa-solid fa-file-lines"></i><span>Publikacje</span><i class="bi bi-chevron-down ms-auto"></i> </a>
-        <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <a class="nav-link collapsed" data-bs-target="#publications-nav" data-bs-toggle="collapse" href="#"> <i class="fa-solid fa-file-lines"></i><span>Publikacje</span><i class="bi bi-chevron-down ms-auto"></i> </a>
+        <ul id="publications-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
            <li> <a href="{{ route('publications.index') }}"> <i class="bi bi-circle"></i><span>Lista publikacji</span> </a></li>
            <li> <a href="{{ route('publications.create') }}"> <i class="bi bi-circle"></i><span>Dodaj publikację</span> </a></li>
         </ul>

@@ -54,4 +54,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Group::class)->withPivot('subgroup_id');
     }
+
+    public function publications()
+    {
+        return $this->belongsToMany(Publication::class);
+    }
 }

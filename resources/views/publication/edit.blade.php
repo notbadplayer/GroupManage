@@ -31,21 +31,50 @@
                             </div>
 
                             <div class="mt-2 profile">
-                                <form method="post"
-                                    action="{{ isset($group) ? route('groups.update', $group->id) : route('groups.store') }}">
+                                <form method="post" action="{{ route('publications.store') }}">
                                     @csrf
-                                    @if (isset($group))
+                                    @if (isset($publication))
                                         @method('PUT')
                                     @endif
+                                    <div class="col-md-12 profile-edit mb-3">
+                                        <label for="name" class="form-label">Tytuł:</label> <input type="text"
+                                            class="form-control @error('name')is-invalid @enderror" id="name"
+                                            name="name">
+                                        @if ($errors->has('name'))
+                                            <div class="invalid-feedback">{{ $errors->first('name') }}</div>
+                                        @endif
+                                    </div>
 
-                                    <form class="row g-3">
-                                        <div class="col-md-12 profile-edit mb-3">
-                                            <label for="inputName5" class="form-label">Tytuł:</label> <input type="text" class="form-control" id="inputName5">
-                                        </div>
-                                        <div class="col-md-12 profile-edit">
-                                            <label for="inputName5" class="form-label">Treść:</label>
-                                            <textarea id="editor" class="block w-full mt-1 rounded-md" name="description" rows="3" cols="10"></textarea>
-                                        </div>
+                                    <div class="col-md-12 profile-edit mb-3">
+                                        <label for="name" class="form-label">Widoczne dla:</label>
+                                        <select class="form-select members @error('members')is-invalid @enderror"
+                                            name="visibility[]" multiple="multiple" id="visibility"
+                                            value="{{ old('members', $group->members ?? '') }}" style="width: 100%">
+                                            @foreach ($groups ?? [] as $group)
+                                            <option value="group:{{ $group->id }}"
+                                                @if (isset($members) && in_array($group->id, $members)) selected @endif>{{ $group->name }}</option>
+                                            @endforeach
+
+                                            @foreach ($subgroups ?? [] as $subgroup)
+                                            <option value="subgroup:{{ $subgroup->id }}"
+                                                    @if (isset($members) && in_array($user->id, $members)) selected @endif>{{ $subgroup->name }}</option>
+                                            @endforeach
+
+                                            @foreach ($users ?? [] as $user)
+                                            <option value="user:{{ $user->id }}"
+                                                    @if (isset($members) && in_array($user->id, $members)) selected @endif>{{ $user->name }}
+                                                    {{ $user->surname }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-12 profile-edit">
+                                        <label for="editor" class="form-label">Treść:</label>
+                                        <textarea id="editor" class="block w-full mt-1 rounded-md @error('content')is-invalid @enderror" name="content"></textarea>
+                                        @if ($errors->has('content'))
+                                            <div class="invalid-feedback">{{ $errors->first('content') }}</div>
+                                        @endif
+                                    </div>
 
                                     <div class="float-end mb-3 mt-3"> <button type="submit" class="btn btn-primary"><i
                                                 class="fa-solid fa-check me-1"></i>Zapisz</button></div>
@@ -74,78 +103,20 @@
     <script type="module">
 
 
-    //generowanie tabeli
-    let ajaxUrl = "{{ route('groups.members', $group->id ?? null) }}"
-            $(function () {
-                var table = $('.tabela').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    responsive: true,
-                    responsive: {
-            details: false
-                    },
-
-
-                    ajax: ajaxUrl,
-                    columns: [
-                        {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                        {data: 'user.name', name: 'user.name', orderable: false,},
-                        {data: 'user.surname', name: 'user.surname', orderable: false,},
-                        {data: 'subgroup.name', defaultContent: 'brak'},
-                        {data: 'user.email', name: 'user.email',orderable: false,},
-                        {data: 'user.phone', name: 'user.phone',orderable: false,},
-
-                    ],
-                    rowGroup: {
-                        dataSrc: 'subgroup.name',
-                        emptyDataGroup: 'Brak przypisanej grupy'
-                    }
-                });
-
+        $('#visibility').select2({
+                placeholder: "Wszyscy"
             });
 
 
-            //kliknięcie w wiersz
-            $(document).ready(function () {
+        $(document).ready(function () {
 
 
-            ClassicEditor.create( document.querySelector( '#editor' ) )
-                .catch( error => {
-                    console.error( error );
-                } );
+        ClassicEditor.create( document.querySelector( '#editor' ) )
+            .catch( error => {
+                console.error( error );
+         } );
 
+        });
 
-            var table = $('#tabela').DataTable();
-
-            $('#tabela tbody').on( 'click', 'tr', function () {
-                //console.log( table.row( this ).data().id );
-                var data = table.row( this ).data()
-
-                var htmlText = "";
-                htmlText = htmlText + '<div class="container mb-3"><div class="row"><div class="col-1 col-md-2"><i class="fa-solid fa-phone"></i></div><div class="col-11 col-md-8">'+data.user.phone+'</div></div></div>'
-                htmlText = htmlText + '<div class="container mb-3"><div class="row"><div class="col-1 col-md-2"><i class="fa-solid fa-at"></i></div><div class="col-11 col-md-8">'+data.user.email+'</div></div></div>'
-
-                Swal.fire({
-                    title: data.user.name +' '+ data.user.surname,
-                    html: htmlText,
-                    icon: 'info',
-                    confirmButtonText: 'Edytuj dane',
-                    confirmButtonColor: '#0d6efd',
-                    showCancelButton: 'true',
-                    cancelButtonText: 'Anuluj',
-                    }).then((result) =>
-                        {
-                            //console.log(result)
-                            if(result.isConfirmed){
-                                //window.location.href = "{{route('users.index')}}";
-                                window.location.href = "/users/edit/"+data.id;
-                            }
-                        }
-                    );
-
-} );
-
-
-});
     </script>
 @endsection
