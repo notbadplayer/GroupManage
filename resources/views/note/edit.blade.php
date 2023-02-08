@@ -30,10 +30,6 @@
                                 </div>
                             </div>
 
-                            @php
-                                dump($errors)
-                            @endphp
-
                             <div class="mt-2 profile">
                                 <form method="post"
                                     action="{{ isset($note) ? route('notes.update', $note->id) : route('notes.store') }}" enctype='multipart/form-data'>
@@ -87,9 +83,9 @@
                                     </div>
 
                                     <div class="col-md-12 profile-edit mb-3">
-                                        <label for="file" class="form-label">Plik:</label> <input class="form-control @error('file')is-invalid @enderror" type="file" id="file" name="file">
-                                        @if ($errors->has('file'))
-                                            <div class="invalid-feedback">{{ $errors->first('file') }}</div>
+                                        <label for="upload" class="form-label">Plik:</label> <input class="form-control @error('upload')is-invalid @enderror" type="file" id="file" name="upload">
+                                        @if ($errors->has('upload'))
+                                            <div class="invalid-feedback">{{ $errors->first('upload') }}</div>
                                         @endif
                                     </div>
 
@@ -123,33 +119,6 @@
         $('#visibility').select2({
                 placeholder: "Wszyscy"
             });
-
-
-        $(document).ready(function () {
-
-
-        ClassicEditor.create( document.querySelector( '#editor' ),{
-            simpleUpload: {
-            // The URL that the images are uploaded to.
-            uploadUrl: "{{route('file.upload', ['location' => 'publication','_token' => csrf_token() ])}}",
-
-            // Enable the XMLHttpRequest.withCredentials property.
-            withCredentials: true,
-
-            // Headers sent along with the XMLHttpRequest to the upload server.
-            headers: {
-                'X-CSRF-TOKEN': 'CSRF-Token',
-                Authorization: 'Bearer <JSON Web Token>'
-            }
-        }
-
-
-    } )
-            .catch( error => {
-                console.error( error );
-         } );
-
-        });
 
     </script>
 @endsection

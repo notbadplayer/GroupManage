@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\NoteController;
@@ -60,7 +61,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
 
 
     //Files
-    Route::post('file-upload/{location}', [FileUploadController::class, 'storeFile'])->name('file.upload');
+    Route::post('file-upload/{assignedTo}', [FileController::class, 'storeFile'])->name('file.upload');
 
 
     //Notes:

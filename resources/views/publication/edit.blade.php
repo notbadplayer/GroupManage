@@ -119,7 +119,7 @@
         ClassicEditor.create( document.querySelector( '#editor' ),{
             simpleUpload: {
             // The URL that the images are uploaded to.
-            uploadUrl: "{{route('file.upload', ['location' => 'publication','_token' => csrf_token() ])}}",
+            uploadUrl: "{{route('file.upload', ['assignedTo' => 'publication','_token' => csrf_token() ])}}",
 
             // Enable the XMLHttpRequest.withCredentials property.
             withCredentials: true,

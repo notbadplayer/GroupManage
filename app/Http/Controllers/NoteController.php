@@ -24,11 +24,11 @@ class NoteController extends Controller
         if ($request->ajax()) {
             $data = Note::latest()->get();
             return Datatables::of($data)
-            ->addColumn('category', function($row){
-                $categoryString = Note::find($row->id)->category?->name;
-                return $categoryString;
-            })
-            ->addColumn('visibility', function($row){
+                ->addColumn('category', function ($row) {
+                    $categoryString = Note::find($row->id)->category?->name;
+                    return $categoryString;
+                })
+                ->addColumn('visibility', function ($row) {
                     $visibilityString = $this->getVisibilityData($row->id);
                     return $visibilityString;
                 })
@@ -38,29 +38,26 @@ class NoteController extends Controller
         }
     }
 
-    private function getVisibilityData($id){
+    private function getVisibilityData($id)
+    {
         $visibilityString = '';
         $note = Note::find($id);
 
-        if($note->restrictedVisibility){
-            foreach($note->groups as $group){
-                $visibilityString .= '<span class="badge rounded-pill bg-primary">'.$group->name.'</span> ';
+        if ($note->restrictedVisibility) {
+            foreach ($note->groups as $group) {
+                $visibilityString .= '<span class="badge rounded-pill bg-primary">' . $group->name . '</span> ';
             }
-            foreach($note->subgroups as $subgroup){
-                $visibilityString .= '<span class="badge rounded-pill bg-success">'.$subgroup->name.'</span> ';
+            foreach ($note->subgroups as $subgroup) {
+                $visibilityString .= '<span class="badge rounded-pill bg-success">' . $subgroup->name . '</span> ';
             }
-            foreach($note->users as $user){
-                $visibilityString .= '<span class="badge rounded-pill bg-secondary">'.$user->name.' '.$user->surname.'</span> ';
+            foreach ($note->users as $user) {
+                $visibilityString .= '<span class="badge rounded-pill bg-secondary">' . $user->name . ' ' . $user->surname . '</span> ';
             }
         } else {
             $visibilityString = 'Wszyscy';
         }
 
-
-        Debugbar::info($visibilityString);
-
         return $visibilityString;
-
     }
 
 
@@ -74,8 +71,8 @@ class NoteController extends Controller
         return view('note.edit', [
             'users' => $users,
             'groups' => $groups,
-            'subgroups' =>$subgroups,
-            'categories'  =>$categories
+            'subgroups' => $subgroups,
+            'categories'  => $categories
         ]);
     }
 
@@ -88,19 +85,18 @@ class NoteController extends Controller
         $subgroups = [];
         $users = [];
 
-        foreach ($visibilityData ?? [] as $entry)
-        {
+        foreach ($visibilityData ?? [] as $entry) {
             $separatedEntry = explode(":", $entry);
-            switch($separatedEntry[0]){
+            switch ($separatedEntry[0]) {
                 case 'group':
-                $groups [] = (int) $separatedEntry[1];
-                break;
+                    $groups[] = (int) $separatedEntry[1];
+                    break;
                 case 'subgroup':
-                $subgroups [] = (int) $separatedEntry[1];
-                break;
+                    $subgroups[] = (int) $separatedEntry[1];
+                    break;
                 case 'user':
-                $users [] = (int) $separatedEntry[1];
-                break;
+                    $users[] = (int) $separatedEntry[1];
+                    break;
             }
         }
 
@@ -114,6 +110,11 @@ class NoteController extends Controller
         $note->groups()->sync($groups);
         $note->subgroups()->sync($subgroups);
         $note->users()->sync($users);
+
+        if($data['upload']){
+            (new FileController)->storeFile($request, 'note');
+        }
+
 
         return redirect()->route('notes.index')
             ->with('success', 'Plik z nutami został dodany');
