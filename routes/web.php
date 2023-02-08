@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\SubgroupController;
@@ -54,6 +55,10 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::post('publications/store', [PublicationController::class, 'store'])->name('publications.store');
     Route::get('publications/edit/{Publication}', [PublicationController::class, 'edit'])->name('publications.edit');
     Route::put('publications/update/{Publication}', [PublicationController::class, 'update'])->name('publications.update');
+
+
+    //Files
+    Route::post('file-upload/{location}', [FileUploadController::class, 'storeFile'])->name('file.upload');
 
 
 

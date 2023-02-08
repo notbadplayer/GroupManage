@@ -31,7 +31,8 @@
                             </div>
 
                             <div class="mt-2 profile">
-                                <form method="post" action="{{ isset($publication) ? route('publications.update', $publication->id) : route('publications.store') }}">
+                                <form method="post"
+                                    action="{{ isset($publication) ? route('publications.update', $publication->id) : route('publications.store') }}">
                                     @csrf
                                     @if (isset($publication))
                                         @method('PUT')
@@ -51,17 +52,19 @@
                                             name="visibility[]" multiple="multiple" id="visibility"
                                             value="{{ old('members', $group->members ?? '') }}" style="width: 100%">
                                             @foreach ($groups ?? [] as $group)
-                                            <option value="group:{{ $group->id }}"
-                                                @if (isset($visibleGroups) && in_array($group->id, $visibleGroups)) selected @endif>{{ $group->name }}</option>
+                                                <option value="group:{{ $group->id }}"
+                                                    @if (isset($visibleGroups) && in_array($group->id, $visibleGroups)) selected @endif>{{ $group->name }}
+                                                </option>
                                             @endforeach
 
                                             @foreach ($subgroups ?? [] as $subgroup)
-                                            <option value="subgroup:{{ $subgroup->id }}"
-                                                    @if (isset($visibleSubgroups) && in_array($subgroup->id, $visibleSubgroups)) selected @endif>{{ $subgroup->name }}</option>
+                                                <option value="subgroup:{{ $subgroup->id }}"
+                                                    @if (isset($visibleSubgroups) && in_array($subgroup->id, $visibleSubgroups)) selected @endif>{{ $subgroup->name }}
+                                                </option>
                                             @endforeach
 
                                             @foreach ($users ?? [] as $user)
-                                            <option value="user:{{ $user->id }}"
+                                                <option value="user:{{ $user->id }}"
                                                     @if (isset($visibleUsers) && in_array($user->id, $visibleUsers)) selected @endif>{{ $user->name }}
                                                     {{ $user->surname }}</option>
                                             @endforeach
@@ -71,7 +74,7 @@
                                     <div class="col-md-12 profile-edit">
                                         <label for="editor" class="form-label">Treść:</label>
                                         <textarea id="editor" class="block w-full mt-1 rounded-md @error('content')is-invalid @enderror" name="content">
-                                            {!! $publication->content ?? ''  !!}
+                                            {!! $publication->content ?? '' !!}
                                         </textarea>
                                         @if ($errors->has('content'))
                                             <div class="invalid-feedback">{{ $errors->first('content') }}</div>
@@ -113,7 +116,23 @@
         $(document).ready(function () {
 
 
-        ClassicEditor.create( document.querySelector( '#editor' ) )
+        ClassicEditor.create( document.querySelector( '#editor' ),{
+            simpleUpload: {
+            // The URL that the images are uploaded to.
+            uploadUrl: "{{route('file.upload', ['location' => 'publication','_token' => csrf_token() ])}}",
+
+            // Enable the XMLHttpRequest.withCredentials property.
+            withCredentials: true,
+
+            // Headers sent along with the XMLHttpRequest to the upload server.
+            headers: {
+                'X-CSRF-TOKEN': 'CSRF-Token',
+                Authorization: 'Bearer <JSON Web Token>'
+            }
+        }
+
+
+    } )
             .catch( error => {
                 console.error( error );
          } );

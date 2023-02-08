@@ -167,7 +167,7 @@ class PublicationController extends Controller
         $Publication->update([
             'name' => $data['name'],
             'content' => $data['content'],
-            'restrictedVisibility' => (empty($groups) || empty($subgroups) || empty($users)) ? true : false,
+            'restrictedVisibility' => (empty($groups) && empty($subgroups) && empty($users)) ? false : true,
         ]);
 
         $Publication->groups()->sync($groups);
@@ -177,6 +177,7 @@ class PublicationController extends Controller
         return redirect()->route('publications.index')
             ->with('success', 'Wpis został aktualizowany');
     }
+
 
     /**
      * Remove the specified resource from storage.
