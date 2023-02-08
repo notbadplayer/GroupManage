@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\NoteController;
 use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\SubgroupController;
 use App\Http\Controllers\UserController;
@@ -48,7 +50,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::put('subgroups/update/{Subgroup}', [SubgroupController::class, 'update'])->name('subgroups.update');
 
 
-    //Publications
+    //Publications:
     Route::get('/publications', [PublicationController::class, 'index'])->name('publications.index');
     Route::get('publications/data', [PublicationController::class, 'data'])->name('publications.data');
     Route::get('publications/create', [PublicationController::class, 'create'])->name('publications.create');
@@ -61,6 +63,21 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::post('file-upload/{location}', [FileUploadController::class, 'storeFile'])->name('file.upload');
 
 
+    //Notes:
+    Route::get('/notes', [NoteController::class, 'index'])->name('notes.index');
+    Route::get('notes/data', [NoteController::class, 'data'])->name('notes.data');
+    Route::get('notes/create', [NoteController::class, 'create'])->name('notes.create');
+    Route::post('notes/store', [NoteController::class, 'store'])->name('notes.store');
+    Route::get('notes/edit/{Note}', [NoteController::class, 'edit'])->name('notes.edit');
+    Route::put('notes/update/{Note}', [NoteController::class, 'update'])->name('notes.update');
+
+
+    //Categories:
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::get('categories/data', [CategoryController::class, 'data'])->name('categories.data');
+    Route::post('categories/store', [CategoryController::class, 'store'])->name('categories.store');
+    Route::post('categories/update/{Category}', [CategoryController::class, 'update'])->name('categories.update');
+    Route::post('categories/destroy/{Category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
 
 });

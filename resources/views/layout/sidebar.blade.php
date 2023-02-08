@@ -23,10 +23,11 @@
         </ul>
      </li>
        <li class="nav-item">
-          <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#"> <i class="bi bi-layout-text-window-reverse"></i><span>Tables</span><i class="bi bi-chevron-down ms-auto"></i> </a>
-          <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-             <li> <a href="tables-general.html"> <i class="bi bi-circle"></i><span>General Tables</span> </a></li>
-             <li> <a href="tables-data.html"> <i class="bi bi-circle"></i><span>Data Tables</span> </a></li>
+          <a class="nav-link collapsed" data-bs-target="#notes-nav" data-bs-toggle="collapse" href="#"> <i class="fa-solid fa-music"></i><span>Nuty</span><i class="bi bi-chevron-down ms-auto"></i> </a>
+          <ul id="notes-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+             <li> <a href="{{ route('notes.index') }}"> <i class="bi bi-circle"></i><span>Lista nut</span> </a></li>
+             <li> <a href="{{ route('publications.create') }}"> <i class="bi bi-circle"></i><span>Dodaj nuty</span> </a></li>
+             <li> <a href="{{ route('categories.index') }}"> <i class="bi bi-circle"></i><span>Kategorie</span> </a></li>
           </ul>
        </li>
        <li class="nav-item">
