@@ -81,7 +81,7 @@ class PublicationController extends Controller
         $subgroups = [];
         $users = [];
 
-        foreach ($visibilityData as $entry)
+        foreach ($visibilityData ?? [] as $entry)
         {
             $separatedEntry = explode(":", $entry);
             switch($separatedEntry[0]){
@@ -102,7 +102,7 @@ class PublicationController extends Controller
         $publication = Publication::create([
             'name' => $data['name'],
             'content' => $data['content'],
-            'restrictedVisibility' => (empty($groups) || empty($subgroups) || empty($users)) ? true : false,
+            'restrictedVisibility' => (empty($groups) && empty($subgroups) && empty($users)) ? false : true,
         ]);
 
         $publication->groups()->sync($groups);
@@ -146,7 +146,7 @@ class PublicationController extends Controller
         $subgroups = [];
         $users = [];
 
-        foreach ($visibilityData as $entry)
+        foreach ($visibilityData ?? [] as $entry)
         {
             $separatedEntry = explode(":", $entry);
             switch($separatedEntry[0]){

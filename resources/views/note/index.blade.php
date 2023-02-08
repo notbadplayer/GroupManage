@@ -57,11 +57,12 @@
             details: false
                     },
 
-                    ajax: "{{ route('groups.data') }}",
+                    ajax: "{{ route('notes.data') }}",
                     columns: [
                         {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                         {data: 'name', name: 'name', orderable: true,},
-                        {data: 'description', name: 'description'},
+                        {data: 'category', name: 'category'},
+                        {data: 'visibility', name: 'visibility'},
                     ],
                 });
 
