@@ -120,9 +120,29 @@ class NoteController extends Controller
             ->with('success', 'Plik z nutami został dodany');
     }
 
-    public function edit(Note $note)
+    public function edit(Note $Note)
     {
-        //
+        $users = User::get();
+        $groups = Group::get();
+        $subgroups = Subgroup::get();
+        $categories = Category::get();
+
+        $visibleGroups = $Note->groupsIDs();
+        $visibleSubgroups = $Note->subgroupsIDs();
+        $visibleUsers = $Note->usersIDs();
+
+
+        return view('note.edit', [
+            'note' => $Note,
+            'users' => $users,
+            'groups' => $groups,
+            'subgroups' => $subgroups,
+            'categories' => $categories,
+            'visibleGroups' => $visibleGroups,
+            'visibleSubgroups' => $visibleSubgroups,
+            'visibleUsers' => $visibleUsers,
+
+        ]);
     }
 
 
