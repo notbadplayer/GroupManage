@@ -11,6 +11,7 @@ class Note extends Model
 
     protected $fillable = [
         'name',
+        'file_id',
         'restrictedVisibility'
     ];
 
@@ -34,19 +35,24 @@ class Note extends Model
         return $this->belongsTo(Category::class);
     }
 
-    //grupy do publikacji: samo ID
+    //grupy do nut: samo ID
     public function groupsIDs()
     {
         return $this->groups->pluck('id')->toArray();
     }
-     //podgrupy do publikacji: samo ID
+     //podgrupy do nut: samo ID
      public function subgroupsIDs()
      {
          return $this->subgroups->pluck('id')->toArray();
      }
-       //użytkownicy do publikacji: samo ID
-       public function usersIDs()
-       {
-           return $this->users->pluck('id')->toArray();
-       }
+    //użytkownicy do nut: samo ID
+    public function usersIDs()
+    {
+        return $this->users->pluck('id')->toArray();
+    }
+
+    public function file()
+    {
+        return $this->hasOne(File::class);
+    }
 }

@@ -102,18 +102,24 @@ class NoteController extends Controller
 
         $data = $request->validated();
 
+
+        if($data['upload']){
+            $file = (new FileController)->storeFile($request, 'note');
+            $file = ($file->getData()->id);
+        }
+
+
+
         $note = Note::create([
             'name' => $data['name'],
             'restrictedVisibility' => (empty($groups) && empty($subgroups) && empty($users)) ? false : true,
+            'file_id' => $file,
         ]);
 
         $note->groups()->sync($groups);
         $note->subgroups()->sync($subgroups);
         $note->users()->sync($users);
 
-        if($data['upload']){
-            (new FileController)->storeFile($request, 'note');
-        }
 
 
         return redirect()->route('notes.index')
@@ -146,9 +152,43 @@ class NoteController extends Controller
     }
 
 
-    public function update(Request $request, Note $note)
+    public function update(Note $Note, UpdateNote $request)
     {
-        //
+        $visibilityData = $request->visibility;
+
+        $groups = [];
+        $subgroups = [];
+        $users = [];
+
+        foreach ($visibilityData ?? [] as $entry)
+        {
+            $separatedEntry = explode(":", $entry);
+            switch($separatedEntry[0]){
+                case 'group':
+                $groups [] = (int) $separatedEntry[1];
+                break;
+                case 'subgroup':
+                $subgroups [] = (int) $separatedEntry[1];
+                break;
+                case 'user':
+                $users [] = (int) $separatedEntry[1];
+                break;
+            }
+        }
+
+        $data = $request->validated();
+
+        $Note->update([
+            'name' => $data['name'],
+            'restrictedVisibility' => (empty($groups) && empty($subgroups) && empty($users)) ? false : true,
+        ]);
+
+        $Note->groups()->sync($groups);
+        $Note->subgroups()->sync($subgroups);
+        $Note->users()->sync($users);
+
+        return redirect()->route('notes.index')
+            ->with('success', 'Nuty zostały aktualizowane');
     }
 
 

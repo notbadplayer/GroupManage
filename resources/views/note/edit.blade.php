@@ -87,6 +87,7 @@
                                         @if ($errors->has('upload'))
                                             <div class="invalid-feedback">{{ $errors->first('upload') }}</div>
                                         @endif
+                                        {{-- @if(isset($note) && $note->) --}}
                                     </div>
 
                                     <div class="float-end mb-3 mt-3"> <button type="submit" class="btn btn-primary"><i

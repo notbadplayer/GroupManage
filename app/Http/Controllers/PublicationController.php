@@ -137,7 +137,6 @@ class PublicationController extends Controller
 
     }
 
-
     public function update(Publication $Publication, UpdatePublication $request)
     {
         $visibilityData = $request->visibility;
@@ -178,13 +177,6 @@ class PublicationController extends Controller
             ->with('success', 'Wpis został aktualizowany');
     }
 
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Publication  $publication
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Publication $publication)
     {
         //
