@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FileController;
-use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\PublicationController;

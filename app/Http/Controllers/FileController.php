@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class FileController extends Controller
 {
-    public function storeFile($request, string $assignedTo)
+    public function storeFile(Request $request, string $assignedTo)
     {
         if ($request->hasFile('upload')) {
             $originName = $request->file('upload')->getClientOriginalName();
@@ -17,6 +17,21 @@ class FileController extends Controller
             $fileName = $fileName . '.' . $extension;
 
 
+            if ( File::whereName($originName)->first() ) {
+                if($assignedTo == 'publication'){
+                    return response()->json([
+                        'error' => [
+                            'message' => 'Nie można dodać pliku. Plik o takiej nazwie już istnieje!'
+                        ]
+                    ]);
+                }else {
+                    $error = \Illuminate\Validation\ValidationException::withMessages([
+                        'upload' => 'Plik o takiej nazwie już istnieje na serwerze.'
+                   ]);
+
+                   throw $error;
+                }
+            }
 
             $request->file('upload')->move(public_path('files/'.$assignedTo), $fileName);
 
@@ -30,7 +45,8 @@ class FileController extends Controller
                 'url' => $url,
             ]);
 
-            return response()->json(['fileName' => $fileName, 'uploaded'=> 1, 'url' => $url]);
+
+            return response()->json(['fileName' => $fileName, 'uploaded'=> 1, 'url' => $url,'id' => $fileModel->id]);
         }
     }
 }

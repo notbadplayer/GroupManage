@@ -102,18 +102,16 @@ class NoteController extends Controller
 
         $data = $request->validated();
 
-
         if($data['upload']){
             $file = (new FileController)->storeFile($request, 'note');
             $file = ($file->getData()->id);
         }
 
-
-
         $note = Note::create([
             'name' => $data['name'],
             'restrictedVisibility' => (empty($groups) && empty($subgroups) && empty($users)) ? false : true,
             'file_id' => $file,
+            'category_id' => $data['category']
         ]);
 
         $note->groups()->sync($groups);

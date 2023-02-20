@@ -12,6 +12,7 @@ class Note extends Model
     protected $fillable = [
         'name',
         'file_id',
+        'category_id',
         'restrictedVisibility'
     ];
 
