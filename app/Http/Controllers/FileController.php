@@ -16,7 +16,7 @@ class FileController extends Controller
             $extension = $request->file('upload')->getClientOriginalExtension();
             $fileName = $fileName . '.' . $extension;
 
-
+            //walidacja:
             if ( File::whereName($originName)->first() ) {
                 if($assignedTo == 'publication'){
                     return response()->json([
@@ -33,12 +33,34 @@ class FileController extends Controller
                 }
             }
 
+            $fileSize = $request->file('upload')->getSize();
+            $fileSize = $fileSize / 1048576;
+
+            if($fileSize > 10)
+            {
+                $message = 'Plik zbyt duży. Maksymalny rozmiar pliku to 10 MB.';
+                if($assignedTo == 'publication'){
+                    return response()->json([
+                        'error' => [
+                            'message' => $message
+                        ]
+                    ]);
+                }else {
+                    $error = \Illuminate\Validation\ValidationException::withMessages([
+                        'upload' => $message
+                   ]);
+
+                   throw $error;
+                }
+            }
+
             $request->file('upload')->move(public_path('files/'.$assignedTo), $fileName);
 
             $url = asset('files/'.$assignedTo.'/' . $fileName);
 
             $fileModel = File::create([
                 'name' => $fileName,
+                'size' => $fileSize,
                 'extension'  => $extension,
                 'model' => $assignedTo,
                 'location' => public_path('files/'.$assignedTo).'\\'.$fileName,

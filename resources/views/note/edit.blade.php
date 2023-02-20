@@ -77,7 +77,7 @@
                                         <select class="form-select" aria-label="select kategory" name="category">
                                             <option selected value='0'>Wybierz kategorię:</option>
                                             @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                <option value="{{ $category->id }}" {{ (old('category') ?? ($note->category ?? '')) == $category->id ? "selected" : "" }}>{{ $category->name }}</option>
                                             @endforeach
                                          </select>
                                     </div>
