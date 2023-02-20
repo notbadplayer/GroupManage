@@ -16,15 +16,17 @@ class FileController extends Controller
             $extension = $request->file('upload')->getClientOriginalExtension();
             $fileName = $fileName . '.' . $extension;
 
-            $request->file('upload')->move(public_path($assignedTo), $fileName);
 
-            $url = asset($assignedTo.'/' . $fileName);
+
+            $request->file('upload')->move(public_path('files/'.$assignedTo), $fileName);
+
+            $url = asset('files/'.$assignedTo.'/' . $fileName);
 
             $fileModel = File::create([
                 'name' => $fileName,
                 'extension'  => $extension,
                 'model' => $assignedTo,
-                'location' => public_path($assignedTo).'\\'.$fileName,
+                'location' => public_path('files/'.$assignedTo).'\\'.$fileName,
                 'url' => $url,
             ]);
 
