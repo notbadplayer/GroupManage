@@ -27,7 +27,7 @@ class UpdateNote extends FormRequest
         return [
             'name' => 'required|max:100',
             'category' => 'sometimes',
-            'upload' => 'required|max:10240|mimes:pdf,jpg,jpeg,png'
+            'upload' => 'sometimes|max:10240|mimes:pdf,jpg,jpeg,png'
         ];
     }
 

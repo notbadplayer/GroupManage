@@ -81,6 +81,13 @@ class NoteController extends Controller
     {
         $visibilityData = $request->visibility;
 
+        $request->validate([
+            'upload' => 'required|max:10240|mimes:pdf,jpg,jpeg,png'
+        ], [
+            'upload.required' =>'Musisz dołączyć plik',
+        ]);
+
+
         $groups = [];
         $subgroups = [];
         $users = [];
@@ -102,7 +109,7 @@ class NoteController extends Controller
 
         $data = $request->validated();
 
-        if($data['upload']){
+        if($request['upload']){
             $file = (new FileController)->storeFile($request, 'note');
             $file = ($file->getData()->id);
         }
@@ -180,6 +187,16 @@ class NoteController extends Controller
             'name' => $data['name'],
             'restrictedVisibility' => (empty($groups) && empty($subgroups) && empty($users)) ? false : true,
         ]);
+
+        if($request['upload']){
+            $file = (new FileController)->storeFile($request, 'note');
+            $file = ($file->getData()->id);
+            $Note->update([
+                'file_id' => $file,
+            ]);
+        }
+
+
 
         $Note->groups()->sync($groups);
         $Note->subgroups()->sync($subgroups);

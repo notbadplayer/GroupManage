@@ -77,7 +77,7 @@
                                         <select class="form-select" aria-label="select kategory" name="category">
                                             <option selected value='0'>Wybierz kategorię:</option>
                                             @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}" {{ (old('category') ?? ($note->category ?? '')) == $category->id ? "selected" : "" }}>{{ $category->name }}</option>
+                                                <option value="{{ $category->id }}" {{ (old('category') ?? ($note->category->id ?? '')) == $category->id ? "selected" : "" }}>{{ $category->name }}</option>
                                             @endforeach
                                          </select>
                                     </div>
@@ -87,7 +87,9 @@
                                         @if ($errors->has('upload'))
                                             <div class="invalid-feedback">{{ $errors->first('upload') }}</div>
                                         @endif
-                                        {{-- @if(isset($note) && $note->) --}}
+                                        @if(isset($note) && $note->file)
+                                        <div class="activity-content mt-1"> Obecnie wybrany plik:  <a href="#" class="fw-bold text-dark">{{ $note->file->name }}</a></div>
+                                         @endif
                                     </div>
 
                                     <div class="float-end mb-3 mt-3"> <button type="submit" class="btn btn-primary"><i
