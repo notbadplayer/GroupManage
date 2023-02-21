@@ -135,6 +135,7 @@
                     processing: true,
                     serverSide: true,
                     responsive: true,
+                    order: [[3, 'desc'], [2,'asc']],
                     responsive: {
             details: false
                     },
@@ -250,7 +251,7 @@ function addMemberToGroup(){
             data: {
                 group: group,
                 member: newMember,
-                subgoups: newMemberSubgroups
+                subgroups: newMemberSubgroups
             },
             success: function(data) {
                 console.log('dodano');

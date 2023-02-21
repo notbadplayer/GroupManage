@@ -134,7 +134,7 @@ class GroupController extends Controller
 
         $group = Group::find($request->group);
 
-        if($request->subgoups){
+        if($request->subgroups){
 
             foreach($request->subgroups as $subgroup){
                 $group->users()->attach($request->member, ['subgroup_id' => $subgroup]);
