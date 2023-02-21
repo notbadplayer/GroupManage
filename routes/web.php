@@ -5,6 +5,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\PublicationController;
+use App\Http\Controllers\SongController;
 use App\Http\Controllers\SubgroupController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -70,6 +71,14 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::post('notes/store', [NoteController::class, 'store'])->name('notes.store');
     Route::get('notes/edit/{Note}', [NoteController::class, 'edit'])->name('notes.edit');
     Route::put('notes/update/{Note}', [NoteController::class, 'update'])->name('notes.update');
+
+    //Player:
+    Route::get('/songs', [SongController::class, 'index'])->name('songs.index');
+    Route::get('songs/data', [SongController::class, 'data'])->name('songs.data');
+    Route::get('songs/create', [SongController::class, 'create'])->name('songs.create');
+    Route::post('songs/store', [SongController::class, 'store'])->name('songs.store');
+    Route::get('songs/edit/{Song}', [SongController::class, 'edit'])->name('songs.edit');
+    Route::put('songs/update/{Song}', [SongController::class, 'update'])->name('songs.update');
 
 
     //Categories:
