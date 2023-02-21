@@ -206,7 +206,7 @@ $('#button-addToGroup').on( 'click', function () {
                     html: htmlAddToGroupText,
                     iconHtml: '<i class="bi bi-person-add"></i>',
                     iconColor: '#0d6efd',
-                    confirmButtonText: 'Edytuj dane',
+                    confirmButtonText: 'Zapisz',
                     confirmButtonColor: '#0d6efd',
                     showCancelButton: 'true',
                     cancelButtonText: 'Anuluj',
@@ -255,6 +255,7 @@ function addMemberToGroup(){
             },
             success: function(data) {
                 console.log('dodano');
+                $('#tabela').DataTable().ajax.reload();
             },
             error: function(data) {
                 console.log('nie dodano');

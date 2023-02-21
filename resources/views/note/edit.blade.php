@@ -88,7 +88,7 @@
                                             <div class="invalid-feedback">{{ $errors->first('upload') }}</div>
                                         @endif
                                         @if(isset($note) && $note->file)
-                                        <div class="activity-content mt-1"> Obecnie wybrany plik:  <a href="#" class="fw-bold text-dark">{{ $note->file->name }}</a></div>
+                                        <div class="activity-content mt-1"> Obecnie wybrany plik:  <a href="{{ $note->file->url }}" class="fw-bold text-dark">{{ $note->file->name }}</a></div>
                                          @endif
                                     </div>
 
