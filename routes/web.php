@@ -80,6 +80,8 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::get('songs/edit/{Song}', [SongController::class, 'edit'])->name('songs.edit');
     Route::put('songs/update/{Song}', [SongController::class, 'update'])->name('songs.update');
 
+    Route::get('songs/play/{Song}', [SongController::class, 'play'])->name('songs.play');
+
 
     //Categories:
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');

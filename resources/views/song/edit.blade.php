@@ -32,7 +32,8 @@
 
                             <div class="mt-2 profile">
                                 <form method="post"
-                                    action="{{ isset($song) ? route('songs.update', $song->id) : route('songs.store') }}" enctype='multipart/form-data'>
+                                    action="{{ isset($song) ? route('songs.update', $song->id) : route('songs.store') }}"
+                                    enctype='multipart/form-data'>
                                     @csrf
                                     @if (isset($song))
                                         @method('PUT')
@@ -77,25 +78,40 @@
                                         <select class="form-select" aria-label="select kategory" name="category">
                                             <option selected value='0'>Wybierz kategorię:</option>
                                             @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}" {{ (old('category') ?? ($song->category->id ?? '')) == $category->id ? "selected" : "" }}>{{ $category->name }}</option>
+                                                <option value="{{ $category->id }}"
+                                                    {{ (old('category') ?? ($song->category->id ?? '')) == $category->id ? 'selected' : '' }}>
+                                                    {{ $category->name }}</option>
                                             @endforeach
-                                         </select>
+                                        </select>
                                     </div>
 
                                     <div class="col-md-12 profile-edit mb-3">
-                                        <label for="upload" class="form-label">Plik MIDI:</label> <input class="form-control @error('upload')is-invalid @enderror" type="file" id="file" name="upload">
+                                        <label for="upload" class="form-label">Plik MIDI:</label> <input
+                                            class="form-control @error('upload')is-invalid @enderror" type="file"
+                                            id="file" name="upload">
                                         @if ($errors->has('upload'))
                                             <div class="invalid-feedback">{{ $errors->first('upload') }}</div>
                                         @endif
-                                        @if(isset($song) && $song->file)
-                                        <div class="activity-content mt-1"> Obecnie wybrany plik:  <a href="{{ $song->file->url }}" class="fw-bold text-dark">{{ $song->file->name }}</a></div>
-                                         @endif
+                                        @if (isset($song) && $song->file)
+                                            <div class="activity-content mt-1"> Obecnie wybrany plik: <a
+                                                    href="{{ $song->file->url }}"
+                                                    class="fw-bold text-dark">{{ $song->file->name }}</a></div>
+                                        @endif
                                     </div>
 
                                     <div class="float-end mb-3 mt-3"> <button type="submit" class="btn btn-primary"><i
                                                 class="fa-solid fa-check me-1"></i>Zapisz</button></div>
 
                                 </form>
+
+                                @if (isset($song))
+                                    <a href="{{ route('songs.play', ['Song' => $song->id]) }}"><button type="button"
+                                            class="btn btn-outline-primary"><i
+                                                class="fa-solid fa-rotate-left me-2"></i>Odtwarzaj</button></a>
+                                @endif
+
+
+
                             </div>
 
                         </div>

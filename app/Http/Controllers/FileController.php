@@ -63,7 +63,7 @@ class FileController extends Controller
                 'size' => $fileSize,
                 'extension'  => $extension,
                 'model' => $assignedTo,
-                'location' => public_path('files/'.$assignedTo).'\\'.$fileName,
+                'location' => 'files\\'.$assignedTo.'\\'.$fileName,
                 'url' => $url,
             ]);
 

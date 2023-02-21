@@ -19,6 +19,8 @@ window.RowGroup = RowGroup;
 import Swal from 'sweetalert2'
 window.Swal = Swal;
 
+import MidiPlayer from 'midi-player-js';
+window.MidiPlayer = MidiPlayer;
 
 
 

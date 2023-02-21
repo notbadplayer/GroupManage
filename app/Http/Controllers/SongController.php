@@ -211,4 +211,11 @@ class SongController extends Controller
     {
         //
     }
+
+    public function play(Song $Song)
+    {
+        return view('song.play', [
+            'song' => $Song,
+        ]);
+    }
 }
