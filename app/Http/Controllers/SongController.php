@@ -214,8 +214,13 @@ class SongController extends Controller
 
     public function play(Song $Song)
     {
+        $midiFile = file_get_contents(public_path($Song->file->location));
+        $base64Midi = base64_encode($midiFile);
+
         return view('song.play', [
             'song' => $Song,
+            'midi' => $base64Midi,
+            'soundFontDir' => url('files').'/soundfonts/',
         ]);
     }
 }

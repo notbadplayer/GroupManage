@@ -22,6 +22,9 @@ window.Swal = Swal;
 import MidiPlayer from 'midi-player-js';
 window.MidiPlayer = MidiPlayer;
 
+import SoundFont from 'soundfont-player';
+window.SoundFont = SoundFont;
+
 
 
 

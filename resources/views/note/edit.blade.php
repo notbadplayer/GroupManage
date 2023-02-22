@@ -97,9 +97,12 @@
 
                                 </form>
 
+                                @if (isset($song))
                                 <a href="{{ route('songs.play', ['song' => $song->id]) }}"><button type="button"
                                     class="btn btn-outline-primary"><i
                                         class="fa-solid fa-rotate-left me-2"></i>Odtwarzaj</button></a>
+
+                                @endif
 
                             </div>
 
