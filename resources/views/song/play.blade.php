@@ -30,15 +30,34 @@
 
                                 <h5 class="card-title ms-2">{{ $song->name }}</h5>
 
-
-                                <div id='trackList'>
-
+                                <div class="row mb-5 justify-content-center">
+                                    <div class="col-sm-10">
+                                        <div><input type="range" class="form-range" min="0" max="100"
+                                                step="1" id="playBarRange" value='0'></div>
+                                    </div>
                                 </div>
-                                <button type="button" id="midibuttonPrev" class="btn btn-primary btn-lg"><i class="fa-solid fa-backward-step"></i></button>
-                                <button type="button" id="midibuttonPlay" class="btn btn-primary btn-lg"><i class="fa-solid fa-play"></i></button>
-                                <button type="button" id="midibuttonStop" class="btn btn-primary btn-lg"><i class="fa-solid fa-stop"></i></button>
-                                <button type="button" id="midibuttonNext" class="btn btn-primary btn-lg"><i class="fa-solid fa-forward-step"></i></button>
 
+                                <div class="row mb-5 justify-content-center">
+                                    <div class="col-sm-10 text-center">
+                                        <button type="button" id="midibuttonPrev" class="btn btn-primary btn-lg me-1"><i
+                                                class="fa-solid fa-backward-step"></i></button>
+                                        <button type="button" id="midibuttonPlay" class="btn btn-primary btn-lg me-1"><i
+                                                class="fa-solid fa-play"></i></button>
+                                        <button type="button" id="midibuttonStop" class="btn btn-primary btn-lg me-1"><i
+                                                class="fa-solid fa-stop"></i></button>
+                                        <button type="button" id="midibuttonNext" class="btn btn-primary btn-lg me-1"><i
+                                                class="fa-solid fa-forward-step"></i></button>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-5 justify-content-center">
+                                    <div class="col-8 col-sm-6 col-md-4 col-xl-3 text-center">
+                                        Tempo: <span id="tempo-display"></span> bpm<br />
+                                        <input type="range" id="midiTempoRange" class="form-range" min="50" max="200">
+                                    </div>
+                                </div>
+
+                                <div id='trackList' class='row justify-content-center'></div>
 
                             </div>
 
@@ -70,20 +89,13 @@
 		Player = new MidiPlayer.Player(function(event) {
 			if (event.name == 'Note on' && event.velocity > 0) {
 				instrument.play(event.noteName, ac.currentTime, {gain:event.velocity/100});
-				//document.querySelector('#track-' + event.track + ' code').innerHTML = JSON.stringify(event);
-				//console.log(event);
 			}
+            $( "#playBarRange" ).val(100 - Player.getSongPercentRemaining());
 
 
 		});
 
 		Player.loadDataUri(dataUri);
-        //Player.play();
-
-		//buildTracksHtml();
-		//play();
-
-
 	}
 
     const midiFile = '{{ $midi }}';
@@ -91,21 +103,23 @@
 	loadDataUri('data:audio/midi;base64,' + midiFile);
 
 
+
+
     for(let i=1; i<=(Player.tracks).length; i++){
-        $( "#trackList" ).append( "<button class='trackEnabler' value='1'>"+i+"</button>" );
+        $( "#trackList" ).append( "<button type='button' class='btn btn-primary trackEnabler col-4 col-sm-5 col-md-2 col-lg-2 col-xl-1 me-4 mb-3' value='1' data-track="+i+">Głos "+i+"</button>" );
     }
         $( ".trackEnabler" ).on( "click", function() {
         let $track = $( this ).text();
-        console.log($track);
             if($( this ).val() == '1'){
-                console.log('jest wlaczone to wylaczam')
-                Player.disableTrack($track);
-                $( this ).attr('value', '0');
-
+                Player.disableTrack($( this ).data('track'));
+                $( this ).val('0');
+                $( this ).removeClass("btn-primary");
+                $( this ).addClass("btn-outline-primary");
             } else {
-                console.log('Wyłączone - odpalam')
-                Player.enableTrack($track);
-                $( this ).attr('value', '1');
+                Player.enableTrack($( this ).data('track'));
+                $( this ).val('1');
+                $( this ).removeClass("btn-outline-primary");
+                $( this ).addClass("btn-primary");
             }
 
 
@@ -114,39 +128,73 @@
 });
 
 
-
-
-
 $('#midibuttonPlay').on( 'click', function () {
-    //Player.isPlaying() ? Player.pause() : Player.play();
-
-    if(Player.isPlaying()){
-        Player.pause()
-        $('#midibuttonPlay').html('<i class="fa-solid fa-play">')
-    }else {
-        Player.play()
-        $('#midibuttonPlay').html('<i class="fa-solid fa-pause"></i>')
-        console.log(Player.getSongTimeRemaining());
-    }
+    Player.isPlaying() ? Player.pause() : Player.play();
+    $( "#playBarRange" ).val(100 - Player.getSongPercentRemaining());
+    checkPlayButton();
 });
 
 $('#midibuttonStop').on( 'click', function () {
 	Player.stop();
     $('#midibuttonPlay').html('<i class="fa-solid fa-play">')
+    $( "#playBarRange" ).val(0);
 });
 
 $('#midibuttonPrev').on( 'click', function () {
-    let move = (Player.getSongTimeRemaining()-5;
-    Player.skipToTick(tict);
-    console.log(Player.getCurrentTick());
+    let $remaining = Player.getSongTimeRemaining();
+    let $total = Player.getSongTime();
+    let $wasPlaying =   Player.isPlaying() ? true : false;
+
+
+    let $current = $total - $remaining;
+    Player.skipToSeconds($current - 5);
+    $( "#playBarRange" ).val(100 - Player.getSongPercentRemaining());
+    if($wasPlaying) Player.play();
+    checkPlayButton();
 });
 
 $('#midibuttonNext').on( 'click', function () {
-    console.log(Player.getCurrentTick());
-	let tict = (Player.getCurrentTick())+1;
-    Player.skipToTick(tict);
-        console.log(Player.getCurrentTick());
+    let $remaining = Player.getSongTimeRemaining();
+    let $total = Player.getSongTime();
+    let $wasPlaying =   Player.isPlaying() ? true : false;
+
+    let $current = $total - $remaining;
+    Player.skipToSeconds($current + 5);
+    $( "#playBarRange" ).val(100 - Player.getSongPercentRemaining());
+    if($wasPlaying) Player.play();
+    checkPlayButton();
 });
+
+
+function checkPlayButton()
+{
+    if(Player.isPlaying()){
+        $('#midibuttonPlay').html('<i class="fa-solid fa-pause"></i>')
+    }else {
+        $('#midibuttonPlay').html('<i class="fa-solid fa-play">')
+    }
+}
+
+
+$( "#playBarRange" ).on( 'change', function () {
+    let $wasPlaying =   Player.isPlaying() ? true : false;
+    Player.skipToPercent($( this ).val());
+    if($wasPlaying) Player.play();
+    checkPlayButton();
+
+});
+
+$( "#midiTempoRange" ).on( 'change', function () {
+    Player.pause();
+    Player.setTempo($( this ).val());
+    Player.play()
+    $( "#tempo-display" ).text($( this ).val());
+
+});
+
+
+
+
 
 
 
