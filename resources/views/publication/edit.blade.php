@@ -2,11 +2,11 @@
 @section('content')
     <main id="main" class="main">
         <div class="pagetitle">
-            <h1>Publikacje</h1>
+            <h1>Ogłoszenia</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('home') }}">Strona Główna</a></li>
-                    <li class="breadcrumb-item active"><a href="{{ route('groups.index') }}">Publikacje</a></li>
+                    <li class="breadcrumb-item active"><a href="{{ route('groups.index') }}">Ogłoszenia</a></li>
                 </ol>
             </nav>
         </div>
@@ -18,9 +18,9 @@
                             <div class="d-flex bd-highlight">
                                 <div class="p-2 flex-grow-1 bd-highlight card-title">
                                     @if (isset($publication))
-                                        Edycja Publikacji
+                                        Edycja Ogłoszenia
                                     @else
-                                        Dodawanie Publikacji
+                                        Dodawanie Ogłoszenia
                                     @endif
                                 </div>
                                 <div class="p-2 bd-highlight">

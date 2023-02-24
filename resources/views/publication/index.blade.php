@@ -15,29 +15,25 @@
                 <div class="col-lg-12">
                     <div class="card mw-90">
                         <div class="card-body">
-                            <div class="d-flex bd-highlight">
-                                <div class="p-2 flex-grow-1 bd-highlight card-title">Lista Ogłoszeń</div>
-                                <div class="p-2 bd-highlight">
-                                    <a href="{{ route('publications.create') }}"><button type="button"
-                                            class="btn btn-outline-primary"><i
-                                                class="fa-solid fa-plus me-1"></i>Dodaj</button></a>
+                            <h5 class="card-title">Lista Ogłoszeń</h5>
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation"> <button class="nav-link active" id="active-tab"
+                                        data-bs-toggle="tab" data-bs-target="#tabActive" type="button" role="tab"
+                                        aria-controls="tabActive" aria-selected="true">Aktywne</button></li>
+                                <li class="nav-item" role="presentation"> <button class="nav-link" id="profile-tab"
+                                        data-bs-toggle="tab" data-bs-target="#tabArchive" type="button" role="tab"
+                                        aria-controls="tabArchive" aria-selected="false">Archiwalne</button></li>
+                            </ul>
+                            <div class="tab-content pt-2" id="myTabContent">
+                                <div class="tab-pane fade show active" id="tabActive" role="tabpanel"
+                                    aria-labelledby="active-tab">
+                                    @include('publication.activePublications')
+                                </div>
+                                <div class="tab-pane fade" id="tabArchive" role="tabpanel" aria-labelledby="archive-tab">
+                                    @include('publication.archivedPubications')
                                 </div>
                             </div>
 
-                            <div class="mt-2 ">
-                                <table class="table tabela table-hover" id="tabela" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Nazwa</th>
-                                            <th scope="col">Opublikowane</th>
-                                            <th scope="col">Widoczność</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -46,42 +42,16 @@
         </section>
 
         <script type="module">
+             generateActiveData();
+            var tabArchive = document.querySelector('button[data-bs-target="#tabArchive"]')
+            tabArchive.addEventListener('show.bs.tab', function (event) {
+                generateArchivedData();
+            })
 
-            //generowanie tabeli
-            $(function () {
-                var table = $('.tabela').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    responsive: true,
-                    responsive: {
-            details: false
-                    },
-
-                    ajax: "{{ route('publications.data') }}",
-                    columns: [
-                        {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                        {data: 'name', name: 'name', orderable: true,},
-                        {data: 'published', name: 'published'},
-                        {data: 'visibility', name: 'visibility'},
-                    ],
-                });
-
-            });
-
-            //kliknięcie w wiersz
-            $(document).ready(function () {
-
-                var table = $('#tabela').DataTable();
-
-                $('#tabela tbody').on( 'click', 'tr', function () {
-                    var data = table.row( this ).data()
-                     window.location.href = "/publications/edit/"+data.id;
-                });
-
-
-
-            });
-
+            var tabActive = document.querySelector('button[data-bs-target="#tabActive"]')
+            tabActive.addEventListener('show.bs.tab', function (event) {
+                generateActiveData();
+            })
 
         </script>
     </main>

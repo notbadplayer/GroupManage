@@ -53,7 +53,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
 
     //Publications:
     Route::get('/publications', [PublicationController::class, 'index'])->name('publications.index');
-    Route::get('publications/data', [PublicationController::class, 'data'])->name('publications.data');
+    Route::get('publications/data/{active}', [PublicationController::class, 'data'])->name('publications.data');
     Route::get('publications/create', [PublicationController::class, 'create'])->name('publications.create');
     Route::post('publications/store', [PublicationController::class, 'store'])->name('publications.store');
     Route::get('publications/edit/{Publication}', [PublicationController::class, 'edit'])->name('publications.edit');

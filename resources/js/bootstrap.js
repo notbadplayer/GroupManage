@@ -1,10 +1,10 @@
 import _ from 'lodash';
 window._ = _;
 
-import 'bootstrap';
-
 import $ from 'jquery';
 window.$ = $;
+
+import 'bootstrap';
 
 import Select2 from 'select2'
 Select2();

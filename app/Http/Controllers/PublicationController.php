@@ -26,7 +26,12 @@ class PublicationController extends Controller
     public function data(Request $request)
     {
         if ($request->ajax()) {
-            $data = Publication::latest()->get();
+            if($request->active == 'true'){
+                $data = Publication::where('archived', 0)->latest()->get();
+            } else {
+                $data = Publication::where('archived', 1)->latest()->get();
+            }
+
             return Datatables::of($data)
             ->addColumn('visibility', function($row){
                     $visibilityString = $this->getVisibilityData($row->id);
