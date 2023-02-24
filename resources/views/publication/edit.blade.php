@@ -17,8 +17,10 @@
                         <div class="card-body">
                             <div class="d-flex bd-highlight">
                                 <div class="p-2 flex-grow-1 bd-highlight card-title">
-                                    @if (isset($publication))
+                                    @if (isset($publication) && !$publication->archived)
                                         Edycja Ogłoszenia
+                                    @elseif(isset($publication) && $publication->archived)
+                                        Podgląd Ogłoszenia (archiwum)
                                     @else
                                         Dodawanie Ogłoszenia
                                     @endif
@@ -40,7 +42,8 @@
                                     <div class="col-md-12 profile-edit mb-3">
                                         <label for="name" class="form-label">Tytuł:</label> <input type="text"
                                             class="form-control @error('name')is-invalid @enderror" id="name"
-                                            name="name" value="{{ old('name', $publication->name ?? '') }}">
+                                            name="name" value="{{ old('name', $publication->name ?? '') }}"
+                                            @if (isset($publication) && $publication->archived) disabled @endif>
                                         @if ($errors->has('name'))
                                             <div class="invalid-feedback">{{ $errors->first('name') }}</div>
                                         @endif
@@ -50,7 +53,8 @@
                                         <label for="name" class="form-label">Widoczne dla:</label>
                                         <select class="form-select members @error('members')is-invalid @enderror"
                                             name="visibility[]" multiple="multiple" id="visibility"
-                                            value="{{ old('members', $group->members ?? '') }}" style="width: 100%">
+                                            value="{{ old('members', $group->members ?? '') }}" style="width: 100%"
+                                            @if (isset($publication) && $publication->archived) disabled @endif>
                                             @foreach ($groups ?? [] as $group)
                                                 <option value="group:{{ $group->id }}"
                                                     @if (isset($visibleGroups) && in_array($group->id, $visibleGroups)) selected @endif>{{ $group->name }}
@@ -81,7 +85,10 @@
                                         @endif
                                     </div>
 
-                                    <div class="float-end mb-3 mt-3"> <button type="submit" class="btn btn-primary"><i
+
+
+                                    <div class="float-end mb-3 mt-3"> <button type="submit" class="btn btn-primary"
+                                            @if (isset($publication) && $publication->archived) disabled @endif><i
                                                 class="fa-solid fa-check me-1"></i>Zapisz</button></div>
 
                                 </form>
@@ -116,7 +123,7 @@
         $(document).ready(function () {
 
 
-        ClassicEditor.create( document.querySelector( '#editor' ),{
+        var $editor = ClassicEditor.create( document.querySelector( '#editor' ),{
             simpleUpload: {
             // The URL that the images are uploaded to.
             uploadUrl: "{{route('file.upload', ['assignedTo' => 'publication','_token' => csrf_token() ])}}",
@@ -130,9 +137,7 @@
                 Authorization: 'Bearer <JSON Web Token>'
             },
         }
-
-
-    } )
+    }){!! (isset($publication) && $publication->archived) ? '.then(editor => {editor.enableReadOnlyMode("editor");})' : ''!!}
             .catch( error => {
                 console.error( error );
          } );

@@ -43,7 +43,7 @@
             ],
         });
 
-        $('.tabela tbody').on( 'click', 'tr', function () {
+        $('#tabela-archiwum tbody').on( 'click', 'tr', function () {
             var data = tableArchive.row( this ).data()
             window.location.href = "/publications/edit/"+data.id;
         });

@@ -1,9 +1,6 @@
 <div class="d-flex bd-highlight">
     <div class="p-2 flex-grow-1 bd-highlight card-title"></div>
     <div class="p-2 bd-highlight">
-        <a href="{{ route('publications.create') }}"><button type="button"
-                class="btn btn-outline-primary"><i
-                    class="fa-solid fa-plus me-1"></i>Dodaj</button></a>
     </div>
 </div>
 
@@ -47,7 +44,7 @@
         });
 
 
-        $('.tabela tbody').on( 'click', 'tr', function () {
+        $('#tabela-active tbody').on( 'click', 'tr', function () {
             var data = tableActive.row( this ).data()
             window.location.href = "/publications/edit/"+data.id;
         });

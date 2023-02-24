@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Publication extends Model
 {
@@ -12,6 +13,7 @@ class Publication extends Model
     protected $fillable = [
         'name',
         'content',
+        'allowComments',
         'restrictedVisibility'
     ];
 
@@ -35,14 +37,19 @@ class Publication extends Model
     {
         return $this->groups->pluck('id')->toArray();
     }
-     //podgrupy do publikacji: samo ID
-     public function subgroupsIDs()
-     {
-         return $this->subgroups->pluck('id')->toArray();
-     }
-       //użytkownicy do publikacji: samo ID
-       public function usersIDs()
-       {
-           return $this->users->pluck('id')->toArray();
-       }
+    //podgrupy do publikacji: samo ID
+    public function subgroupsIDs()
+    {
+        return $this->subgroups->pluck('id')->toArray();
+    }
+    //użytkownicy do publikacji: samo ID
+    public function usersIDs()
+    {
+        return $this->users->pluck('id')->toArray();
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

@@ -23,6 +23,13 @@
                                 <li class="nav-item" role="presentation"> <button class="nav-link" id="profile-tab"
                                         data-bs-toggle="tab" data-bs-target="#tabArchive" type="button" role="tab"
                                         aria-controls="tabArchive" aria-selected="false">Archiwalne</button></li>
+
+                                <li class="nav-item me-1 ms-auto" role="presentation">
+                                    <a href="{{ route('publications.create') }}"><button type="button"
+                                            class="btn btn-outline-primary"><i
+                                                class="fa-solid fa-plus me-1"></i>Dodaj</button></a>
+                                </li>
+
                             </ul>
                             <div class="tab-content pt-2" id="myTabContent">
                                 <div class="tab-pane fade show active" id="tabActive" role="tabpanel"
