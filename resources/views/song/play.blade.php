@@ -64,13 +64,13 @@
                                 <div class="row mb-5 justify-content-center visually-hidden" id="midiControlButtons">
                                     <div class="col-sm-10 text-center">
                                         <button type="button" id="midibuttonPrev" class="btn btn-primary btn-lg me-1"><i
-                                                class="fa-solid fa-backward-step"></i></button>
+                                                class="fa-solid fa-backward"></i></button>
                                         <button type="button" id="midibuttonPlay" class="btn btn-primary btn-lg me-1"><i
                                                 class="fa-solid fa-play"></i></button>
                                         <button type="button" id="midibuttonStop" class="btn btn-primary btn-lg me-1"><i
                                                 class="fa-solid fa-stop"></i></button>
                                         <button type="button" id="midibuttonNext" class="btn btn-primary btn-lg me-1"><i
-                                                class="fa-solid fa-forward-step"></i></button>
+                                                class="fa-solid fa-forward"></i></button>
                                     </div>
                                 </div>
 
@@ -126,9 +126,9 @@
     const midiFile = '{{ $midi }}';
 
 	loadDataUri('data:audio/midi;base64,' + midiFile);
-    Player.setTempo(120);
 
     for(let i=1; i<=(Player.tracks).length; i++){
+
         $( "#trackList" ).append( "<button type='button' class='btn btn-primary trackEnabler col-4 col-sm-5 col-md-2 col-lg-2 col-xl-1 me-4 mb-3' value='1' data-track="+i+">Głos "+i+"</button>" );
     }
         $( ".trackEnabler" ).on( "click", function() {

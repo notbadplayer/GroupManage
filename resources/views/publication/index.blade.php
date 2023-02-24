@@ -2,11 +2,11 @@
 @section('content')
     <main id="main" class="main">
         <div class="pagetitle">
-            <h1>Publikacje</h1>
+            <h1>Ogłoszenia</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('home') }}">Strona Główna</a></li>
-                    <li class="breadcrumb-item active">Publikacje</li>
+                    <li class="breadcrumb-item active">Ogłoszenia</li>
                 </ol>
             </nav>
         </div>
@@ -16,7 +16,7 @@
                     <div class="card mw-90">
                         <div class="card-body">
                             <div class="d-flex bd-highlight">
-                                <div class="p-2 flex-grow-1 bd-highlight card-title">Lista publikacji</div>
+                                <div class="p-2 flex-grow-1 bd-highlight card-title">Lista Ogłoszeń</div>
                                 <div class="p-2 bd-highlight">
                                     <a href="{{ route('publications.create') }}"><button type="button"
                                             class="btn btn-outline-primary"><i

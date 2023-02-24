@@ -16,10 +16,10 @@
           </ul>
        </li>
        <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#publications-nav" data-bs-toggle="collapse" href="#"> <i class="fa-solid fa-file-lines"></i><span>Publikacje</span><i class="bi bi-chevron-down ms-auto"></i> </a>
+        <a class="nav-link collapsed" data-bs-target="#publications-nav" data-bs-toggle="collapse" href="#"> <i class="fa-solid fa-file-lines"></i><span>Ogłoszenia</span><i class="bi bi-chevron-down ms-auto"></i> </a>
         <ul id="publications-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-           <li> <a href="{{ route('publications.index') }}"> <i class="bi bi-circle"></i><span>Lista publikacji</span> </a></li>
-           <li> <a href="{{ route('publications.create') }}"> <i class="bi bi-circle"></i><span>Dodaj publikację</span> </a></li>
+           <li> <a href="{{ route('publications.index') }}"> <i class="bi bi-circle"></i><span>Lista Ogłoszeń</span> </a></li>
+           <li> <a href="{{ route('publications.create') }}"> <i class="bi bi-circle"></i><span>Dodaj Ogłoszenie</span> </a></li>
         </ul>
      </li>
        <li class="nav-item">
