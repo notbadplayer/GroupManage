@@ -85,6 +85,19 @@
                                         @endif
                                     </div>
 
+                                    <div class="form-check form-switch mt-4 ms-2">
+
+                                        <!-- Size of the default switch will increase 1.8 times -->
+                                        <input class="form-check-input "
+                                               type="checkbox"
+                                               role="switch"
+                                               id="allowComments"
+                                               name="allowComments"
+                                               style="transform: scale(1.7);">
+
+                                        <label class="form-check-label ms-3"
+                                               for="allowComments">Zezwalaj na komentowanie</label>
+                                      </div>
 
 
                                     <div class="float-end mb-3 mt-3"> <button type="submit" class="btn btn-primary"
@@ -114,11 +127,13 @@
     {{-- Generowanie tabeli uczestników --}}
     <script type="module">
 
+        @if ((isset($publication) && $publication->allowComments))
+            $('#allowComments').click();
+        @endif
 
         $('#visibility').select2({
                 placeholder: "Wszyscy"
             });
-
 
         $(document).ready(function () {
 

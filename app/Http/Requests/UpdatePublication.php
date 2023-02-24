@@ -26,6 +26,7 @@ class UpdatePublication extends FormRequest
         return [
             'name' => 'required|max:150',
             'content' => 'required',
+            'allowComments' => 'sometimes'
         ];
     }
 

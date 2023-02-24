@@ -107,6 +107,7 @@ class PublicationController extends Controller
         $publication = Publication::create([
             'name' => $data['name'],
             'content' => $data['content'],
+            'allowComments' => ($data['allowComments'] ?? null) ? '1' : '0',
             'restrictedVisibility' => (empty($groups) && empty($subgroups) && empty($users)) ? false : true,
         ]);
 
@@ -171,6 +172,7 @@ class PublicationController extends Controller
         $Publication->update([
             'name' => $data['name'],
             'content' => $data['content'],
+            'allowComments' => ($data['allowComments'] ?? null) ? '1' : '0',
             'restrictedVisibility' => (empty($groups) && empty($subgroups) && empty($users)) ? false : true,
         ]);
 
