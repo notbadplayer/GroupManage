@@ -99,16 +99,18 @@
                                         @endif
                                     </div>
 
-                                    <div class="float-end mb-3 mt-3"> <button type="submit" class="btn btn-primary"><i
-                                                class="fa-solid fa-check me-1"></i>Zapisz</button></div>
+                                    <div class="float-end mb-3 mt-3">
+                                        @if (isset($song))
+                                            <a href="{{ route('songs.play', ['Song' => $song->id]) }}"><button
+                                                    type="button" class="btn btn-outline-primary me-1"><i class="fa-solid fa-play me-2"></i>Odtwarzaj</button></a>
+                                        @endif
+                                        <button type="submit" class="btn btn-primary"><i
+                                                class="fa-solid fa-check me-1"></i>Zapisz</button>
+                                    </div>
 
                                 </form>
 
-                                @if (isset($song))
-                                    <a href="{{ route('songs.play', ['Song' => $song->id]) }}"><button type="button"
-                                            class="btn btn-outline-primary"><i
-                                                class="fa-solid fa-rotate-left me-2"></i>Odtwarzaj</button></a>
-                                @endif
+
 
 
 

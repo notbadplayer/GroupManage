@@ -30,14 +30,38 @@
 
                                 <h5 class="card-title ms-2">{{ $song->name }}</h5>
 
+
+                                <div class="row mb-1 justify-content-center">
+                                    <div class="col-sm-10">
+                                        <div class="row">
+                                            <div class="col-4 text-start">
+                                                <span id="midiCurrentTime"></span>
+                                            </div>
+                                            <div class="col-4">
+                                            </div>
+                                            <div class="col-4 text-end">
+                                                <span id="midiDuration"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
                                 <div class="row mb-5 justify-content-center">
                                     <div class="col-sm-10">
                                         <div><input type="range" class="form-range" min="0" max="100"
-                                                step="1" id="playBarRange" value='0'></div>
+                                                step="1" id="playBarRange" value=0></div>
                                     </div>
                                 </div>
 
-                                <div class="row mb-5 justify-content-center">
+                                <div id='loadingMidi' class="row mb-5 justify-content-center">
+                                    <div class="spinner-border text-primary" role="status"
+                                        style="width: 50px; height: 50px;"><span
+                                            class="visually-hidden">Wczytywanie...</span></div>
+                                </div>
+
+
+                                <div class="row mb-5 justify-content-center visually-hidden" id="midiControlButtons">
                                     <div class="col-sm-10 text-center">
                                         <button type="button" id="midibuttonPrev" class="btn btn-primary btn-lg me-1"><i
                                                 class="fa-solid fa-backward-step"></i></button>
@@ -50,10 +74,11 @@
                                     </div>
                                 </div>
 
-                                <div class="row mb-5 justify-content-center">
+                                <div class="row mb-5 justify-content-center visually-hidden" id='midiTempoBar'>
                                     <div class="col-8 col-sm-6 col-md-4 col-xl-3 text-center">
                                         Tempo: <span id="tempo-display"></span> bpm<br />
-                                        <input type="range" id="midiTempoRange" class="form-range" min="50" max="200">
+                                        <input type="range" id="midiTempoRange" class="form-range" min="50"
+                                            max="150">
                                     </div>
                                 </div>
 
@@ -80,9 +105,7 @@
 
 
         var soundfontDir = "{{ addcslashes($soundFontDir, "\\") }}";
-        Soundfont.instrument(ac, soundfontDir+'piano.js' ).then(function (instrument) {
-
-
+        Soundfont.instrument(ac, soundfontDir+'piano.js').then(function (instrument) {
 
 
 	loadDataUri = function(dataUri) {
@@ -91,19 +114,19 @@
 				instrument.play(event.noteName, ac.currentTime, {gain:event.velocity/100});
 			}
             $( "#playBarRange" ).val(100 - Player.getSongPercentRemaining());
-
-
+            checkSongTime();
 		});
 
 		Player.loadDataUri(dataUri);
+        $( "#loadingMidi" ).hide();
+        $( "#midiControlButtons" ).removeClass("visually-hidden");
+        $( "#midiTempoBar" ).removeClass("visually-hidden");
 	}
 
     const midiFile = '{{ $midi }}';
 
 	loadDataUri('data:audio/midi;base64,' + midiFile);
-
-
-
+    Player.setTempo(120);
 
     for(let i=1; i<=(Player.tracks).length; i++){
         $( "#trackList" ).append( "<button type='button' class='btn btn-primary trackEnabler col-4 col-sm-5 col-md-2 col-lg-2 col-xl-1 me-4 mb-3' value='1' data-track="+i+">Głos "+i+"</button>" );
@@ -121,12 +144,8 @@
                 $( this ).removeClass("btn-outline-primary");
                 $( this ).addClass("btn-primary");
             }
-
-
         });
-
 });
-
 
 $('#midibuttonPlay').on( 'click', function () {
     Player.isPlaying() ? Player.pause() : Player.play();
@@ -138,6 +157,8 @@ $('#midibuttonStop').on( 'click', function () {
 	Player.stop();
     $('#midibuttonPlay').html('<i class="fa-solid fa-play">')
     $( "#playBarRange" ).val(0);
+    $( "#midiCurrentTime" ).text('00:00');
+    $( "#midiDuration" ).text(formatSeconds(Player.getSongTime()));
 });
 
 $('#midibuttonPrev').on( 'click', function () {
@@ -151,6 +172,7 @@ $('#midibuttonPrev').on( 'click', function () {
     $( "#playBarRange" ).val(100 - Player.getSongPercentRemaining());
     if($wasPlaying) Player.play();
     checkPlayButton();
+    checkSongTime();
 });
 
 $('#midibuttonNext').on( 'click', function () {
@@ -163,6 +185,7 @@ $('#midibuttonNext').on( 'click', function () {
     $( "#playBarRange" ).val(100 - Player.getSongPercentRemaining());
     if($wasPlaying) Player.play();
     checkPlayButton();
+    checkSongTime();
 });
 
 
@@ -175,33 +198,36 @@ function checkPlayButton()
     }
 }
 
-
-$( "#playBarRange" ).on( 'change', function () {
+$( "#playBarRange" ).on('input change', function () {
     let $wasPlaying =   Player.isPlaying() ? true : false;
+    Player.pause();
     Player.skipToPercent($( this ).val());
-    if($wasPlaying) Player.play();
+    if($wasPlaying){
+        Player.play();
+    }
+    checkSongTime();
     checkPlayButton();
-
 });
+
+
 
 $( "#midiTempoRange" ).on( 'change', function () {
     Player.pause();
     Player.setTempo($( this ).val());
     Player.play()
     $( "#tempo-display" ).text($( this ).val());
-
 });
 
+function formatSeconds($time)
+{
+    return new Date($time * 1000).toISOString().slice(14, 19);
+}
 
-
-
-
-
-
-
-
-
-
+function checkSongTime()
+{
+    $( "#midiCurrentTime" ).text(formatSeconds(Player.getSongTime() - Player.getSongTimeRemaining()));
+    $( "#midiDuration" ).text(formatSeconds(Player.getSongTimeRemaining()));
+}
 
     </script>
 
