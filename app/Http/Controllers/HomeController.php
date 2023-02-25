@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Publication;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +24,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home.home');
+        $publications = Publication::where('archived', 0)->latest()->get();
+
+        return view('home.home',[
+            'publications' => $publications
+        ]);
     }
 }
