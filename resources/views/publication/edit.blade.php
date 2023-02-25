@@ -78,7 +78,7 @@
                                     <div class="col-md-12 profile-edit">
                                         <label for="editor" class="form-label">Treść:</label>
                                         <textarea id="editor" class="block w-full mt-1 rounded-md @error('content')is-invalid @enderror" name="content">
-                                            {!! $publication->content ?? '' !!}
+                                            {{ old('content', $publication->content ?? '') }}
                                         </textarea>
                                         @if ($errors->has('content'))
                                             <div class="invalid-feedback">{{ $errors->first('content') }}</div>
