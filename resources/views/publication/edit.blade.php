@@ -25,6 +25,7 @@
                                         Dodawanie Ogłoszenia
                                     @endif
                                 </div>
+
                                 <div class="p-2 bd-highlight">
                                     <a href="{{ route('groups.index') }}"><button type="button"
                                             class="btn btn-outline-primary"><i
@@ -95,6 +96,17 @@
                                         <label class="form-check-label ms-3" for="allowComments">Zezwalaj na
                                             komentowanie</label>
                                     </div>
+
+
+                                    <div class="card mt-4">
+                                        <div class="accordion" id="publicationAccordion">
+                                            @include('questionnaires.edit')
+
+                                        </div>
+
+                                    </div>
+
+
 
 
                                     <div class="float-end mb-3 mt-3"> <button type="submit" class="btn btn-primary"

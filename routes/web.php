@@ -5,6 +5,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\PublicationController;
+use App\Http\Controllers\QuestionnaireController;
 use App\Http\Controllers\SongController;
 use App\Http\Controllers\SubgroupController;
 use App\Http\Controllers\UserController;
@@ -89,6 +90,10 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::post('categories/store', [CategoryController::class, 'store'])->name('categories.store');
     Route::post('categories/update/{Category}', [CategoryController::class, 'update'])->name('categories.update');
     Route::post('categories/destroy/{Category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
+
+    //Questionnaire
+    Route::post('questionnaire/destroy/{Questionnaire?}', [QuestionnaireController::class, 'destroy'])->name('questionnaires.destroy');
 
 
 });

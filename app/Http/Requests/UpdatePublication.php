@@ -26,7 +26,11 @@ class UpdatePublication extends FormRequest
         return [
             'name' => 'required|max:150',
             'content' => 'required',
-            'allowComments' => 'sometimes'
+            'allowComments' => 'sometimes',
+            'questionnaireAvailable' => 'sometimes',
+            'questionnaireDescription' => 'required_if:questionnaireAvailable,1|max:500',
+            'questionnaireDate' => 'sometimes',
+            'questionnaireType' => 'sometimes'
         ];
     }
 
@@ -36,6 +40,7 @@ class UpdatePublication extends FormRequest
                 'name.required' => 'Nazwa wpisu jest wymagana',
                 'name.max' =>' Maksymalna ilość znaków to: :max',
                 'content.required' => 'Treść wpisu jest wymagana',
+                'questionnaireDescription.required_if' => 'Proszę wprowadzić pytanie do ankiety.',
         ];
     }
 }

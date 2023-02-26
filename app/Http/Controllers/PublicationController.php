@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UpdatePublication;
 use App\Models\Group;
 use App\Models\Publication;
+use App\Models\Questionnaire;
 use App\Models\Subgroup;
 use App\Models\User;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\Request;
 use DataTables;
+use DateInterval;
+use DateTime;
 
 class PublicationController extends Controller
 {
@@ -71,10 +74,14 @@ class PublicationController extends Controller
         $groups = Group::get();
         $subgroups = Subgroup::get();
 
+        $questionnaireValidTill = new DateTime();
+        $questionnaireValidTill->add(new DateInterval('P7D'));
+
         return view('publication.edit', [
             'users' => $users,
             'groups' => $groups,
-            'subgroups' =>$subgroups
+            'subgroups' =>$subgroups,
+            'questionnaireValidTill' => $questionnaireValidTill->format('Y-m-d'),
         ]);
     }
 
@@ -115,6 +122,15 @@ class PublicationController extends Controller
         $publication->subgroups()->sync($subgroups);
         $publication->users()->sync($users);
 
+        if($data['questionnaireAvailable']){
+            $questionnaire = Questionnaire::create([
+                'description' => $data['questionnaireDescription'],
+                'validTill' => $data['questionnaireDate'],
+                'type' => $data['questionnaireType'],
+                'publication_id' => $publication->id,
+            ]);
+        }
+
         return redirect()->route('publications.index')
             ->with('success', 'Wpis został dodany');
     }
@@ -129,6 +145,9 @@ class PublicationController extends Controller
         $visibleSubgroups = $Publication->subgroupsIDs();
         $visibleUsers = $Publication->usersIDs();
 
+        $questionnaireValidTill = new DateTime();
+        $questionnaireValidTill->add(new DateInterval('P7D'));
+
 
         return view('publication.edit', [
             'publication' => $Publication,
@@ -138,7 +157,7 @@ class PublicationController extends Controller
             'visibleGroups' => $visibleGroups,
             'visibleSubgroups' => $visibleSubgroups,
             'visibleUsers' => $visibleUsers,
-
+            'questionnaireValidTill' => $questionnaireValidTill->format('Y-m-d'),
         ]);
 
     }
@@ -179,6 +198,26 @@ class PublicationController extends Controller
         $Publication->groups()->sync($groups);
         $Publication->subgroups()->sync($subgroups);
         $Publication->users()->sync($users);
+
+        if($data['questionnaireAvailable']){
+            if($Publication->questionnaire){
+                $Publication->questionnaire->update([
+                    'description' => $data['questionnaireDescription'],
+                    'validTill' => $data['questionnaireDate'],
+                    'type' => $data['questionnaireType'],
+                    'publication_id' => $Publication->id,
+                ]);
+            } else {
+                Questionnaire::create([
+                    'description' => $data['questionnaireDescription'],
+                    'validTill' => $data['questionnaireDate'],
+                    'type' => $data['questionnaireType'],
+                    'publication_id' => $Publication->id,
+                ]);
+
+            }
+
+        }
 
         return redirect()->route('publications.index')
             ->with('success', 'Wpis został aktualizowany');
