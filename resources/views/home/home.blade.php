@@ -9,14 +9,7 @@
                 <div class="col-lg-8">
                     <div class="row">
                         @foreach ($publications as $publication)
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-body card-body-dashboard">
-                                    <h5 class="card-title">{{ $publication->name }}</h5>
-                                    {!! $publication->content !!}
-                                </div>
-                            </div>
-                        </div>
+                            @include('home.publication')
                         @endforeach
                     </div>
                 </div>
@@ -261,4 +254,8 @@
             </div>
         </section>
     </main>
+
+@include('home.questionnaireJS')
+
+
 @endsection

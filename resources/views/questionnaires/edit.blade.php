@@ -8,6 +8,12 @@
     <div id="collapseQuestionnaire" class="accordion-collapse collapse" aria-labelledby="headingQuestionnaire"
         data-bs-parent="#publicationAccordion">
         <div class="accordion-body">
+
+            @if (isset($publication->questionnaire) && count($publication->questionnaire->userAnswers) > 0)
+                <a class="btn btn-outline-primary mb-3" id="questionnaireResults" href="{{route('questionnaires.results', ['Questionnaire' => $publication->questionnaire->id ]) }}" role="button">
+                    Zobacz wyniki
+                </a>
+            @endif
             <a class="btn btn-outline-primary mb-3" id="addRemoveQuestionnaire"
                 data-available="{{ isset($publication->questionnaire) && $publication->questionnaire ? '1' : '0' }}"
                 data-bs-toggle="collapse" href="#collapse1" role="button" aria-expanded="false"
@@ -38,17 +44,20 @@
                 <div class="row mb-3">
                     <label for="questionnaireDate" class="col-sm-2 col-form-label">Ważna do:</label>
                     <div class="col-sm-10"> <input type="date" class="form-control" name="questionnaireDate"
-                            value="{{ old('questionnaireDate', $publication->questionnaire->validTill ?? $questionnaireValidTill) }}"></div>
+                            value="{{ old('questionnaireDate', $publication->questionnaire->validTill ?? $questionnaireValidTill) }}">
+                    </div>
                 </div>
                 <fieldset class="row mb-3">
                     <legend class="col-form-label col-sm-2 pt-0">Typ odpowiedzi:</legend>
                     <div class="col-sm-10">
                         <div class="form-check"> <input class="form-check-input" type="radio" name="questionnaireType"
                                 id="questionnaireType1" value="closed" @if (old('questionnaireType') == 'closed' || ($publication->questionnaire->type ?? 'closed') == 'closed') checked @endif>
-                            <label class="form-check-label" for="questionnaireType1"> tak/nie </label></div>
+                            <label class="form-check-label" for="questionnaireType1"> tak/nie </label>
+                        </div>
                         <div class="form-check"> <input class="form-check-input" type="radio" name="questionnaireType"
                                 id="questionnaireType2" value="open" @if (old('questionnaireType') == 'open' || ($publication->questionnaire->type ?? '') == 'open') checked @endif>
-                            <label class="form-check-label" for="questionnaireType2"> otwarta odpowiedź </label></div>
+                            <label class="form-check-label" for="questionnaireType2"> otwarta odpowiedź </label>
+                        </div>
                     </div>
                 </fieldset>
 

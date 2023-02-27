@@ -58,4 +58,25 @@ class Publication extends Model
     {
         return $this->hasOne(Questionnaire::class);
     }
+
+    public function restrictedVisibilityUserIds()
+    {
+    // Get the group IDs associated with the publication
+    $groupIds = $this->groups->pluck('id');
+
+    // Get the subgroup IDs associated with the publication
+    $subgroupIds = $this->subgroups->pluck('id');
+
+    // Get the user IDs associated with the groups and subgroups
+    $userIds = User::whereIn('id', function ($query) use ($groupIds, $subgroupIds) {
+        $query->select('user_id')
+            ->from('group_user')
+            ->whereIn('group_id', $groupIds)
+            ->orWhereIn('subgroup_id', $subgroupIds);
+    })->pluck('id')->toArray();
+
+    dd($userIds);
+
+
+    }
 }

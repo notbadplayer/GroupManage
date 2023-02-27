@@ -94,6 +94,8 @@ Route::middleware(['auth', 'verified'])->group(function(){
 
     //Questionnaire
     Route::post('questionnaire/destroy/{Questionnaire?}', [QuestionnaireController::class, 'destroy'])->name('questionnaires.destroy');
+    Route::post('questionnaire/vote/{Questionnaire?}', [QuestionnaireController::class, 'vote'])->name('questionnaires.vote');
+    Route::get('questionnaire/results/{Questionnaire}', [QuestionnaireController::class, 'results'])->name('questionnaires.results');
 
 
 });
