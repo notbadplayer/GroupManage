@@ -36,42 +36,20 @@ class QuestionnaireController extends Controller
 
     public function results(Questionnaire $Questionnaire)
     {
-        $entitledToVote = 1;
+        $entitledToVote = $Questionnaire->publication->restrictedVisibilityUserIds();
+        $votes = $Questionnaire->answers;
 
-        // $entitledUsersIds = $Questionnaire->publication->usersIDs();
-
-        // $entitledUsersIdsFromGroups = [];
-        // foreach($Questionnaire->publication->groups as $group)
-        // {
-        //     foreach($group->users as $user){
-        //     $entitledUsersIdsFromGroups[] = $user->id;
-        //     }
-        // }
-
-        // $entitledUsersIdsFromSubgroups = [];
-        // foreach($Questionnaire->publication->subgroups as $subgroup)
-        // {
-        //     foreach($subgroup->users as $user){
-        //     $entitledUsersIdsFromSubgroups[] = $user->id;
-        //     }
-        // }
-
-        // dump($entitledUsersIds);
-        // dump($entitledUsersIdsFromGroups);
-        // dump($entitledUsersIdsFromSubgroups);
-        // exit();
-
-        $membersFromGroups = $Questionnaire->publication->restrictedVisibilityUserIds();
-         dump($membersFromGroups);
-        //exit();
-
-        $group = Group::find(1);
-        dump($group->users);
+        $yes = count($Questionnaire->answers()->where('value', 1)->get());
+        $no = count($Questionnaire->answers()->where('value', 0)->get());
 
 
         return view('questionnaires.results', [
             'questionnaire' => $Questionnaire,
             'entitledToVote' => $entitledToVote,
+            'votes' => count($votes),
+            'held' => (count($entitledToVote) - count($votes)),
+            'yes' => $yes,
+            'no' => $no,
 
         ]);
     }

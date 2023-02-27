@@ -67,15 +67,21 @@ class Publication extends Model
     // Get the subgroup IDs associated with the publication
     $subgroupIds = $this->subgroups->pluck('id');
 
+    $usersId = $this->users->pluck('id')->toArray();
+
+
     // Get the user IDs associated with the groups and subgroups
-    $userIds = User::whereIn('id', function ($query) use ($groupIds, $subgroupIds) {
+    $groupsSubgroupsIds = User::whereIn('id', function ($query) use ($groupIds, $subgroupIds) {
         $query->select('user_id')
             ->from('group_user')
             ->whereIn('group_id', $groupIds)
             ->orWhereIn('subgroup_id', $subgroupIds);
     })->pluck('id')->toArray();
 
-    dd($userIds);
+    $idMerged = array_merge($groupsSubgroupsIds, $usersId);
+    $idMerged = array_unique($idMerged);
+
+    return($idMerged);
 
 
     }

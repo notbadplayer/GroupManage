@@ -31,10 +31,16 @@
                             <div class="mt-2 profile">
                                 <div class="card-title">
                                     {{ $questionnaire->description }}
+
                                 </div>
 
-                                {{$entitledToVote}}
+                                {{-- Uprawnieni do głosowania{{count($entitledToVote)}}
+                                Oddane głosy: {{count($votes)}} --}}
 
+
+                                <div style="width: 600px; margin: auto;">
+                                    <canvas id="myChart"></canvas>
+                                </div>
 
                             </div>
 
@@ -42,6 +48,42 @@
                     </div>
                 </div>
             </div>
+
+
+            <script type="module">
+
+const data = {
+  labels: [
+    'Red',
+    'Blue',
+    'Yellow'
+  ],
+  datasets: [{
+    label: 'My First Dataset',
+    data: [{{$yes}}, {{$no}},  {{$held}}],
+    backgroundColor: [
+      'rgb(255, 99, 132)',
+      'rgb(54, 162, 235)',
+      'rgb(0, 0, 0)',
+    ],
+    hoverOffset: 4
+  }]
+};
+
+const config = {
+  type: 'pie',
+  data: data,
+};
+
+
+
+new Chart(
+    document.getElementById('myChart'),
+    config
+);
+
+                </script>
+
 
 
 
