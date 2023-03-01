@@ -26,6 +26,9 @@
 
     function generateArchivedData() {
         var tableArchive = $('#tabela-archiwum').DataTable({
+            language: {
+                        url: "{{asset('pl.json')}}",
+                    },
             processing: true,
             serverSide: true,
             responsive: true,

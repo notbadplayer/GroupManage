@@ -132,6 +132,9 @@
     let ajaxUrl = "{{ route('groups.members', $group->id ?? null) }}"
             $(function () {
                 var table = $('.tabela').DataTable({
+                    language: {
+                        url: "{{asset('pl.json')}}",
+                    },
                     processing: true,
                     serverSide: true,
                     responsive: true,

@@ -47,6 +47,9 @@
             //generowanie tabeli
             $(function () {
                 var table = $('.tabela').DataTable({
+                    language: {
+                        url: "{{asset('pl.json')}}",
+                    },
                     processing: true,
                     serverSide: true,
                     responsive: true,

@@ -175,6 +175,9 @@ $('.chart').on('click', function(){
 
         var table = $('.tabela').DataTable({
                     processing: true,
+                    language: {
+                        url: "{{asset('pl.json')}}",
+                    },
                     pageLength: 50,
                     serverSide: true,
                     responsive: true,

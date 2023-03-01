@@ -26,6 +26,9 @@
 
     function generateActiveData() {
         var tableActive = $('#tabela-active').DataTable({
+            language: {
+                        url: "{{asset('pl.json')}}",
+                    },
             processing: true,
             serverSide: true,
             responsive: true,
