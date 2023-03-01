@@ -55,7 +55,7 @@
                                         <label for="members" class="col-sm-2 col-form-label fw-bold">Uczestnicy:</label>
                                         <div class="col-sm-10 "> <select
                                                 class="form-select members @error('members')is-invalid @enderror" name="members[]" multiple="multiple"
-                                                id="members" value="{{ old('members', $group->members ?? '') }}" style="width: 100%">
+                                                id="members" value="{{ old('members', '') }}" style="width: 100%">
                                      @foreach($users as $user)
                                             <option value="{{ $user->id }}" @if(isset($members) && (in_array($user->id, $members))) selected @endif>{{ $user->name }} {{$user->surname }}</option>
                                      @endforeach

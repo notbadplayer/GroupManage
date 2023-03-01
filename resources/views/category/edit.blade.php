@@ -238,11 +238,15 @@ function addMemberToGroup(){
     console.log(newMember);
     console.log(newMemberSubgroups);
 
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-        }
+    var meta = document.getElementsByTagName("meta")[0];
+
+    var tokenHash = meta.content;
+
+    $.ajaxPrefilter(function(options,originalOptions,jqXHR) {
+        jqXHR.setRequestHeader('X-CSRF-Token', tokenHash);
     });
+
+
 
     $.ajax({
             url: "{{ route('groups.addMember') }}",

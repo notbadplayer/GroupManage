@@ -35,10 +35,9 @@ class Subgroup extends Model
     }
 
     //członkowie podgrupy: same ID
-    public function members()
+   public function members()
     {
-        //return $this->group->users()->wherePivot('subgroup_id', $this->id)->get()->pluck('id')->toArray();
-        return $this->users->pluck('id')->toArray();
+        return $this->users->pluck('id')->unique()->toArray();
     }
 
     public function publications()

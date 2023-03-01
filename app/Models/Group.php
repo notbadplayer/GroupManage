@@ -35,15 +35,20 @@ class Group extends Model
     {
         return $this->belongsToMany(User::class)->withPivot('subgroup_id');
     }
-    // public function members()
-    // {
-    //     return $this->users->pluck('id')->toArray();
-    // }
+    public function members()
+    {
+        return $this->users->pluck('id')->toArray();
+    }
 
     public function publications()
     {
         return $this->belongsToMany(Publication::class);
     }
 
+
+    public function userIds()
+    {
+        return $this->users()->pluck('id');
+    }
 
 }

@@ -25,9 +25,8 @@ window.MidiPlayer = MidiPlayer;
 import SoundFont from 'soundfont-player';
 window.SoundFont = SoundFont;
 
-import Chart from 'chart.js/auto';
-window.Chart = Chart;
-
+import ApexCharts from 'apexcharts'
+window.ApexCharts = ApexCharts;
 
 
 
