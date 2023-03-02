@@ -221,4 +221,48 @@ class QuestionnaireController extends Controller
 
         }
     }
+
+    public function addOption(Request $request)
+    {
+        $request->validate([
+            'questionnaire' => 'required',
+            'value' => 'required|max:160'
+        ]);
+
+        $questionnaire = Questionnaire::find($request->questionnaire);
+
+        $answer = Answer::create([
+            'user_id' => Auth::user()->id,
+            'userValue' => $request->value,
+        ]);
+
+        $questionnaire->answers()->attach($answer);
+
+        $data = array(
+            'answerId' => $answer->id,
+            'questionnaireId' => $questionnaire->id,
+        );
+        return response()->json($data);
+
+    }
+
+    public function deleteOption(Request $request)
+    {
+        $answer = Answer::find($request->answer);
+
+        $answer->questionnaires()->detach();
+        $answer->forceDelete();
+
+    }
+
+    public function updateOption(Request $request)
+    {
+        $request->validate([
+            'answer' => 'required',
+            'value' => 'required|max:160'
+        ]);
+
+        $answer = Answer::find($request->answer);
+        $answer->update(['userValue' => $request->value]);
+    }
 }

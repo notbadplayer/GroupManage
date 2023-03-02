@@ -38,7 +38,7 @@
 
                                     @foreach ($data as $chart => $value)
                                         <div class="col-12 col-md-6 col-xl-4">
-                                            <div class="border m-1">
+                                            <div class="border rounded-1 m-1 mb-4">
                                                 <h5 class="card-title text-center">{{ $value['name'] }}</h5>
 
 

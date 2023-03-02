@@ -13,10 +13,11 @@ class Answer extends Model
 
     protected $fillable = [
         'user_id',
-        'value'
+        'value',
+        'userValue'
     ];
 
-    public function answers(): BelongsToMany
+    public function questionnaires(): BelongsToMany
     {
         return $this->BelongsToMany(Questionnaire::class);
     }

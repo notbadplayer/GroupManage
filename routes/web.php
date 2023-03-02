@@ -97,7 +97,9 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::post('questionnaire/vote/{Questionnaire?}', [QuestionnaireController::class, 'vote'])->name('questionnaires.vote');
     Route::get('questionnaire/results/{Questionnaire}', [QuestionnaireController::class, 'results'])->name('questionnaires.results');
     Route::post('questionnaire/resultsModal', [QuestionnaireController::class, 'resultsModal'])->name('questionnaires.resultsModal');
-
+    Route::post('questionnaire/addOption', [QuestionnaireController::class, 'addOption'])->name('questionnaires.addOption');
+    Route::post('questionnaire/deleteOption', [QuestionnaireController::class, 'deleteOption'])->name('questionnaires.deleteOption');
+    Route::post('questionnaire/updateOption', [QuestionnaireController::class, 'updateOption'])->name('questionnaires.updateOption');
 
 
 });

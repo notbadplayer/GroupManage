@@ -47,7 +47,8 @@
                             value="{{ old('questionnaireDate', $publication->questionnaire->validTill ?? $questionnaireValidTill) }}">
                     </div>
                 </div>
-                <fieldset class="row mb-3">
+
+                <fieldset class="row mb-3 @if(isset($publication->questionnaire)) d-none @endif " id="questionnaireTypeFields">
                     <legend class="col-form-label col-sm-2 pt-0">Typ odpowiedzi:</legend>
                     <div class="col-sm-10">
                         <div class="form-check"> <input class="form-check-input" type="radio" name="questionnaireType"
@@ -106,10 +107,6 @@ function removeQuestionnaireConfirmation()
                 {
                     if(result.isConfirmed){
                         //removeQuestionnaire(result.value);
-                        $('#addRemoveQuestionnaire').data('available', '0');
-                        $('#questionnaireAvailable').val('0')
-                        $('#addRemoveQuestionnaire').text('Dodaj ankietę')
-                        console.log('Usuwam');
                         removeQuestionnaire();
 
                     }else if (result.isDenied) {
@@ -143,6 +140,11 @@ function removeQuestionnaireConfirmation()
                     url: url,
                     method: 'POST',
                     success: function(data) {
+                        $('#addRemoveQuestionnaire').data('available', '0');
+                        $('#questionnaireAvailable').val('0')
+                        $('#addRemoveQuestionnaire').text('Dodaj ankietę')
+                        $('#questionnaireTypeFields').removeClass('d-none')
+
                         Toast.fire({
                             icon: 'success',
                             title:  ("Usunięto ankietę")
