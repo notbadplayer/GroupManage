@@ -66,6 +66,7 @@ var questionnaireId = $( this ).data('questionnaire-id');
     Swal.fire({
                 title: 'Dodaj odpowiedź:',
                 html: html,
+                icon: 'question',
                 confirmButtonText: 'Zapisz',
                 confirmButtonColor: '#0d6efd',
                 showCancelButton: 'true',
@@ -108,7 +109,7 @@ function sendOption(questionnaireId){
                 value: value,
             },
             success: function(data) {
-                $("#questionnaireOpenAnswersFieldList_"+questionnaireId).append('<li id="questionnaireOpenAnswersElement_'+data.answerId+'"><div class="row justify-content-between"><span class="col">'+value+'</span><span class="col text-end"><button type="button" class="btn btn-sm btn-outline-danger QuestionnaireEditOption" data-answer-id="'+ data.answerId+'"data-questionnaire-value="'+value+'"data-questionnaire-id="'+ data.questionnaireId+'"><i class="fa-solid fa-pencil"></i><span class="d-none d-md-inline ms-2">Edytuj</span></button></span></span></div></li>');
+                $("#questionnaireOpenAnswersFieldList_"+questionnaireId).append('<li id="questionnaireOpenAnswersElement_'+data.answerId+'"><div class="row justify-content-between"><span class="col-9">'+value+'</span><span class="col-3 text-end"><button type="button" class="btn btn-sm btn-outline-danger QuestionnaireEditOption" data-answer-id="'+ data.answerId+'"data-questionnaire-value="'+value+'"data-questionnaire-id="'+ data.questionnaireId+'"><i class="fa-solid fa-pencil"></i><span class="d-none d-md-inline ms-2">Edytuj</span></button></span></span></div></li>');
                 Toast.fire({
                                 icon: 'success',
                                 title:  ("Wysłano odpowiedź")

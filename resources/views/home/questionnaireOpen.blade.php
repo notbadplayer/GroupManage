@@ -3,9 +3,9 @@
         @foreach ($publication->questionnaire->answers as $answer)
             <li id="questionnaireOpenAnswersElement_{{$answer->id}}">
                 <div class="row justify-content-between">
-                    <span class="col" id="col_text_{{$answer->id}}">{{ $answer->userValue }}</span>
+                    <span class="col-9" id="col_text_{{$answer->id}}">{{ $answer->userValue }}</span>
                     @if ($answer->user_id == Auth::user()->id)
-                        <span class="col text-end">
+                        <span class="col-3 text-end">
 
 
                             <button type="button" class="btn btn-sm btn-outline-danger QuestionnaireEditOption" id="buttonEdit_{{ $answer->id}}"
