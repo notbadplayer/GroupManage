@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\NoteController;
@@ -100,6 +101,16 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::post('questionnaire/addOption', [QuestionnaireController::class, 'addOption'])->name('questionnaires.addOption');
     Route::post('questionnaire/deleteOption', [QuestionnaireController::class, 'deleteOption'])->name('questionnaires.deleteOption');
     Route::post('questionnaire/updateOption', [QuestionnaireController::class, 'updateOption'])->name('questionnaires.updateOption');
+
+
+    //Events
+    Route::get('/events', [EventController::class, 'index'])->name('events.index');
+    Route::get('events/data', [EventController::class, 'data'])->name('events.data');
+    Route::get('events/create', [EventController::class, 'create'])->name('events.create');
+    Route::post('events/store', [EventController::class, 'store'])->name('events.store');
+    Route::get('events/edit/{Event}', [EventController::class, 'edit'])->name('events.edit');
+    Route::put('events/update/{Event}', [EventController::class, 'update'])->name('events.update');
+    Route::post('events/destroy/{Event}', [EventController::class, 'destroy'])->name('events.destroy');
 
 
 });
