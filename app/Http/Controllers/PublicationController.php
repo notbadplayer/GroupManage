@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use DataTables;
 use DateInterval;
 use DateTime;
+use Illuminate\Support\Facades\Gate;
 
 class PublicationController extends Controller
 {
@@ -23,6 +24,7 @@ class PublicationController extends Controller
      */
     public function index()
     {
+        Gate::authorize('admin-level');
         return view('publication.index');
     }
 
@@ -70,6 +72,7 @@ class PublicationController extends Controller
 
     public function create()
     {
+        Gate::authorize('admin-level');
         $users = User::get();
         $groups = Group::get();
         $subgroups = Subgroup::get();
@@ -87,6 +90,7 @@ class PublicationController extends Controller
 
     public function store(UpdatePublication $request)
     {
+        Gate::authorize('admin-level');
         $visibilityData = $request->visibility;
 
         $groups = [];
@@ -137,6 +141,7 @@ class PublicationController extends Controller
 
     public function edit(Publication $Publication)
     {
+        Gate::authorize('admin-level');
         $users = User::get();
         $groups = Group::get();
         $subgroups = Subgroup::get();
@@ -164,6 +169,7 @@ class PublicationController extends Controller
 
     public function update(Publication $Publication, UpdatePublication $request)
     {
+        Gate::authorize('admin-level');
         $visibilityData = $request->visibility;
 
         $groups = [];

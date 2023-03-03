@@ -18,9 +18,11 @@
                             <div class="d-flex bd-highlight">
                                 <div class="p-2 flex-grow-1 bd-highlight card-title">Lista utworów</div>
                                 <div class="p-2 bd-highlight">
+                                    @can('admin-level')
                                     <a href="{{ route('songs.create') }}"><button type="button"
                                             class="btn btn-outline-primary"><i
                                                 class="fa-solid fa-plus me-1"></i>Dodaj</button></a>
+                                    @endcan
                                 </div>
                             </div>
 
@@ -78,7 +80,12 @@
 
                 $('#tabela tbody').on( 'click', 'tr', function () {
                     var data = table.row( this ).data()
-                     window.location.href = "/songs/edit/"+data.id;
+                    @if (Gate::allows('admin-level')) {
+                        window.location.href = "/songs/edit/"+data.id;
+                    } @else {
+                        window.location.href = "/songs/play/"+data.id;
+                    }
+                    @endif
                 });
 
 

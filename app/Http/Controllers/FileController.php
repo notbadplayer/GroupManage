@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\File;
 use Illuminate\Http\Request;
-
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Response as FacadesResponse;
 
 class FileController extends Controller
 {
     public function storeFile(Request $request, string $assignedTo)
     {
+        Gate::authorize('admin-level');
         if ($request->hasFile('upload')) {
             $originName = $request->file('upload')->getClientOriginalName();
             $fileName = pathinfo($originName, PATHINFO_FILENAME);
@@ -17,58 +20,69 @@ class FileController extends Controller
             $fileName = $fileName . '.' . $extension;
 
             //walidacja:
-            if ( File::whereName($originName)->first() ) {
-                if($assignedTo == 'publication'){
+            if (File::whereName($originName)->first()) {
+                if ($assignedTo == 'publication') {
                     return response()->json([
                         'error' => [
                             'message' => 'Nie można dodać pliku. Plik o takiej nazwie już istnieje!'
                         ]
                     ]);
-                }else {
+                } else {
                     $error = \Illuminate\Validation\ValidationException::withMessages([
                         'upload' => 'Plik o takiej nazwie już istnieje na serwerze.'
-                   ]);
+                    ]);
 
-                   throw $error;
+                    throw $error;
                 }
             }
 
             $fileSize = $request->file('upload')->getSize();
             $fileSize = $fileSize / 1048576;
 
-            if($fileSize > 10)
-            {
+            if ($fileSize > 10) {
                 $message = 'Plik zbyt duży. Maksymalny rozmiar pliku to 10 MB.';
-                if($assignedTo == 'publication'){
+                if ($assignedTo == 'publication') {
                     return response()->json([
                         'error' => [
                             'message' => $message
                         ]
                     ]);
-                }else {
+                } else {
                     $error = \Illuminate\Validation\ValidationException::withMessages([
                         'upload' => $message
-                   ]);
+                    ]);
 
-                   throw $error;
+                    throw $error;
                 }
             }
 
-            $request->file('upload')->move(public_path('files/'.$assignedTo), $fileName);
+            $request->file('upload')->move(public_path('files/' . $assignedTo), $fileName);
 
-            $url = asset('files/'.$assignedTo.'/' . $fileName);
+            $url = asset('files/' . $assignedTo . '/' . $fileName);
 
             $fileModel = File::create([
                 'name' => $fileName,
                 'size' => $fileSize,
                 'extension'  => $extension,
                 'model' => $assignedTo,
-                'location' => 'files\\'.$assignedTo.'\\'.$fileName,
+                'location' => 'files\\' . $assignedTo . '\\' . $fileName,
                 'url' => $url,
             ]);
 
 
-            return response()->json(['fileName' => $fileName, 'uploaded'=> 1, 'url' => $url,'id' => $fileModel->id]);
+            return response()->json(['fileName' => $fileName, 'uploaded' => 1, 'url' => $url, 'id' => $fileModel->id]);
         }
+    }
+
+    public function downloadFile(string $type, string $id)
+    {
+        $model_prefix = "App\Models";
+        $model = $model_prefix . '\\' . $type;
+
+        $model = $model::find($id);
+         $path = public_path($model->file->location);
+
+        return response()->download($path);
+
     }
 }

@@ -61,28 +61,30 @@ class Publication extends Model
 
     public function restrictedVisibilityUserIds()
     {
-    // Get the group IDs associated with the publication
-    $groupIds = $this->groups->pluck('id');
+        if (!($this->restrictedVisibility)) {
+            return (User::all()->pluck('id')->toArray());
+        } else {
+            // Get the group IDs associated with the publication
+            $groupIds = $this->groups->pluck('id');
 
-    // Get the subgroup IDs associated with the publication
-    $subgroupIds = $this->subgroups->pluck('id');
+            // Get the subgroup IDs associated with the publication
+            $subgroupIds = $this->subgroups->pluck('id');
 
-    $usersId = $this->users->pluck('id')->toArray();
-
-
-    // Get the user IDs associated with the groups and subgroups
-    $groupsSubgroupsIds = User::whereIn('id', function ($query) use ($groupIds, $subgroupIds) {
-        $query->select('user_id')
-            ->from('group_user')
-            ->whereIn('group_id', $groupIds)
-            ->orWhereIn('subgroup_id', $subgroupIds);
-    })->pluck('id')->toArray();
-
-    $idMerged = array_merge($groupsSubgroupsIds, $usersId);
-    $idMerged = array_unique($idMerged);
-
-    return($idMerged);
+            $usersId = $this->users->pluck('id')->toArray();
 
 
+            // Get the user IDs associated with the groups and subgroups
+            $groupsSubgroupsIds = User::whereIn('id', function ($query) use ($groupIds, $subgroupIds) {
+                $query->select('user_id')
+                    ->from('group_user')
+                    ->whereIn('group_id', $groupIds)
+                    ->orWhereIn('subgroup_id', $subgroupIds);
+            })->pluck('id')->toArray();
+
+            $idMerged = array_merge($groupsSubgroupsIds, $usersId);
+            $idMerged = array_unique($idMerged);
+
+            return ($idMerged);
+        }
     }
 }

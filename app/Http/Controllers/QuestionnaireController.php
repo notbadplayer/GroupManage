@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use DataTables;
+use Illuminate\Support\Facades\Gate;
 
 use function PHPUnit\Framework\isNull;
 
@@ -19,6 +20,7 @@ class QuestionnaireController extends Controller
 {
     public function destroy(Questionnaire $Questionnaire)
     {
+        Gate::authorize('admin-level');
         $Questionnaire->delete();
     }
 
@@ -40,7 +42,7 @@ class QuestionnaireController extends Controller
 
     public function results(Questionnaire $Questionnaire)
     {
-
+        Gate::authorize('admin-level');
         //jeżeli jest ograniczona widoczność publikacji, to wykresy dla wszystkich grup, podgrup itp.
         if ($Questionnaire->publication->restrictedVisibility) {
 

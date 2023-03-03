@@ -56,4 +56,5 @@ class Note extends Model
     {
         return $this->belongsTo(File::class);
     }
+
 }

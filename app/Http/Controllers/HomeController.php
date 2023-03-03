@@ -6,7 +6,9 @@ use App\Models\Event;
 use App\Models\Publication;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Gate;
 
 class HomeController extends Controller
 {
@@ -27,8 +29,62 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $publications = Publication::where('archived', 0)->latest()->get();
-        $events = Event::whereDate('date', '>=', date('Y-m-d'))->orderBy('date', 'asc')->get();
+
+        if (Gate::allows('admin-level')) {
+            $publications = Publication::where('archived', 0)->latest()->get();
+            $events = Event::whereDate('date', '>=', date('Y-m-d'))->orderBy('date', 'asc')->get();
+        } else {
+            $user_id = Auth::id();
+            $groups = auth()->user()->groups;
+            $subgroups = auth()->user()->subgroups;
+
+
+            $publications = Publication::where(function ($query) use ($groups, $subgroups, $user_id) {
+                $query->where(function ($query) use ($groups) {
+                    $query->whereHas('groups', function ($query) use ($groups) {
+                        $query->whereIn('id', $groups->pluck('id'));
+                    });
+                })
+                ->orWhere(function ($query) use ($subgroups) {
+                    $query->whereHas('subgroups', function ($query) use ($subgroups) {
+                        $query->whereIn('id', $subgroups->pluck('id'));
+                    });
+                })
+                ->orWhere(function ($query) use ($user_id) {
+                    $query->whereHas('users', function ($query) use ($user_id) {
+                        $query->where('id', $user_id);
+                    });
+                })
+                ->orWhere(function ($query) {
+                    $query->where('restrictedVisibility', '0');
+                });
+            })
+            ->get();
+
+            $events = Event::where(function ($query) use ($groups, $subgroups, $user_id) {
+                $query->where(function ($query) use ($groups) {
+                    $query->whereHas('groups', function ($query) use ($groups) {
+                        $query->whereIn('id', $groups->pluck('id'));
+                    });
+                })
+                ->orWhere(function ($query) use ($subgroups) {
+                    $query->whereHas('subgroups', function ($query) use ($subgroups) {
+                        $query->whereIn('id', $subgroups->pluck('id'));
+                    });
+                })
+                ->orWhere(function ($query) use ($user_id) {
+                    $query->whereHas('users', function ($query) use ($user_id) {
+                        $query->where('id', $user_id);
+                    });
+                })
+                ->orWhere(function ($query) {
+                    $query->where('restrictedVisibility', '0');
+                });
+            })->whereDate('date', '>=', date('Y-m-d'))->orderBy('date', 'asc')->get();
+
+
+        }
+
         $today = new DateTime();
 
         return view('home.home',[

@@ -64,6 +64,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
 
     //Files
     Route::post('file-upload/{assignedTo}', [FileController::class, 'storeFile'])->name('file.upload');
+    Route::get('file-download/{type}/{id}', [FileController::class, 'downloadFile'])->name('file.download');
 
 
     //Notes:

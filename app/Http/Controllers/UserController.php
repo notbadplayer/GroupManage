@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -28,6 +30,7 @@ class UserController extends Controller
      */
     public function index()
     {
+        Gate::authorize('admin-level');
         return view('user.index');
     }
 
@@ -48,11 +51,13 @@ class UserController extends Controller
 
     public function create(): View
     {
+        Gate::authorize('admin-level');
         return view('user.edit');
     }
 
     public function store(UpdateUser $request): RedirectResponse
     {
+        Gate::authorize('admin-level');
         $data = $request->validated();
 
         $user=User::create([
@@ -68,11 +73,13 @@ class UserController extends Controller
 
     public function edit(User $User): View
     {
+        Gate::authorize('admin-level');
         return view('user.edit', ['user' => $User]);
     }
 
     public function update(User $User, UpdateUser $request): RedirectResponse
     {
+        Gate::authorize('admin-level');
         $data = $request->validated();
 
         $User->update([

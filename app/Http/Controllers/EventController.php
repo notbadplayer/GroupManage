@@ -9,11 +9,13 @@ use App\Models\Subgroup;
 use App\Models\User;
 use Illuminate\Http\Request;
 use DataTables;
+use Illuminate\Support\Facades\Gate;
 
 class EventController extends Controller
 {
     public function index()
     {
+        Gate::authorize('admin-level');
         return view('event.index');
     }
 
@@ -57,6 +59,7 @@ class EventController extends Controller
 
     public function create()
     {
+        Gate::authorize('admin-level');
         $users = User::get();
         $groups = Group::get();
         $subgroups = Subgroup::get();
@@ -71,6 +74,7 @@ class EventController extends Controller
 
     public function store(UpdateEvent $request)
     {
+        Gate::authorize('admin-level');
         $visibilityData = $request->visibility;
 
 
@@ -114,6 +118,7 @@ class EventController extends Controller
 
     public function edit(Event $Event)
     {
+        Gate::authorize('admin-level');
         $users = User::get();
         $groups = Group::get();
         $subgroups = Subgroup::get();
@@ -138,6 +143,7 @@ class EventController extends Controller
 
     public function update(Event $Event, UpdateEvent $request)
     {
+        Gate::authorize('admin-level');
         $visibilityData = $request->visibility;
 
         $groups = [];

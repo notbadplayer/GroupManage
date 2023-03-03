@@ -10,6 +10,7 @@ use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 class GroupController extends Controller
@@ -22,6 +23,7 @@ class GroupController extends Controller
 
     public function index()
     {
+        Gate::authorize('admin-level');
         return view('group.index');
     }
 
@@ -43,6 +45,7 @@ class GroupController extends Controller
 
     public function create(): View
     {
+        Gate::authorize('admin-level');
         $users = User::get();
         return view('group.edit',[
             'users' => $users,
@@ -52,6 +55,7 @@ class GroupController extends Controller
 
     public function store(UpdateGroup $request): RedirectResponse
     {
+        Gate::authorize('admin-level');
         $data = $request->validated();
 
         $group = Group::create([
@@ -66,6 +70,7 @@ class GroupController extends Controller
 
     public function edit(Group $Group): View
     {
+        Gate::authorize('admin-level');
         $users = User::get();
         return view('group.edit', [
             'group' => $Group,
@@ -75,6 +80,7 @@ class GroupController extends Controller
 
     public function update(Group $Group, UpdateGroup $request): RedirectResponse
     {
+        Gate::authorize('admin-level');
         $data = $request->validated();
 
         $Group->update([
@@ -119,19 +125,7 @@ class GroupController extends Controller
 
     public function addMember(Request $request)
     {
-        Debugbar::info($request);
-        // $member = new GroupUser();
-        // $member->group_id = $request->member;
-        // $member->user_id = $request->member;
-        // $member->save();
-
-        // $member = GroupUser::create([
-        //     'group_id' => $request->group,
-        //     'user_id' => $request->member,
-        // ]);
-
-        // $member->subgroups()->attach($request->subGroups);
-
+        Gate::authorize('admin-level');
         $group = Group::find($request->group);
 
         if($request->subgroups){
@@ -142,7 +136,6 @@ class GroupController extends Controller
         } else {
             $group->users()->attach($request->member);
         }
-
 
     }
 }

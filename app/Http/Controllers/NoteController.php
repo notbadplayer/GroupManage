@@ -11,6 +11,8 @@ use App\Models\User;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\Request;
 use DataTables;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class NoteController extends Controller
 {
@@ -22,7 +24,39 @@ class NoteController extends Controller
     public function data(Request $request)
     {
         if ($request->ajax()) {
-            $data = Note::latest()->get();
+
+            if (Gate::allows('admin-level')) {
+                $data = Note::latest()->get();
+            } else {
+                $user_id = Auth::id();
+                $groups = auth()->user()->groups;
+                $subgroups = auth()->user()->subgroups;
+
+                $data = Note::where(function ($query) use ($groups, $subgroups, $user_id) {
+                    $query->where(function ($query) use ($groups) {
+                        $query->whereHas('groups', function ($query) use ($groups) {
+                            $query->whereIn('id', $groups->pluck('id'));
+                        });
+                    })
+                    ->orWhere(function ($query) use ($subgroups) {
+                        $query->whereHas('subgroups', function ($query) use ($subgroups) {
+                            $query->whereIn('id', $subgroups->pluck('id'));
+                        });
+                    })
+                    ->orWhere(function ($query) use ($user_id) {
+                        $query->whereHas('users', function ($query) use ($user_id) {
+                            $query->where('id', $user_id);
+                        });
+                    })
+                    ->orWhere(function ($query) {
+                        $query->where('restrictedVisibility', '0');
+                    });
+                })
+                ->get();
+
+            }
+
+
             return Datatables::of($data)
                 ->addColumn('category', function ($row) {
                     $categoryString = Note::find($row->id)->category?->name;
@@ -63,6 +97,7 @@ class NoteController extends Controller
 
     public function create()
     {
+        Gate::authorize('admin-level');
         $users = User::get();
         $groups = Group::get();
         $subgroups = Subgroup::get();
@@ -79,6 +114,7 @@ class NoteController extends Controller
 
     public function store(UpdateNote $request)
     {
+        Gate::authorize('admin-level');
         $visibilityData = $request->visibility;
 
         $request->validate([
@@ -133,6 +169,7 @@ class NoteController extends Controller
 
     public function edit(Note $Note)
     {
+        Gate::authorize('admin-level');
         $users = User::get();
         $groups = Group::get();
         $subgroups = Subgroup::get();
@@ -159,6 +196,7 @@ class NoteController extends Controller
 
     public function update(Note $Note, UpdateNote $request)
     {
+        Gate::authorize('admin-level');
         $visibilityData = $request->visibility;
 
         $groups = [];

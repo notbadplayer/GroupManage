@@ -5,16 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use DataTables;
+use Illuminate\Support\Facades\Gate;
 
 class CategoryController extends Controller
 {
     public function index()
     {
+        Gate::authorize('admin-level');
         return view('category.index');
     }
 
     public function data(Request $request)
     {
+        Gate::authorize('admin-level');
         if ($request->ajax()) {
             $data = Category::latest()->get();
             return Datatables::of($data)
@@ -30,6 +33,7 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
+        Gate::authorize('admin-level');
         $request->validate([
             'name' => 'required|max:100',
         ]);
@@ -41,6 +45,7 @@ class CategoryController extends Controller
     }
     public function update(Request $request, Category $Category)
     {
+        Gate::authorize('admin-level');
         $request->validate([
             'name' => 'required|max:100',
         ]);
@@ -52,6 +57,7 @@ class CategoryController extends Controller
 
     public function destroy(Category $Category)
     {
+        Gate::authorize('admin-level');
         $Category->forceDelete();
     }
 }

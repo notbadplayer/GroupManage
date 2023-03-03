@@ -18,9 +18,11 @@
                             <div class="d-flex bd-highlight">
                                 <div class="p-2 flex-grow-1 bd-highlight card-title">Lista nut</div>
                                 <div class="p-2 bd-highlight">
+                                    @can('admin-level')
                                     <a href="{{ route('notes.create') }}"><button type="button"
                                             class="btn btn-outline-primary"><i
                                                 class="fa-solid fa-plus me-1"></i>Dodaj</button></a>
+                                    @endcan
                                 </div>
                             </div>
 
@@ -78,7 +80,15 @@
 
                 $('#tabela tbody').on( 'click', 'tr', function () {
                     var data = table.row( this ).data()
-                     window.location.href = "/notes/edit/"+data.id;
+
+                    @if (Gate::allows('admin-level')) {
+                        window.location.href = "/notes/edit/"+data.id;
+                    } @else {
+                        window.location.href = "/file-download/note/"+data.id;
+                    }
+                    @endif
+
+
                 });
 
 

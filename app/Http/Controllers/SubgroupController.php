@@ -11,6 +11,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Gate;
 
 class SubgroupController extends Controller
 {
@@ -26,6 +27,7 @@ class SubgroupController extends Controller
 
     public function create(Group $Group): View
     {
+        Gate::authorize('admin-level');
         $users = User::get();
         return view('subgroup.edit', [
             'group' => $Group,
@@ -36,6 +38,7 @@ class SubgroupController extends Controller
 
     public function store(UpdateGroup $request): RedirectResponse
     {
+        Gate::authorize('admin-level');
         $groupId = $request->groupId;
         $group = Group::find($groupId);
 
@@ -57,6 +60,7 @@ class SubgroupController extends Controller
 
     public function edit(Subgroup $Subgroup)
     {
+        Gate::authorize('admin-level');
         $group = Group::find($Subgroup->group_id);
         $users = User::get();
         $members = $Subgroup->members();
@@ -72,6 +76,7 @@ class SubgroupController extends Controller
 
     public function update(Subgroup $Subgroup, UpdateGroup $request)
     {
+        Gate::authorize('admin-level');
         $groupId = $request->groupId;
         $group = Group::find($groupId);
 
