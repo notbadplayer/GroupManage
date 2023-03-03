@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\Note;
 use App\Models\Publication;
 use DateTime;
 use Illuminate\Http\Request;
@@ -33,6 +34,7 @@ class HomeController extends Controller
         if (Gate::allows('admin-level')) {
             $publications = Publication::where('archived', 0)->latest()->get();
             $events = Event::whereDate('date', '>=', date('Y-m-d'))->orderBy('date', 'asc')->get();
+            $latestNote = Note::latest()->first();
         } else {
             $user_id = Auth::id();
             $groups = auth()->user()->groups;
@@ -82,6 +84,27 @@ class HomeController extends Controller
                 });
             })->whereDate('date', '>=', date('Y-m-d'))->orderBy('date', 'asc')->get();
 
+            $latestNote = Note::where(function ($query) use ($groups, $subgroups, $user_id) {
+                $query->where(function ($query) use ($groups) {
+                    $query->whereHas('groups', function ($query) use ($groups) {
+                        $query->whereIn('id', $groups->pluck('id'));
+                    });
+                })
+                ->orWhere(function ($query) use ($subgroups) {
+                    $query->whereHas('subgroups', function ($query) use ($subgroups) {
+                        $query->whereIn('id', $subgroups->pluck('id'));
+                    });
+                })
+                ->orWhere(function ($query) use ($user_id) {
+                    $query->whereHas('users', function ($query) use ($user_id) {
+                        $query->where('id', $user_id);
+                    });
+                })
+                ->orWhere(function ($query) {
+                    $query->where('restrictedVisibility', '0');
+                });
+            })
+            ->latest()->first();
 
         }
 
@@ -92,6 +115,7 @@ class HomeController extends Controller
             'events' => $events,
             'today' =>  $today->format('Y-m-d'),
             'tomorrow' => $today->modify('+1 day')->format('Y-m-d'),
+            'latestNote' => $latestNote,
         ]);
     }
 }
