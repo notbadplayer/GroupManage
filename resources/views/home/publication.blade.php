@@ -5,7 +5,7 @@
             {!! $publication->content !!}
             @if (isset($publication->questionnaire) && (new DateTime($publication->questionnaire->validTill) > new DateTime()))
                 <hr>
-                <p class="card-text">{{ $publication->questionnaire->description }}</p>
+                <p class="card-text fw-bold text-dark">{{ $publication->questionnaire->description }}</p>
                 @if ($publication->questionnaire->type == 'closed')
                     @include('home.questionnaireClosed')
                 @elseif ($publication->questionnaire->type == 'open')
