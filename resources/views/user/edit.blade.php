@@ -86,6 +86,11 @@
                                         <label for="phone" class="col-sm-2 col-form-label fw-bold">Członek grupy:</label>
                                         <div class="col-sm-10">
                                             @if (isset($user))
+                                                @foreach ($user->groups as $group)
+                                                    <a href="{{ route('groups.edit', $group->id) }}"><button type="button"
+                                                            class="btn btn-success mb-2 me-2">
+                                                            {{ $group->name }}</button></a>
+                                                @endforeach
                                                 @foreach ($user->subgroups as $subgroup)
                                                     <a href="{{ route('subgroups.edit', $subgroup->id) }}"><button
                                                             type="button" class="btn btn-success mb-2 me-2">
@@ -93,9 +98,10 @@
                                                                 class="badge bg-white text-success ms-1">{{ $subgroup->name }}</span></button></a>
                                                 @endforeach
                                             @endif
-                                            <a href=""><button type="button"
+                                            <button type="button" id="button-addUserToGroup"
                                                 class="btn btn-outline-success mb-2 me-2"><i
-                                                    class="fa-solid fa-people-group me-2"></i>Dodaj do grupy</button></a>
+                                                    class="fa-solid fa-people-group me-2"></i>Dodaj do
+                                                grupy</button>
                                         </div>
                                     </div>
 
@@ -113,4 +119,137 @@
         </section>
 
     </main>
+
+    {{-- Generowanie tabeli uczestników --}}
+    <script type="module">
+
+//Kliknięciee przycisku "dopisz do grupy":
+$('#button-addUserToGroup').on( 'click', function () {
+
+    let htmlAddToGroupText = '<select class="form-select members" name="newGroup" id="newGroup" value="" style="width: 80%"><option value="">Wybierz Grupę</option>@foreach($groups ?? [] as $group)<option value="{{ $group->id }}">{{ $group->name }}</option>@endforeach</select></br>';
+    htmlAddToGroupText = htmlAddToGroupText + '<div id="subgroupsField" class="invisible"><div class="mt-5">Dodaj również do podgrupy:</div>';
+    htmlAddToGroupText = htmlAddToGroupText + '<select class="form-select subgroups" name="newSubgroup" id="newSubgroup" value="" style="width: 80%"><option value="">Nie wybrano</option></select></br></div>';
+
+    Swal.fire({
+                    title: 'Dopisz użytkownika do grupy: ',
+                    html: htmlAddToGroupText,
+                    icon: 'info',
+                    confirmButtonText: 'Dodaj',
+                    confirmButtonColor: '#0d6efd',
+                    showCancelButton: 'true',
+                    cancelButtonText: 'Anuluj',
+                    didOpen: (q) => {
+                        console.log('otwarty swal');
+                        $('#newGroup').select2({
+                        });
+                        $('#newSubgroup').select2({
+                            placeholder: "Nie wybrano"
+                        });
+                        $('#newGroup').on('change', function(){
+                            $('#newSubgroup').empty();
+                            $('#newSubgroup').append('<option value="">Nie wybrano</option>');
+                            var $groupId =  $('#newGroup').val();
+                            getSubgroups($groupId);
+                        })
+
+                    }
+
+                    }).then((result) =>
+                        {
+                            //console.log(result)
+                            if(result.isConfirmed){
+                                addMemberToGroup();
+                            }
+                        }
+                    );
+});
+
+function getSubgroups($groupId)
+{
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        }
+    });
+
+    $.ajax({
+            url: "/groups/subgroups/"+$groupId,
+            method: 'get',
+            success: function(data) {
+                $('#subgroupsField').removeClass('invisible');
+
+                Object.entries(data).forEach(entry => {
+                const [key, value] = entry;
+                //console.log(key, value);
+                $('#newSubgroup').append("<option value='"+value+"'>"+key+"</option>");
+                });
+
+
+;
+            },
+            error: function(data) {
+                console.log('błąd pobierania subgroups');
+                $('#subgroupsField').addClass('invisible');
+            }
+        })
+
+}
+
+
+function addMemberToGroup(){
+    var group = $('#newGroup').val();
+    var subgroups = [];
+    subgroups.push($('#newSubgroup').val());
+    var newMember = "{{ $user->id }}";
+
+    console.log(group);
+    console.log(subgroups);
+    console.log(newMember);
+
+    const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+                })
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        }
+    });
+
+    $.ajax({
+            url: "{{ route('groups.addMember') }}",
+            method: 'POST',
+            data: {
+                group: group,
+                member: newMember,
+                subgroups: subgroups
+            },
+            success: function(data) {
+                Toast.fire({
+                            icon: 'success',
+                            title:  ("Dodano do grupy")
+                            })
+            },
+            error: function(data) {
+                Toast.fire({
+                            icon: 'error',
+                            title: ("Błąd dodawania do grupy.")
+                            })
+            }
+        })
+
+}
+
+    </script>
+
+
+
 @endsection

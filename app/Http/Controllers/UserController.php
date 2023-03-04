@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUser;
+use App\Models\Group;
+use App\Models\Subgroup;
 use App\Models\User;
 use Illuminate\Http\Request;
 use DataTables;
@@ -74,7 +76,13 @@ class UserController extends Controller
     public function edit(User $User): View
     {
         Gate::authorize('admin-level');
-        return view('user.edit', ['user' => $User]);
+        $groups = Group::get();
+        $subgroups = Subgroup::get();
+        return view('user.edit', [
+            'user' => $User,
+            'groups' => $groups,
+            'subgroups' => $subgroups
+        ]);
     }
 
     public function update(User $User, UpdateUser $request): RedirectResponse

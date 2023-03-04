@@ -125,7 +125,6 @@ class GroupController extends Controller
 
     public function addMember(Request $request)
     {
-        Gate::authorize('admin-level');
         $group = Group::find($request->group);
 
         if($request->subgroups){
@@ -137,5 +136,11 @@ class GroupController extends Controller
             $group->users()->attach($request->member);
         }
 
+    }
+
+    public function subgroups(Group $Group)
+    {
+        $subgroups = $Group->subgroups->pluck('id', 'name')->toArray();
+        return response()->json($subgroups);
     }
 }
