@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\Group;
 use App\Models\Note;
 use App\Models\Publication;
 use DateTime;
@@ -30,15 +31,24 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $noGroups = false;
 
         if (Gate::allows('admin-level')) {
             $publications = Publication::where('archived', 0)->latest()->get();
             $events = Event::whereDate('date', '>=', date('Y-m-d'))->orderBy('date', 'asc')->get();
             $latestNote = Note::latest()->first();
+
         } else {
             $user_id = Auth::id();
             $groups = auth()->user()->groups;
             $subgroups = auth()->user()->subgroups;
+
+            if(count(Auth::user()->groups) < 1 && count(Auth::user()->subgroups) < 1)
+            {
+                $noGroups = true;
+                $allGroups = Group::get();
+            }
+
 
 
             $publications = Publication::where(function ($query) use ($groups, $subgroups, $user_id) {
@@ -116,6 +126,8 @@ class HomeController extends Controller
             'today' =>  $today->format('Y-m-d'),
             'tomorrow' => $today->modify('+1 day')->format('Y-m-d'),
             'latestNote' => $latestNote,
+            'noGroups' => $noGroups,
+            'allGroups' => $allGroups ?? [],
         ]);
     }
 }

@@ -84,9 +84,9 @@
 
                                     <div class="row mb-3 profile-edit">
                                         <label for="phone" class="col-sm-2 col-form-label fw-bold">Członek grupy:</label>
-                                        <div class="col-sm-10">
+                                        <div class="col-sm-10" id="userGroupsField">
                                             @if (isset($user))
-                                                @foreach ($user->groups as $group)
+                                                @foreach ($user->groups->unique() as $group)
                                                     <a href="{{ route('groups.edit', $group->id) }}"><button type="button"
                                                             class="btn btn-success mb-2 me-2">
                                                             {{ $group->name }}</button></a>
@@ -237,6 +237,12 @@ function addMemberToGroup(){
                             icon: 'success',
                             title:  ("Dodano do grupy")
                             })
+                        $('#userGroupsField').prepend('<a href="/groups/edit/'+data['groupId']+'"><button type="button" class="btn btn-success mb-2 me-2">'+data['groupName']+'</button></a>')
+                        if(subgroups !== [""]){
+
+                            $('<a href="/subgroups/edit/'+data['subgroupId']+'"><button type="button" class="btn btn-success mb-2 me-2">'+data['groupName']+'<span class="badge bg-white text-success ms-1">'+data['subgroupName']+'</span></button></a>' ).insertBefore( "#button-addUserToGroup" );
+                        }
+
             },
             error: function(data) {
                 Toast.fire({

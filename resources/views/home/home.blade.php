@@ -8,6 +8,9 @@
             <div class="row">
                 <div class="col-lg-8">
                     <div class="row">
+                        @if($noGroups)
+                            @include('home.noGroups')
+                        @endif
                         @foreach ($publications as $publication)
                             @include('home.publication')
                         @endforeach

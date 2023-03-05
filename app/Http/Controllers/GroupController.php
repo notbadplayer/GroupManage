@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UpdateGroup;
 use App\Models\Group;
 use App\Models\GroupUser;
+use App\Models\Subgroup;
 use App\Models\User;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\Request;
@@ -127,14 +128,34 @@ class GroupController extends Controller
     {
         $group = Group::find($request->group);
 
+        if($request->subgroups == ['']){
+            $request->merge([
+                'subgroups' => null,
+            ]);
+        }
+
         if($request->subgroups){
 
             foreach($request->subgroups as $subgroup){
-                $group->users()->attach($request->member, ['subgroup_id' => $subgroup]);
+                $subgroupModel = Subgroup::find($subgroup);
+                if(!($subgroupModel->users->contains($request->member))){
+                    $group->users()->attach($request->member, ['subgroup_id' => $subgroup]);
+                }
             }
         } else {
-            $group->users()->attach($request->member);
+            if(!($group->users->contains($request->member))){
+                $group->users()->attach($request->member);
+            }
         }
+
+        $data = array(
+            'groupId' => $group->id,
+            'groupName' => $group->name,
+            'subgroupId' => $subgroupModel->id ?? '',
+            'subgroupName' => $subgroupModel->name ?? '',
+        );
+
+        return response()->json($data);
 
     }
 
