@@ -1,7 +1,7 @@
 <script type="module">
 $(document).ready(function () {
 
-    let htmlAddToGroupText = '<select class="form-select members" name="newGroup" id="newGroup" value="" style="width: 80%"><option value="">Wybierz Grupę</option>@foreach($allGroups ?? [] as $group)<option value="{{ $group->id }}">{{ $group->name }}</option>@endforeach</select></br>';
+    let htmlAddToGroupText = '<p>Aby w pełni korzystać ze strony, musisz dopisać się do przynajmniej jednej grupy.</p><br/><select class="form-select members" name="newGroup" id="newGroup" value="" style="width: 80%"><option value="">Wybierz Grupę</option>@foreach($allGroups ?? [] as $group)<option value="{{ $group->id }}">{{ $group->name }}</option>@endforeach</select></br>';
     htmlAddToGroupText = htmlAddToGroupText + '<div id="subgroupsField" class="invisible"><div class="mt-5">Dodaj również do podgrupy:</div>';
     htmlAddToGroupText = htmlAddToGroupText + '<select class="form-select subgroups" name="newSubgroup" id="newSubgroup" value="" style="width: 80%"><option value="">Nie wybrano</option></select></br></div>';
 
