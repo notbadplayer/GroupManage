@@ -93,15 +93,28 @@ class GroupController extends Controller
             ->with('success', 'Dane grupy zostały aktualizowane');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Group  $group
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Group $group)
+
+    public function destroy(Group $Group): RedirectResponse
     {
-        //
+        Gate::authorize('admin-level');
+
+        foreach($Group->subgroups as $subgroup){
+            $subgroup->users()->detach();
+            $subgroup->group()->dissociate();
+            $subgroup->publications()->detach();
+            $subgroup->notes()->detach();
+            $subgroup->songs()->detach();
+            $subgroup->forceDelete();
+        }
+
+        $Group->users()->detach();
+        $Group->subgroups()->delete();
+        $Group->publications()->detach();
+        $Group->notes()->detach();
+        $Group->songs()->detach();
+        $Group->forceDelete();
+        return redirect()->route('groups.index')
+            ->with('success', 'Grupa została usunięta');
     }
 
     public function members(Group $Group, Request $request)

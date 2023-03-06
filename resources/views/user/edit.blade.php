@@ -264,7 +264,7 @@ function addMemberToGroup(){
 
 }
 
-//Kliknięciee przycisku "dopisz do grupy":
+//Kliknięciee przycisku "Usuń":
 $('#buttonRemoveUser').on( 'click', function () {
 
 Swal.fire({

@@ -105,8 +105,12 @@
                                     <div class="float-start mb-3 mt-3"> <div class="btn btn-outline-success" id="button-addToGroup"><i class="fa-solid fa-user-plus me-1"></i>Dopisz do grupy</div></div>
                                     @endif
 
-                                    <div class="float-end mb-3 mt-3"> <button type="submit" class="btn btn-primary"><i
-                                                class="fa-solid fa-check me-1"></i>Zapisz</button></div>
+                                    <div class="float-end mb-3 mt-3">
+                                        <a class="btn btn-outline-danger me-3" id="buttonRemoveGroup"><i
+                                            class="fa-solid fa-user-xmark me-1"></i>Usuń grupę</a>
+                                        <button type="submit" class="btn btn-primary"><i
+                                                class="fa-solid fa-check me-1"></i>Zapisz</button>
+                                            </div>
 
                                 </form>
                             </div>
@@ -115,6 +119,11 @@
                     </div>
                 </div>
             </div>
+
+
+            <form method="post" action="{{route('groups.destroy', ['Group'=> $group->id])}}" id="deleteGroupForm">
+                @csrf
+            </form>
 
         </section>
 
@@ -266,9 +275,29 @@ function addMemberToGroup(){
         })
 
 }
-
-
-
 });
+
+
+//Kliknięciee przycisku "Usuń":
+$('#buttonRemoveGroup').on( 'click', function () {
+    var html = 'Czy chcesz usunąć grupę: {{$group->name}} ?<br/>@if(count($group->subgroups)>0)Usunie to również wszystkie grupy podrzędne. @endif';
+
+Swal.fire({
+                    title: 'Usuń Grupę',
+                    html: html,
+                    icon: 'warning',
+                    confirmButtonText: 'Tak, usuń',
+                    confirmButtonColor: '#dc3545',
+                    showCancelButton: 'true',
+                    cancelButtonText: 'Anuluj',
+                    }).then((result) =>
+                        {
+                            if(result.isConfirmed){
+                                $('#deleteGroupForm').submit();
+                            }
+                        }
+                    );
+});
+
     </script>
 @endsection

@@ -94,8 +94,16 @@ class SubgroupController extends Controller
     }
 
 
-    public function destroy(Subgroup $subgroup)
+    public function destroy(Subgroup $Subgroup): RedirectResponse
     {
-        //
+        Gate::authorize('admin-level');
+
+        $Subgroup->users()->detach();
+        $Subgroup->publications()->detach();
+        $Subgroup->notes()->detach();
+        $Subgroup->songs()->detach();
+        $Subgroup->forceDelete();
+        return redirect()->route('groups.index')
+            ->with('success', "Grupa $Subgroup->name została usunięta");
     }
 }

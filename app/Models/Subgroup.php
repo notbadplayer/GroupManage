@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Subgroup extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
+
+    protected $dates = ['deleted_at'];
 
      /**
      * The attributes that are mass assignable.
@@ -43,5 +46,15 @@ class Subgroup extends Model
     public function publications()
     {
         return $this->belongsToMany(Publication::class);
+    }
+
+    public function notes()
+    {
+        return $this->belongsToMany(Note::class);
+    }
+
+    public function songs()
+    {
+        return $this->belongsToMany(Song::class);
     }
 }

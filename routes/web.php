@@ -45,6 +45,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::post('groups/store', [GroupController::class, 'store'])->name('groups.store');
     Route::get('groups/edit/{Group}', [GroupController::class, 'edit'])->name('groups.edit');
     Route::put('groups/update/{Group}', [GroupController::class, 'update'])->name('groups.update');
+    Route::post('groups/destroy/{Group}', [GroupController::class, 'destroy'])->name('groups.destroy');
 
     //members of group:
     Route::get('groups/members/{Group?}', [GroupController::class, 'members'])->name('groups.members');
@@ -58,6 +59,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::post('subgroups/store', [SubgroupController::class, 'store'])->name('subgroups.store');
     Route::get('subgroups/edit/{Subgroup}', [SubgroupController::class, 'edit'])->name('subgroups.edit');
     Route::put('subgroups/update/{Subgroup}', [SubgroupController::class, 'update'])->name('subgroups.update');
+    Route::post('subgroups/destroy/{Subgroup}', [SubgroupController::class, 'destroy'])->name('subgroups.destroy');
 
 
     //Publications:
