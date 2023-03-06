@@ -92,6 +92,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::post('songs/store', [SongController::class, 'store'])->name('songs.store');
     Route::get('songs/edit/{Song}', [SongController::class, 'edit'])->name('songs.edit');
     Route::put('songs/update/{Song}', [SongController::class, 'update'])->name('songs.update');
+    Route::post('songs/destroy/{Song}', [SongController::class, 'destroy'])->name('songs.destroy');
 
     Route::get('songs/play/{Song}', [SongController::class, 'play'])->name('songs.play');
 

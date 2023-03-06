@@ -94,8 +94,7 @@
 
                                     <div class="float-end mb-3 mt-3">
                                         @isset($note)
-                                        <a class="btn btn-outline-danger me-3" id="buttonRemoveNote"><i
-                                            class="fa-solid fa-user-xmark me-1"></i>Usuń</a>
+                                        <a class="btn btn-outline-danger me-3" id="buttonRemoveNote"><i class="fa-solid fa-trash me-1"></i>Usuń</a>
                                         @endisset
                                          <button type="submit" class="btn btn-primary"><i
                                                 class="fa-solid fa-check me-1"></i>Zapisz</button>

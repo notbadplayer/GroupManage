@@ -11,6 +11,7 @@ use App\Models\User;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\Request;
 use DataTables;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
@@ -243,9 +244,20 @@ class SongController extends Controller
     }
 
 
-    public function destroy(Song $Song)
+    public function destroy(Song $Song): RedirectResponse
     {
-        //
+        Gate::authorize('admin-level');
+
+        $Song->users()->detach();
+        $Song->subgroups()->detach();
+        $Song->groups()->detach();
+
+        unlink(public_path($Song->file->location));
+        $Song->file->forceDelete();
+
+        $Song->forceDelete();
+        return redirect()->route('songs.index')
+            ->with('success', 'Utwór zostsał usunięty');
     }
 
     public function play(Song $Song)

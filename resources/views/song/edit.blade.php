@@ -104,6 +104,11 @@
                                             <a href="{{ route('songs.play', ['Song' => $song->id]) }}"><button
                                                     type="button" class="btn btn-outline-primary me-1"><i class="fa-solid fa-play me-2"></i>Odtwarzaj</button></a>
                                         @endif
+
+                                        @isset($song)
+                                        <a class="btn btn-outline-danger me-3 ms-2" id="buttonRemoveSong"><i class="fa-solid fa-trash me-1"></i></i>Usuń</a>
+                                        @endisset
+
                                         <button type="submit" class="btn btn-primary"><i
                                                 class="fa-solid fa-check me-1"></i>Zapisz</button>
                                     </div>
@@ -116,7 +121,11 @@
                     </div>
                 </div>
             </div>
-
+            @isset($song)
+            <form method="post" action="{{route('songs.destroy', ['Song'=> $song->id])}}" id="deleteSongForm">
+                @csrf
+            </form>
+            @endisset
 
 
         </section>
@@ -136,6 +145,30 @@
         $('#visibility').select2({
                 placeholder: "Wszyscy"
             });
+
+
+
+
+//Kliknięciee przycisku "Usuń":
+$('#buttonRemoveSong').on( 'click', function () {
+    var html = 'Czy chcesz usunąć nuty?';
+
+Swal.fire({
+                    title: 'Usuń utwór',
+                    html: html,
+                    icon: 'warning',
+                    confirmButtonText: 'Tak, usuń',
+                    confirmButtonColor: '#dc3545',
+                    showCancelButton: 'true',
+                    cancelButtonText: 'Anuluj',
+                    }).then((result) =>
+                        {
+                            if(result.isConfirmed){
+                                $('#deleteSongForm').submit();
+                            }
+                        }
+                    );
+});
 
     </script>
 @endsection
