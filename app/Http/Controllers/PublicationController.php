@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use DataTables;
 use DateInterval;
 use DateTime;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 
 class PublicationController extends Controller
@@ -232,5 +233,12 @@ class PublicationController extends Controller
     public function destroy(Publication $publication)
     {
         //
+    }
+
+    public function archive(Publication $Publication): RedirectResponse
+    {
+        $Publication->update(['archived' => 1]);
+        return redirect()->route('publications.index')
+            ->with('success', 'Ogłoszenie przeniesiono do archiwum');
     }
 }

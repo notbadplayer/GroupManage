@@ -27,7 +27,7 @@
                                 </div>
 
                                 <div class="p-2 bd-highlight">
-                                    <a href="{{ route('groups.index') }}"><button type="button"
+                                    <a href="{{ url()->previous() }}"><button type="button"
                                             class="btn btn-outline-primary"><i
                                                 class="fa-solid fa-rotate-left me-2"></i>Powrót</button></a>
                                 </div>
@@ -109,9 +109,18 @@
 
 
 
-                                    <div class="float-end mb-3 mt-3"> <button type="submit" class="btn btn-primary"
+                                    <div class="float-end mb-3 mt-3">
+
+                                        @if((isset($publication) && !($publication->archived)))
+                                            <a class="btn btn-outline-danger me-3" id="buttonArchivePublication"><i
+                                                    class="fa-solid fa-box-archive me-1"></i>Przenieś do archiwum</a>
+                                        @endif
+
+                                        <button type="submit" class="btn btn-primary"
                                             @if (isset($publication) && $publication->archived) disabled @endif><i
-                                                class="fa-solid fa-check me-1"></i>Zapisz</button></div>
+                                                class="fa-solid fa-check me-1"></i>Zapisz</button>
+
+                                    </div>
 
                                 </form>
                             </div>
@@ -121,7 +130,11 @@
                 </div>
             </div>
 
-
+            @isset($publication)
+            <form method="post" action="{{route('publications.archive', ['Publication'=> $publication->id])}}" id="archivePublication">
+                @csrf
+            </form>
+            @endisset
 
         </section>
 
@@ -167,6 +180,28 @@
          } );
 
         });
+
+
+        //Kliknięciee przycisku "Przenieś do aarchiwum":
+$('#buttonArchivePublication').on( 'click', function () {
+    var html = 'Przenieść do archiwum? Wpisy z archiwum nie są wyświetlane na stronie głównej.';
+
+Swal.fire({
+                    title: 'Archiwizuj',
+                    html: html,
+                    icon: 'warning',
+                    confirmButtonText: 'Tak, przenieś',
+                    confirmButtonColor: '#dc3545',
+                    showCancelButton: 'true',
+                    cancelButtonText: 'Anuluj',
+                    }).then((result) =>
+                        {
+                            if(result.isConfirmed){
+                                $('#archivePublication').submit();
+                            }
+                        }
+                    );
+});
 
     </script>
 @endsection

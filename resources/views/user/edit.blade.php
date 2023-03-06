@@ -82,6 +82,7 @@
                                         </div>
                                     </div>
 
+                                    @isset($user)
                                     <div class="row mb-3 profile-edit">
                                         <label for="phone" class="col-sm-2 col-form-label fw-bold">Członek grupy:</label>
                                         <div class="col-sm-10" id="userGroupsField">
@@ -104,10 +105,13 @@
                                                 grupy</button>
                                         </div>
                                     </div>
+                                    @endisset
 
                                     <div class="float-end mb-3 mt-3">
+                                        @isset($user)
                                         <a class="btn btn-outline-danger me-3" id="buttonRemoveUser"><i
                                                 class="fa-solid fa-user-xmark me-1"></i>Usuń</a>
+                                                @endisset
                                         <button type="submit" class="btn btn-primary"><i
                                                 class="fa-solid fa-check me-1"></i>Zapisz</button>
 
@@ -122,9 +126,11 @@
                 </div>
             </div>
 
+            @isset($user)
             <form method="post" action="{{route('users.destroy', ['User'=> $user->id])}}" id="deleteUserForm">
                 @csrf
             </form>
+            @endisset
 
         </section>
 
@@ -210,7 +216,7 @@ function addMemberToGroup(){
     var group = $('#newGroup').val();
     var subgroups = [];
     subgroups.push($('#newSubgroup').val());
-    var newMember = "{{ $user->id }}";
+    var newMember = "{{ $user->id ?? '' }}";
 
     console.log(group);
     console.log(subgroups);
@@ -269,7 +275,7 @@ $('#buttonRemoveUser').on( 'click', function () {
 
 Swal.fire({
                     title: 'Usuń użytkownika',
-                    text: 'Czy chcesz usunąć użytkownika: {{$user->name}} {{$user->surname}}',
+                    text: 'Czy chcesz usunąć użytkownika: {{$user->name ?? ''}} {{$user->surname ?? ''}}',
                     icon: 'warning',
                     confirmButtonText: 'Tak, usuń',
                     confirmButtonColor: '#dc3545',
@@ -286,6 +292,8 @@ Swal.fire({
 
     </script>
 
-
+@if (Session::has('success'))
+@include('other.statusSuccess')
+@endif
 
 @endsection

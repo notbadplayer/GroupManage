@@ -56,7 +56,11 @@ class UserController extends Controller
     public function create(): View
     {
         Gate::authorize('admin-level');
-        return view('user.edit');
+        $groups = Group::get();
+        return view(
+            'user.edit',
+            ['groups' => $groups]
+        );
     }
 
     public function store(UpdateUser $request): RedirectResponse
@@ -69,10 +73,11 @@ class UserController extends Controller
             'surname' => $data['surname'],
             'phone' => $data['phone'],
             'email' => $data['email'],
+            'password' => Hash::make('12345'),
         ]);
 
-        return redirect()->route('users.index')
-            ->with('success', 'Użytkownik został dodany');
+        return redirect()->route('users.edit', ['User' => $user->id])
+            ->with('success', 'Użytkownik został dodany.');
     }
 
     public function edit(User $User): View

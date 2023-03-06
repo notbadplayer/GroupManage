@@ -15,7 +15,8 @@ class Publication extends Model
         'name',
         'content',
         'allowComments',
-        'restrictedVisibility'
+        'restrictedVisibility',
+        'archived',
     ];
 
     public function groups()

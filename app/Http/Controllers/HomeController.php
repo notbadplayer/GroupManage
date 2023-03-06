@@ -70,7 +70,7 @@ class HomeController extends Controller
                 ->orWhere(function ($query) {
                     $query->where('restrictedVisibility', '0');
                 });
-            })
+            })->where('archived', 0)
             ->get();
 
             $events = Event::where(function ($query) use ($groups, $subgroups, $user_id) {

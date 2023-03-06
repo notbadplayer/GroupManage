@@ -92,8 +92,14 @@
                                          @endif
                                     </div>
 
-                                    <div class="float-end mb-3 mt-3"> <button type="submit" class="btn btn-primary"><i
-                                                class="fa-solid fa-check me-1"></i>Zapisz</button></div>
+                                    <div class="float-end mb-3 mt-3">
+                                        @isset($note)
+                                        <a class="btn btn-outline-danger me-3" id="buttonRemoveNote"><i
+                                            class="fa-solid fa-user-xmark me-1"></i>Usuń</a>
+                                        @endisset
+                                         <button type="submit" class="btn btn-primary"><i
+                                                class="fa-solid fa-check me-1"></i>Zapisz</button>
+                                            </div>
 
                                 </form>
 
@@ -110,6 +116,12 @@
                     </div>
                 </div>
             </div>
+
+            @isset($note)
+            <form method="post" action="{{route('notes.destroy', ['Note'=> $note->id])}}" id="deleteNoteForm">
+                @csrf
+            </form>
+            @endisset
 
 
 
@@ -130,6 +142,31 @@
         $('#visibility').select2({
                 placeholder: "Wszyscy"
             });
+
+
+            //Kliknięciee przycisku "Usuń":
+$('#buttonRemoveNote').on( 'click', function () {
+    var html = 'Czy chcesz usunąć nuty?';
+
+Swal.fire({
+                    title: 'Usuń nuty',
+                    html: html,
+                    icon: 'warning',
+                    confirmButtonText: 'Tak, usuń',
+                    confirmButtonColor: '#dc3545',
+                    showCancelButton: 'true',
+                    cancelButtonText: 'Anuluj',
+                    }).then((result) =>
+                        {
+                            if(result.isConfirmed){
+                                $('#deleteNoteForm').submit();
+                            }
+                        }
+                    );
+});
+
+
+
 
     </script>
 @endsection

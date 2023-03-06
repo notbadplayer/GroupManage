@@ -11,8 +11,10 @@ use App\Models\User;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\Request;
 use DataTables;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 
 class NoteController extends Controller
 {
@@ -245,9 +247,20 @@ class NoteController extends Controller
     }
 
 
-    public function destroy(Note $note)
+    public function destroy(Note $Note): RedirectResponse
     {
-        //
+        Gate::authorize('admin-level');
+
+        $Note->users()->detach();
+        $Note->subgroups()->detach();
+        $Note->groups()->detach();
+
+        unlink(public_path($Note->file->location));
+        $Note->file->forceDelete();
+
+        $Note->forceDelete();
+        return redirect()->route('notes.index')
+            ->with('success', 'Nuty zostały usunięte');
     }
 
 }

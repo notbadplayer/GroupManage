@@ -69,7 +69,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::post('publications/store', [PublicationController::class, 'store'])->name('publications.store');
     Route::get('publications/edit/{Publication}', [PublicationController::class, 'edit'])->name('publications.edit');
     Route::put('publications/update/{Publication}', [PublicationController::class, 'update'])->name('publications.update');
-
+    Route::post('publications/archive/{Publication}', [PublicationController::class, 'archive'])->name('publications.archive');
 
     //Files
     Route::post('file-upload/{assignedTo}', [FileController::class, 'storeFile'])->name('file.upload');
@@ -83,6 +83,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::post('notes/store', [NoteController::class, 'store'])->name('notes.store');
     Route::get('notes/edit/{Note}', [NoteController::class, 'edit'])->name('notes.edit');
     Route::put('notes/update/{Note}', [NoteController::class, 'update'])->name('notes.update');
+    Route::post('notes/destroy/{Note}', [NoteController::class, 'destroy'])->name('notes.destroy');
 
     //Player:
     Route::get('/songs', [SongController::class, 'index'])->name('songs.index');

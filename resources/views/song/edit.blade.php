@@ -24,7 +24,7 @@
                                     @endif
                                 </div>
                                 <div class="p-2 bd-highlight">
-                                    <a href="{{ route('songs.index') }}"><button type="button"
+                                    <a href="{{ url()->previous() }}"><button type="button"
                                             class="btn btn-outline-primary"><i
                                                 class="fa-solid fa-rotate-left me-2"></i>Powrót</button></a>
                                 </div>
