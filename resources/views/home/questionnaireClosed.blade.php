@@ -29,3 +29,11 @@
         {{ $publication->questionnaire->userAnswers->first()->value ? 'Tak' : 'Nie' }}
     </div>
 @endif
+
+@can('admin-level')
+    <div class="mt-2">
+        <a href="questionnaire/results/{{ $publication->questionnaire->id }}" class="btn btn-sm btn-outline-primary" role="button">
+            <i class="fa-solid fa-check"></i> Wyświetl wyniki
+        </a>
+    </div>
+@endcan

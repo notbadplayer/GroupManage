@@ -237,7 +237,7 @@ function addMemberToGroup(){
                             icon: 'success',
                             title:  ("Dodano do grupy")
                             })
-                        $('#userGroupsField').prepend('<a href="/groups/edit/'+data['groupId']+'"><button type="button" class="btn btn-success mb-2 me-2">'+data['groupName']+'</button></a>')
+                        //$('#userGroupsField').prepend('<a href="/groups/edit/'+data['groupId']+'"><button type="button" class="btn btn-success mb-2 me-2">'+data['groupName']+'</button></a>')
                         if(subgroups !== [""]){
 
                             $('<a href="/subgroups/edit/'+data['subgroupId']+'"><button type="button" class="btn btn-success mb-2 me-2">'+data['groupName']+'<span class="badge bg-white text-success ms-1">'+data['subgroupName']+'</span></button></a>' ).insertBefore( "#button-addUserToGroup" );
