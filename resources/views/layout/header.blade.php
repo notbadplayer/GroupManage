@@ -22,7 +22,7 @@
                             @if(Gate::check('admin-level'))
                             <li>Administrator</li>
                             @else
-                            @foreach(Auth::user()->groups as $group)
+                            @foreach(Auth::user()->groups->unique() as $group)
                                 @if(count($group->subgroups->whereIn('id', Auth::user()->subgroups->pluck('id'))) > 0)
                                         @foreach($group->subgroups->whereIn('id', Auth::user()->subgroups->pluck('id')) as $subgroup)
                                             <li>{{ $group->name }}-{{ $subgroup->name }}</li>
@@ -37,18 +37,8 @@
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li> <a class="dropdown-item d-flex align-items-center" href="users-profile.html"> <i
-                                class="bi bi-person"></i> <span>My Profile</span> </a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li> <a class="dropdown-item d-flex align-items-center" href="users-profile.html"> <i
-                                class="bi bi-gear"></i> <span>Account Settings</span> </a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li> <a class="dropdown-item d-flex align-items-center" href="pages-faq.html"> <i
-                                class="bi bi-question-circle"></i> <span>Need Help?</span> </a></li>
+                    <li> <a class="dropdown-item d-flex align-items-center" href="{{route('users.profile')}}"> <i
+                                class="bi bi-person"></i> <span>Mój profil</span> </a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>

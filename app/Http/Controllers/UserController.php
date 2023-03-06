@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdatePassword;
 use App\Http\Requests\UpdateUser;
 use App\Models\Group;
 use App\Models\Subgroup;
@@ -11,6 +12,7 @@ use DataTables;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -99,6 +101,39 @@ class UserController extends Controller
 
         return redirect()->route('users.index')
         ->with('success','Dane użytkownika zostały aktualizowane');
+    }
+
+    public function profile()
+    {
+        $user = Auth::user();
+        $groups = Group::get();
+        return view('user.profile',[
+            'user' => $user,
+            'groups' => $groups,
+        ]);
+    }
+
+    public function profileUdate(User $User, UpdateUser $request): RedirectResponse
+    {
+        $data = $request->validated();
+
+        $User->update([
+            'name' => $data['name'],
+            'surname' => $data['surname'],
+            'phone' => $data['phone'],
+            'email' => $data['email'],
+        ]);
+
+        return redirect()->route('users.profile')
+                ->with('success','Dane zostały aktualizowane');
+    }
+
+    public function passwordUdate(UpdatePassword $request): RedirectResponse
+    {
+        $data = $request->validated();
+        User::find(auth()->user()->id)->update(['password'=> Hash::make($request->password)]);
+        return redirect()->route('users.profile')
+                ->with('success','Hasło zostało zmienione.');
     }
 
 

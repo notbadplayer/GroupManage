@@ -32,7 +32,11 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::post('users/store', [UserController::class, 'store'])->name('users.store');
     Route::get('users/edit/{User}', [UserController::class, 'edit'])->name('users.edit');
     Route::put('users/update/{User}', [UserController::class, 'update'])->name('users.update');
+    Route::get('users/profile', [UserController::class, 'profile'])->name('users.profile');
+    Route::put('users/profile/update/{User}', [UserController::class, 'profileUdate'])->name('users.profileUdate');
+    Route::put('users/passwordUpdate', [UserController::class, 'passwordUdate'])->name('users.passwordUpdate');
 
+    Route::get('users/profile', [UserController::class, 'profile'])->name('users.profile');
     //Groups:
     Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
     Route::get('groups/data', [GroupController::class, 'data'])->name('groups.data');
