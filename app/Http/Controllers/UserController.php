@@ -64,7 +64,7 @@ class UserController extends Controller
         Gate::authorize('admin-level');
         $data = $request->validated();
 
-        $user=User::create([
+        $user = User::create([
             'name' => $data['name'],
             'surname' => $data['surname'],
             'phone' => $data['phone'],
@@ -72,7 +72,7 @@ class UserController extends Controller
         ]);
 
         return redirect()->route('users.index')
-                ->with('success','Użytkownik został dodany');
+            ->with('success', 'Użytkownik został dodany');
     }
 
     public function edit(User $User): View
@@ -100,14 +100,14 @@ class UserController extends Controller
         ]);
 
         return redirect()->route('users.index')
-        ->with('success','Dane użytkownika zostały aktualizowane');
+            ->with('success', 'Dane użytkownika zostały aktualizowane');
     }
 
     public function profile()
     {
         $user = Auth::user();
         $groups = Group::get();
-        return view('user.profile',[
+        return view('user.profile', [
             'user' => $user,
             'groups' => $groups,
         ]);
@@ -125,16 +125,27 @@ class UserController extends Controller
         ]);
 
         return redirect()->route('users.profile')
-                ->with('success','Dane zostały aktualizowane');
+            ->with('success', 'Dane zostały aktualizowane');
     }
 
     public function passwordUdate(UpdatePassword $request): RedirectResponse
     {
         $data = $request->validated();
-        User::find(auth()->user()->id)->update(['password'=> Hash::make($request->password)]);
+        User::find(auth()->user()->id)->update(['password' => Hash::make($request->password)]);
         return redirect()->route('users.profile')
-                ->with('success','Hasło zostało zmienione.');
+            ->with('success', 'Hasło zostało zmienione.');
     }
 
-
+    public function destroy(User $User): RedirectResponse
+    {
+        Gate::authorize('admin-level');
+        $User->groups()->detach();
+        $User->subgroups()->detach();
+        $User->publications()->detach();
+        $User->notes()->detach();
+        $User->songs()->detach();
+        $User->delete();
+        return redirect()->route('users.index')
+            ->with('success', 'Użytkownik został usunięty');
+    }
 }

@@ -35,6 +35,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::get('users/profile', [UserController::class, 'profile'])->name('users.profile');
     Route::put('users/profile/update/{User}', [UserController::class, 'profileUdate'])->name('users.profileUdate');
     Route::put('users/passwordUpdate', [UserController::class, 'passwordUdate'])->name('users.passwordUpdate');
+    Route::post('users/destroy/{User}', [UserController::class, 'destroy'])->name('users.destroy');
 
     Route::get('users/profile', [UserController::class, 'profile'])->name('users.profile');
     //Groups:
