@@ -37,7 +37,7 @@
             </li>
         @endcan
         <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#notes-nav" data-bs-toggle="collapse" href="#"> <i
+            <a class="nav-link collapsed" data-bs-target="#notes-nav" data-bs-toggle="@if(Gate::check('admin-level')){{'collapse'}}@endif" href="@if(!(Gate::check('admin-level'))) {{route('notes.index')}} @else # @endif"> <i
                     class="fa-solid fa-music"></i><span>Nuty</span><i class="bi bi-chevron-down ms-auto"></i> </a>
             <ul id="notes-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li> <a href="{{ route('notes.index') }}"> <i class="bi bi-circle"></i><span>Lista nut</span> </a></li>
@@ -50,7 +50,7 @@
             </ul>
         </li>
         <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#player-nav" data-bs-toggle="collapse" href="#"> <i
+            <a class="nav-link collapsed" data-bs-target="#player-nav" data-bs-toggle="@if(Gate::check('admin-level')){{'collapse'}}@endif" href="@if(!(Gate::check('admin-level'))) {{route('songs.index')}} @else # @endif"> <i
                     class="fa-solid fa-circle-play"></i><span>Odtwarzacz</span><i
                     class="bi bi-chevron-down ms-auto"></i> </a>
             <ul id="player-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
