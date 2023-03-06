@@ -28,5 +28,4 @@ class Answer extends Model
     }
 
 
-
 }

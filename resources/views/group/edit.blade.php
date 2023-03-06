@@ -106,8 +106,10 @@
                                     @endif
 
                                     <div class="float-end mb-3 mt-3">
+                                        @isset($group)
                                         <a class="btn btn-outline-danger me-3" id="buttonRemoveGroup"><i
                                             class="fa-solid fa-user-xmark me-1"></i>Usuń grupę</a>
+                                        @endisset
                                         <button type="submit" class="btn btn-primary"><i
                                                 class="fa-solid fa-check me-1"></i>Zapisz</button>
                                             </div>
@@ -120,10 +122,11 @@
                 </div>
             </div>
 
-
+            @isset($group)
             <form method="post" action="{{route('groups.destroy', ['Group'=> $group->id])}}" id="deleteGroupForm">
                 @csrf
             </form>
+            @endisset
 
         </section>
 
@@ -280,7 +283,7 @@ function addMemberToGroup(){
 
 //Kliknięciee przycisku "Usuń":
 $('#buttonRemoveGroup').on( 'click', function () {
-    var html = 'Czy chcesz usunąć grupę: {{$group->name}} ?<br/>@if(count($group->subgroups)>0)Usunie to również wszystkie grupy podrzędne. @endif';
+    var html = 'Czy chcesz usunąć grupę: {{isset($group) ? $group->name : '' }} ?<br/>@if(count($group->subgroups ?? [])>0)Usunie to również wszystkie grupy podrzędne. @endif';
 
 Swal.fire({
                     title: 'Usuń Grupę',

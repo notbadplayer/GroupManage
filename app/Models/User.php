@@ -74,4 +74,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Song::class);
     }
+
+    public function answers()
+    {
+        return $this->hasMany(Answer::class);
+    }
 }

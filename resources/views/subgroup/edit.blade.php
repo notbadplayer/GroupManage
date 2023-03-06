@@ -81,9 +81,11 @@
                 </div>
             </div>
 
+            @if(isset($subgroup))
             <form method="post" action="{{route('subgroups.destroy', ['Subgroup'=> $subgroup->id])}}" id="deleteSubgroupForm">
                 @csrf
             </form>
+            @endif
 
         </section>
 
@@ -100,7 +102,7 @@
 
 //Kliknięciee przycisku "Usuń":
 $('#buttonRemoveSubgroup').on( 'click', function () {
-    var html = 'Czy chcesz usunąć grupę: {{$subgroup->name}} ?';
+    var html = 'Czy chcesz usunąć grupę: {{$subgroup->name ?? ''}} ?';
 
 Swal.fire({
                     title: 'Usuń Grupę',

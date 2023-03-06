@@ -43,6 +43,8 @@ class QuestionnaireController extends Controller
     public function results(Questionnaire $Questionnaire)
     {
         Gate::authorize('admin-level');
+
+        $data = [];
         //jeżeli jest ograniczona widoczność publikacji, to wykresy dla wszystkich grup, podgrup itp.
         if ($Questionnaire->publication->restrictedVisibility) {
 

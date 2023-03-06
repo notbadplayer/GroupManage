@@ -86,7 +86,7 @@
                                         @endif
                                     </div>
 
-                                    <div class="form-check form-switch mt-4 ms-2">
+                                    {{-- <div class="form-check form-switch mt-4 ms-2">
 
                                         <!-- Size of the default switch will increase 1.8 times -->
                                         <input class="form-check-input " type="checkbox" role="switch" id="allowComments"
@@ -95,7 +95,7 @@
 
                                         <label class="form-check-label ms-3" for="allowComments">Zezwalaj na
                                             komentowanie</label>
-                                    </div>
+                                    </div> --}}
 
 
                                     <div class="card mt-4">

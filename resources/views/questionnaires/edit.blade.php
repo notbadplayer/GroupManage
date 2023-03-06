@@ -9,7 +9,7 @@
         data-bs-parent="#publicationAccordion">
         <div class="accordion-body">
 
-            @if (isset($publication->questionnaire) && count($publication->questionnaire->userAnswers) > 0)
+            @if (isset($publication->questionnaire) && count($publication->questionnaire->answers) > 0)
                 <a class="btn btn-outline-primary mb-3" id="questionnaireResults" href="{{route('questionnaires.results', ['Questionnaire' => $publication->questionnaire->id ]) }}" role="button">
                     Zobacz wyniki
                 </a>

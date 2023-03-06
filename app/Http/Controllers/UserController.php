@@ -144,6 +144,12 @@ class UserController extends Controller
         $User->publications()->detach();
         $User->notes()->detach();
         $User->songs()->detach();
+
+        foreach ($User->answers as $answer) {
+            $answer->questionnaires()->detach();
+            $answer->forceDelete();
+        }
+
         $User->delete();
         return redirect()->route('users.index')
             ->with('success', 'Użytkownik został usunięty');
