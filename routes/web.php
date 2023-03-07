@@ -47,9 +47,11 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::put('groups/update/{Group}', [GroupController::class, 'update'])->name('groups.update');
     Route::post('groups/destroy/{Group}', [GroupController::class, 'destroy'])->name('groups.destroy');
 
+
     //members of group:
     Route::get('groups/members/{Group?}', [GroupController::class, 'members'])->name('groups.members');
     Route::POST('groups/members/addMember', [GroupController::class, 'addMember'])->name('groups.addMember');
+    Route::post('groups/members/removeMember', [GroupController::class, 'removeMember'])->name('groups.removeMember');
 
     //subgroups of group
     Route::get('groups/subgroups/{Group}', [GroupController::class, 'subgroups'])->name('groups.subgroups');

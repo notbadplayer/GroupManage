@@ -138,6 +138,8 @@
                                                 class="btn btn-outline-success mb-2 me-2"><i
                                                     class="fa-solid fa-people-group me-2"></i>Dołącz do
                                                 grupy</button>
+                                                <button type="button" id="button-removeUserFromGroup"
+                                                class="btn btn-outline-danger mb-2 me-2"><i class="fa-solid fa-user-minus me-2"></i>Wypisz się z grupy</button>
                                         </div>
                                     </div>
                                 </div>
@@ -275,10 +277,6 @@ function addMemberToGroup(){
     subgroups.push($('#newSubgroup').val());
     var newMember = "{{ $user->id }}";
 
-    console.log(group);
-    console.log(subgroups);
-    console.log(newMember);
-
     const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
@@ -326,6 +324,74 @@ function addMemberToGroup(){
         })
 
 }
+
+
+
+//Kliknięciee przycisku "Wypisz się z grupy":
+$('#button-removeUserFromGroup').on( 'click', function () {
+
+    let htmlRemoveFromGroupText = '<select class="form-select members" name="removeFromGroup" id="removeFromGroup" value="" style="width: 100%"><option value="">Wybierz Grupę</option>@foreach($user->groups ?? [] as $userGroup)<option value="{{ $userGroup->id }}">{{ $userGroup->name }}</option>@endforeach</select></br>';
+
+
+    Swal.fire({
+                    title: 'Odłącz od grupy: ',
+                    html: htmlRemoveFromGroupText,
+                    icon: 'warning',
+                    confirmButtonText: 'Odłącz',
+                    confirmButtonColor: '#0d6efd',
+                    showCancelButton: 'true',
+                    cancelButtonText: 'Anuluj',
+                    didOpen: (q) => {
+                        $('#removeFromGroup').select2({
+                        });
+                        $('#removeFromGroup').select2({
+                            placeholder: "Nie wybrano"
+                        });
+
+                    }
+
+                    }).then((result) =>
+                        {
+                            //console.log(result)
+                            if(result.isConfirmed){
+                                removeMemberFromGroup();
+                            }
+                        }
+                    );
+});
+
+function removeMemberFromGroup(){
+    var $groupId = $('#removeFromGroup').val();
+    var $member = "{{ $user->id }}";
+
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        }
+    });
+
+    $.ajax({
+            url: "{{ route('groups.removeMember') }}",
+            method: 'POST',
+            data: {
+                group: $groupId,
+                member: $member,
+            },
+            success: function(data) {
+                window.location = "{{ route('users.profile') }}"
+
+            },
+            error: function(data) {
+                console.log('error');
+            }
+        })
+
+}
+
+
+
+
 
     </script>
 

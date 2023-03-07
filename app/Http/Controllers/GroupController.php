@@ -177,4 +177,13 @@ class GroupController extends Controller
         $subgroups = $Group->subgroups->pluck('id', 'name')->toArray();
         return response()->json($subgroups);
     }
+
+    public function removeMember(Request $request)
+    {
+        $group = Group::find($request->group);
+        $user = User::find($request->member);
+
+        $user->groups()->detach($group);
+
+    }
 }
