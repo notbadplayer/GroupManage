@@ -88,4 +88,9 @@ class Publication extends Model
             return ($idMerged);
         }
     }
+
+    public function emailRecipients()
+    {
+        return User::whereIn('id', $this->restrictedVisibilityUserIds())->get();
+    }
 }

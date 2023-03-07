@@ -97,6 +97,16 @@
                                             komentowanie</label>
                                     </div> --}}
 
+                                    <div class="form-check form-switch mt-4 ms-2">
+
+                                        <!-- Size of the default switch will increase 1.8 times -->
+                                        <input class="form-check-input " type="checkbox" role="switch" id="sendMail"
+                                            name="sendMail" style="transform: scale(1.7);"
+                                            @if (isset($publication) && $publication->archived) disabled @endif>
+
+                                        <label class="form-check-label ms-3" for="allowComments">Wyślij e-mail</label>
+                                    </div>
+
 
                                     <div class="card mt-4">
                                         <div class="accordion" id="publicationAccordion">

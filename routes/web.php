@@ -128,6 +128,10 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::post('events/destroy/{Event}', [EventController::class, 'destroy'])->name('events.destroy');
 
 
+    //Mails
+    Route::post('users-send-email', [UserController::class, 'sendEmail'])->name('ajax.send.email');
+
+
 });
 
 

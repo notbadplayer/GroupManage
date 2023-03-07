@@ -3,18 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdatePublication;
+use App\Jobs\SendEmailJob;
+use App\Mail\UserEmail;
 use App\Models\Group;
 use App\Models\Publication;
 use App\Models\Questionnaire;
 use App\Models\Subgroup;
 use App\Models\User;
-use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\Request;
 use DataTables;
 use DateInterval;
 use DateTime;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 
 class PublicationController extends Controller
 {
@@ -32,14 +34,14 @@ class PublicationController extends Controller
     public function data(Request $request)
     {
         if ($request->ajax()) {
-            if($request->active == 'true'){
+            if ($request->active == 'true') {
                 $data = Publication::where('archived', 0)->latest()->get();
             } else {
                 $data = Publication::where('archived', 1)->latest()->get();
             }
 
             return Datatables::of($data)
-            ->addColumn('visibility', function($row){
+                ->addColumn('visibility', function ($row) {
                     $visibilityString = $this->getVisibilityData($row->id);
                     return $visibilityString;
                 })
@@ -49,26 +51,26 @@ class PublicationController extends Controller
         }
     }
 
-    private function getVisibilityData($id){
+    private function getVisibilityData($id)
+    {
         $visibilityString = '';
         $publication = Publication::find($id);
 
-        if($publication->restrictedVisibility){
-            foreach($publication->groups as $group){
-                $visibilityString .= '<span class="badge rounded-pill bg-primary">'.$group->name.'</span> ';
+        if ($publication->restrictedVisibility) {
+            foreach ($publication->groups as $group) {
+                $visibilityString .= '<span class="badge rounded-pill bg-primary">' . $group->name . '</span> ';
             }
-            foreach($publication->subgroups as $subgroup){
-                $visibilityString .= '<span class="badge rounded-pill bg-success">'.$subgroup->name.'</span> ';
+            foreach ($publication->subgroups as $subgroup) {
+                $visibilityString .= '<span class="badge rounded-pill bg-success">' . $subgroup->name . '</span> ';
             }
-            foreach($publication->users as $user){
-                $visibilityString .= '<span class="badge rounded-pill bg-secondary">'.$user->name.' '.$user->surname.'</span> ';
+            foreach ($publication->users as $user) {
+                $visibilityString .= '<span class="badge rounded-pill bg-secondary">' . $user->name . ' ' . $user->surname . '</span> ';
             }
         } else {
             $visibilityString = 'Wszyscy';
         }
 
         return $visibilityString;
-
     }
 
     public function create()
@@ -84,7 +86,7 @@ class PublicationController extends Controller
         return view('publication.edit', [
             'users' => $users,
             'groups' => $groups,
-            'subgroups' =>$subgroups,
+            'subgroups' => $subgroups,
             'questionnaireValidTill' => $questionnaireValidTill->format('Y-m-d'),
         ]);
     }
@@ -98,19 +100,18 @@ class PublicationController extends Controller
         $subgroups = [];
         $users = [];
 
-        foreach ($visibilityData ?? [] as $entry)
-        {
+        foreach ($visibilityData ?? [] as $entry) {
             $separatedEntry = explode(":", $entry);
-            switch($separatedEntry[0]){
+            switch ($separatedEntry[0]) {
                 case 'group':
-                $groups [] = (int) $separatedEntry[1];
-                break;
+                    $groups[] = (int) $separatedEntry[1];
+                    break;
                 case 'subgroup':
-                $subgroups [] = (int) $separatedEntry[1];
-                break;
+                    $subgroups[] = (int) $separatedEntry[1];
+                    break;
                 case 'user':
-                $users [] = (int) $separatedEntry[1];
-                break;
+                    $users[] = (int) $separatedEntry[1];
+                    break;
             }
         }
 
@@ -127,7 +128,7 @@ class PublicationController extends Controller
         $publication->subgroups()->sync($subgroups);
         $publication->users()->sync($users);
 
-        if($data['questionnaireAvailable']){
+        if ($data['questionnaireAvailable']) {
             $questionnaire = Questionnaire::create([
                 'description' => $data['questionnaireDescription'],
                 'validTill' => $data['questionnaireDate'],
@@ -165,31 +166,30 @@ class PublicationController extends Controller
             'visibleUsers' => $visibleUsers,
             'questionnaireValidTill' => $questionnaireValidTill->format('Y-m-d'),
         ]);
-
     }
 
     public function update(Publication $Publication, UpdatePublication $request)
     {
         Gate::authorize('admin-level');
         $visibilityData = $request->visibility;
+        $sendMail = ($request->sendMail == 'on') ? true : false;
 
         $groups = [];
         $subgroups = [];
         $users = [];
 
-        foreach ($visibilityData ?? [] as $entry)
-        {
+        foreach ($visibilityData ?? [] as $entry) {
             $separatedEntry = explode(":", $entry);
-            switch($separatedEntry[0]){
+            switch ($separatedEntry[0]) {
                 case 'group':
-                $groups [] = (int) $separatedEntry[1];
-                break;
+                    $groups[] = (int) $separatedEntry[1];
+                    break;
                 case 'subgroup':
-                $subgroups [] = (int) $separatedEntry[1];
-                break;
+                    $subgroups[] = (int) $separatedEntry[1];
+                    break;
                 case 'user':
-                $users [] = (int) $separatedEntry[1];
-                break;
+                    $users[] = (int) $separatedEntry[1];
+                    break;
             }
         }
 
@@ -206,8 +206,8 @@ class PublicationController extends Controller
         $Publication->subgroups()->sync($subgroups);
         $Publication->users()->sync($users);
 
-        if($data['questionnaireAvailable']){
-            if($Publication->questionnaire){
+        if ($data['questionnaireAvailable']) {
+            if ($Publication->questionnaire) {
                 $Publication->questionnaire->update([
                     'description' => $data['questionnaireDescription'],
                     'validTill' => $data['questionnaireDate'],
@@ -221,9 +221,11 @@ class PublicationController extends Controller
                     'type' => $data['questionnaireType'],
                     'publication_id' => $Publication->id,
                 ]);
-
             }
+        }
 
+        if($sendMail){
+            $this->sendEmail($Publication->emailRecipients(), $Publication);
         }
 
         return redirect()->route('publications.index')
@@ -240,5 +242,16 @@ class PublicationController extends Controller
         $Publication->update(['archived' => 1]);
         return redirect()->route('publications.index')
             ->with('success', 'Ogłoszenie przeniesiono do archiwum');
+    }
+
+
+
+    public function sendEmail($users, Publication $publication)
+    {
+        foreach($users as $user)
+        {
+           dispatch(new SendEmailJob($user, $publication));
+        }
+
     }
 }
