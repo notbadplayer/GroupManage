@@ -95,6 +95,8 @@ class PublicationController extends Controller
     {
         Gate::authorize('admin-level');
         $visibilityData = $request->visibility;
+        $sendMail = ($request->sendMail == 'on') ? true : false;
+
 
         $groups = [];
         $subgroups = [];
@@ -137,8 +139,17 @@ class PublicationController extends Controller
             ]);
         }
 
+        $message='Wpis został dodany';
+
+        if($sendMail){
+            $this->sendEmail($publication->emailRecipients(), $publication);
+            $message=$message.' Dodano maile do kolejki';
+        }
+
+
+
         return redirect()->route('publications.index')
-            ->with('success', 'Wpis został dodany');
+            ->with('success', $message);
     }
 
     public function edit(Publication $Publication)
@@ -223,13 +234,15 @@ class PublicationController extends Controller
                 ]);
             }
         }
+        $message='Wpis został dodany';
 
         if($sendMail){
             $this->sendEmail($Publication->emailRecipients(), $Publication);
+            $message=$message.' Dodano maile do kolejki';
         }
 
         return redirect()->route('publications.index')
-            ->with('success', 'Wpis został aktualizowany');
+            ->with('success', $message);
     }
 
     public function destroy(Publication $publication)

@@ -362,7 +362,7 @@
               <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block">
-                    <span class="apple-link">To jest wiadomość wygenereowana automatycznie. Proszę na nią nie odpowiadać.</span>
+                    <span class="apple-link">To jest wiadomość wygenerowana automatycznie. Proszę na nią nie odpowiadać.</span>
                     <br>
                   </td>
                 </tr>
