@@ -19,9 +19,9 @@
                                 <div class="p-2 flex-grow-1 bd-highlight card-title">Lista nut</div>
                                 <div class="p-2 bd-highlight">
                                     @can('admin-level')
-                                    <a href="{{ route('notes.create') }}"><button type="button"
-                                            class="btn btn-outline-primary"><i
-                                                class="fa-solid fa-plus me-1"></i>Dodaj</button></a>
+                                        <a href="{{ route('notes.create') }}"><button type="button"
+                                                class="btn btn-outline-primary"><i
+                                                    class="fa-solid fa-plus me-1"></i>Dodaj</button></a>
                                     @endcan
                                 </div>
                             </div>
@@ -40,6 +40,11 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <div class="text-end">
+                                <button type="button" id="button-downloadAllNotes"
+                                    class="btn btn-outline-primary mb-2 me-2 mt-5"><i
+                                        class="fa-solid fa-download me-2"></i>Pobierz wszystkie nuty</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -49,11 +54,11 @@
 
         <script type="module">
 
-            //generowanie tabeli
+        //generowanie tabeli
             $(function () {
                 var table = $('.tabela').DataTable({
                     language: {
-                        url: "{{asset('pl.json')}}",
+                        url: "{{ asset('pl.json') }}",
                     },
                     processing: true,
                     serverSide: true,
@@ -81,12 +86,12 @@
                 $('#tabela tbody').on( 'click', 'tr', function () {
                     var data = table.row( this ).data()
 
-                    @if (Gate::allows('admin-level')) {
+@if(Gate::allows('admin-level')) {
                         window.location.href = "/notes/edit/"+data.id;
                     } @else {
                         window.location.href = "/file-download/note/"+data.id;
                     }
-                    @endif
+@endif
 
 
                 });
@@ -94,6 +99,55 @@
 
 
             });
+
+
+            $('#button-downloadAllNotes').on('click', function(){
+                let htmlDownloadNotesText = '<select class="form-select" name="downloadNotes" id="downloadNotes" style="width: 100%"><option value="0">Wszystkie</option>@foreach($categories ?? [] as $category)<option value="{{ $category->id }}">{{ $category->name }}</option>@endforeach</select></br>';
+
+                Swal.fire({
+                                title: 'Pobierz wszystkie nuty:',
+                                html: htmlDownloadNotesText,
+                                icon: 'question',
+                                confirmButtonText: 'Pobierz',
+                                confirmButtonColor: '#0d6efd',
+                                showCancelButton: 'true',
+                                cancelButtonText: 'Anuluj',
+                                didOpen: (q) => {
+                                    $('#downloadNotes').select2({
+                                    });
+                                    $('#downloadNotes').select2({
+                                        placeholder: "Wszystkie"
+                                    });
+
+                                }
+
+                                }).then((result) =>
+                                    {
+                                        //console.log(result)
+                                        if(result.isConfirmed){
+                                            downloadNotes()
+                                        }
+                                    }
+                                );
+            });
+
+            function downloadNotes(){
+                var $category = $('#downloadNotes').val();
+                $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        }
+                    });
+
+                                    // Create a hidden iframe
+                    var iframe = $('<iframe>', {
+                        style: 'display:none',
+                        src: '{{ route("file.downloadZip") }}?category=' + $category,
+                    });
+
+                    // Append the iframe to the body
+                    $('body').append(iframe);
+                                                }
 
 
         </script>

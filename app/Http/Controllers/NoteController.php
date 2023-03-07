@@ -20,7 +20,8 @@ class NoteController extends Controller
 {
     public function index()
     {
-        return view('note.index');
+        $categories = Category::get();
+        return view('note.index', ['categories' => $categories]);
     }
 
     public function data(Request $request)
