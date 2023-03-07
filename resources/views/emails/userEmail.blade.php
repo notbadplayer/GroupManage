@@ -3,13 +3,9 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Simple Transactional Email</title>
+    <title>{{$publication->name}}</title>
     <style>
-      /* -------------------------------------
-          GLOBAL RESETS
-      ------------------------------------- */
 
-      /*All the styling goes here*/
 
       img {
         border: none;
@@ -40,16 +36,14 @@
           vertical-align: top;
       }
 
-      /* -------------------------------------
-          BODY & CONTAINER
-      ------------------------------------- */
+
 
       .body {
         background-color: #f6f6f6;
         width: 100%;
       }
 
-      /* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
+
       .container {
         display: block;
         margin: 0 auto !important;
@@ -59,7 +53,6 @@
         width: 580px;
       }
 
-      /* This should also be a block element, so that it will fill 100% of the .container */
       .content {
         box-sizing: border-box;
         display: block;
@@ -68,9 +61,7 @@
         padding: 10px;
       }
 
-      /* -------------------------------------
-          HEADER, FOOTER, MAIN
-      ------------------------------------- */
+
       .main {
         background: #ffffff;
         border-radius: 3px;
@@ -145,9 +136,7 @@
         text-decoration: underline;
       }
 
-      /* -------------------------------------
-          BUTTONS
-      ------------------------------------- */
+
       .btn {
         box-sizing: border-box;
         width: 100%; }
@@ -187,9 +176,6 @@
         color: #ffffff;
       }
 
-      /* -------------------------------------
-          OTHER STYLES THAT MIGHT BE USEFUL
-      ------------------------------------- */
       .last {
         margin-bottom: 0;
       }
@@ -245,9 +231,6 @@
         margin: 20px 0;
       }
 
-      /* -------------------------------------
-          RESPONSIVE AND MOBILE FRIENDLY STYLES
-      ------------------------------------- */
       @media only screen and (max-width: 620px) {
         table.body h1 {
           font-size: 28px !important;
@@ -290,9 +273,6 @@
         }
       }
 
-      /* -------------------------------------
-          PRESERVE THESE STYLES IN THE HEAD
-      ------------------------------------- */
       @media all {
         .ExternalClass {
           width: 100%;
@@ -340,10 +320,10 @@
         <td class="container">
           <div class="content">
 
-            <!-- START CENTERED WHITE CONTAINER -->
+
             <table role="presentation" class="main">
 
-              <!-- START MAIN CONTENT AREA -->
+
               <tr>
                 <td class="wrapper">
                   <table role="presentation" border="0" cellpadding="0" cellspacing="0">
@@ -373,11 +353,11 @@
                 </td>
               </tr>
 
-            <!-- END MAIN CONTENT AREA -->
-            </table>
-            <!-- END CENTERED WHITE CONTAINER -->
 
-            <!-- START FOOTER -->
+            </table>
+
+
+
             <div class="footer">
               <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                 <tr>
@@ -388,12 +368,12 @@
                 </tr>
                 <tr>
                   <td class="content-block powered-by">
-                    JFstudio</a>.
+                    JFstudio</a>
                   </td>
                 </tr>
               </table>
             </div>
-            <!-- END FOOTER -->
+
 
           </div>
         </td>
