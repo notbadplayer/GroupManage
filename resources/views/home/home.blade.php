@@ -8,23 +8,27 @@
             <div class="row">
                 <div class="col-lg-8">
                     <div class="row">
-                        @if($noGroups)
+                        @if ($noGroups)
                             @include('home.noGroups')
                         @endif
-                        @foreach ($publications as $publication)
-                            @include('home.publication')
-                        @endforeach
+                        @if (count($publications) > 0)
+                            @foreach ($publications as $publication)
+                                @include('home.publication')
+                            @endforeach
+                        @else
+                            @include('home.noActivePublications')
+                        @endif
                     </div>
                 </div>
                 <div class="col-lg-4">
-                   @include('home.events')
-                   @include('home.recentAddedNotes')
+                    @include('home.events')
+                    @include('home.recentAddedNotes')
                 </div>
             </div>
         </section>
     </main>
 
-@include('home.questionnaireJS')
+    @include('home.questionnaireJS')
 
 
 @endsection
