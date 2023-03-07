@@ -92,8 +92,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'jfstudio@jfstudio.pl'),
-        'name' => env('MAIL_FROM_NAME', 'JFstudio'),
+        'address' => env('MAIL_FROM_ADDRESS', 'jfstudiosuprasl@gmail.com'),
+        'name' => env('MAIL_NAME', 'JFstudio'),
     ],
 
     /*
