@@ -15,6 +15,6 @@ return [
 
     'failed' => 'Podane dane są nieprawidłowe.',
     'password' => 'Podane hasło jest nieprawidłowe.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'throttle' => 'Za dużo prób logowania. Spróbuj ponownie za :seconds sekund.',
 
 ];
