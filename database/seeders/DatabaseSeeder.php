@@ -29,7 +29,8 @@ class DatabaseSeeder extends Seeder
             'surname' => 'Rogaczewski',
             'email' => 'notbadplayer@gmail.com',
             'phone' => '123123123',
-            'password' => Hash::make('player1234')
+            'role' => 'admin',
+            'password' => Hash::make('ntbplayer!23')
         ]);
     }
 }

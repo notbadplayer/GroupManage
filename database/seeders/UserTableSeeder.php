@@ -16,16 +16,16 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Factory::create();
+        // $faker = Factory::create();
 
-    	foreach (range(1,200) as $index) {
-            DB::table('users')->insert([
-                'name' => $faker->name,
-                'surname' => $faker->word,
-                'email' => $faker->email,
-                'phone' => $faker->phoneNumber,
-                'password' => $faker->word,
-            ]);
-        }
+    	// foreach (range(1,200) as $index) {
+        //     DB::table('users')->insert([
+        //         'name' => $faker->name,
+        //         'surname' => $faker->word,
+        //         'email' => $faker->email,
+        //         'phone' => $faker->phoneNumber,
+        //         'password' => $faker->word,
+        //     ]);
+        // }
     }
 }
