@@ -230,6 +230,10 @@ class NoteController extends Controller
         ]);
 
         if($request['upload']){
+            //usunięcie starego pliku z serwera:
+            unlink(public_path($Note->file->location));
+            $Note->file->forceDelete();
+            //aktualizacja:
             $file = (new FileController)->storeFile($request, 'note');
             $file = ($file->getData()->id);
             $Note->update([

@@ -14,7 +14,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card mw-90">
-                        <div class="card-body">
+                        <div class="card-body" id="card-body">
                             <div class="d-flex bd-highlight">
                                 <div class="p-2 flex-grow-1 bd-highlight card-title">
                                     Odtwarzacz
@@ -82,7 +82,8 @@
                                     </div>
                                 </div>
 
-                                <div id='trackList' class='row justify-content-center'></div>
+                                <div id='trackList' class='row justify-content-center'>
+                                </div>
 
                             </div>
 
@@ -90,6 +91,7 @@
                     </div>
                 </div>
             </div>
+
 
         </section>
 
@@ -131,17 +133,19 @@
 
         $( "#trackList" ).append( "<button type='button' class='btn btn-primary trackEnabler col-4 col-sm-5 col-md-2 col-lg-2 col-xl-1 me-4 mb-3' value='1' data-track="+i+">Głos "+i+"</button>" );
     }
-        $( ".trackEnabler" ).on( "click", function() {
+
+
+        $( ".trackEnabler" ).on('click', function() {
         let $track = $( this ).text();
             if($( this ).val() == '1'){
                 Player.disableTrack($( this ).data('track'));
                 $( this ).val('0');
                 $( this ).removeClass("btn-primary");
-                $( this ).addClass("btn-outline-primary");
+                $( this ).addClass("btn-secondary");
             } else {
                 Player.enableTrack($( this ).data('track'));
                 $( this ).val('1');
-                $( this ).removeClass("btn-outline-primary");
+                $( this ).removeClass("btn-secondary");
                 $( this ).addClass("btn-primary");
             }
         });

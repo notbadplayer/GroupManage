@@ -89,7 +89,7 @@
 @if(Gate::allows('admin-level')) {
                         window.location.href = "/notes/edit/"+data.id;
                     } @else {
-                        window.location.href = "/file-download/note/"+data.id;
+                        window.location.href = "/file-download/Note/"+data.id;
                     }
 @endif
 

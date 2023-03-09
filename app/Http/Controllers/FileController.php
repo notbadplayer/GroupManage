@@ -60,14 +60,14 @@ class FileController extends Controller
 
             $request->file('upload')->move(public_path('files/' . $assignedTo), $fileName);
 
-            $url = asset('files/' . $assignedTo . '/' . $fileName);
+            $url = url('public/files') .'/'. $assignedTo . '/' . $fileName;
 
             $fileModel = File::create([
                 'name' => $fileName,
                 'size' => $fileSize,
                 'extension'  => $extension,
                 'model' => $assignedTo,
-                'location' => 'files\\' . $assignedTo . '\\' . $fileName,
+                'location' => 'files/' . $assignedTo . '/' . $fileName,
                 'url' => $url,
             ]);
 
@@ -82,9 +82,10 @@ class FileController extends Controller
         $model = $model_prefix . '\\' . $type;
 
         $model = $model::find($id);
-         $path = public_path($model->file->location);
+        $path = $model->file->url;
 
-        return response()->download($path);
+        return response()->download(public_path($model->file->location));
+
 
     }
 

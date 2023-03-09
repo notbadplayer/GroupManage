@@ -2,9 +2,6 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 
 export default defineConfig({
-    define: {
-        global: {},
-      },
     plugins: [
         laravel({
             input: [
@@ -14,4 +11,14 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    resolve: {
+        alias: {
+            '$': 'jQuery'
+        },
+    },
+    build: {
+        commonjsOptions: {
+          exclude: ['cke/*'],
+        },
+   }
 });

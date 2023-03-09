@@ -1,6 +1,7 @@
 @extends('layout.layout')
 @section('content')
     <main id="main" class="main">
+        <script src="{{asset('cke/ckeditor.js')}}"></script>
         <div class="pagetitle">
             <h1>Ogłoszenia</h1>
             <nav>
