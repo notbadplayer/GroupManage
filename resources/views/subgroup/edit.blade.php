@@ -26,9 +26,8 @@
                                     @endif
                                 </div>
                                 <div class="p-2 bd-highlight">
-                                    <a href="{{ route('groups.edit', $group->id) }}"><button type="button"
-                                            class="btn btn-outline-primary"><i
-                                                class="fa-solid fa-rotate-left me-2"></i>Powrót</button></a>
+                                    <a href="{{ url()->previous() }}"><button type="button"
+                                        class="btn btn-outline-primary"><i class="fa-solid fa-chevron-left me-sm-2"></i><span class="d-none d-sm-inline">Powrót<span></button></a>
                                 </div>
                             </div>
 

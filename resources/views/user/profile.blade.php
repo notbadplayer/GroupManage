@@ -24,7 +24,8 @@
                                 <li class="nav-item"> <button class="nav-link" data-bs-toggle="tab"
                                         data-bs-target="#profile-settings">Grupy</button></li>
                                 <li class="nav-item"> <button class="nav-link" data-bs-toggle="tab"
-                                        data-bs-target="#profile-change-password" id="button-password-edit">Zmień hasło</button></li>
+                                        data-bs-target="#profile-change-password" id="button-password-edit">Zmień
+                                        hasło</button></li>
                             </ul>
                             <div class="tab-content pt-2 profile">
                                 <div class="tab-pane fade show active profile-overview profile-edit" id="profile-overview">
@@ -34,15 +35,15 @@
                                         <div class="col-lg-9 col-md-8">{{ $user->name }}</div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-lg-3 col-md-4 label">Nazwisko</div>
+                                        <div class="col-lg-3 col-md-4 label">Nazwisko:</div>
                                         <div class="col-lg-9 col-md-8">{{ $user->surname }}</div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-lg-3 col-md-4 label">e-mail</div>
+                                        <div class="col-lg-3 col-md-4 label">e-mail:</div>
                                         <div class="col-lg-9 col-md-8">{{ $user->email }}</div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-lg-3 col-md-4 label">telefon</div>
+                                        <div class="col-lg-3 col-md-4 label">telefon:</div>
                                         <div class="col-lg-9 col-md-8">{{ $user->phone ?? '' }}</div>
                                     </div>
                                     <div class="row">
@@ -65,6 +66,30 @@
                                                 @endif
                                             </ul>
                                         </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label">
+                                            <a class="btn btn-outline-primary mt-2" href="{{ route('logout') }}"
+                                                onclick="event.preventDefault();
+                    document.getElementById('logout-form').submit();">
+                                                <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Wyloguj
+                                                    się</span>
+                                            </a>
+
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                                class="d-none">
+                                                @csrf
+                                            </form>
+
+
+                                        </div>
+                                        <div class="col-lg-9 col-md-8">
+
+
+                                        </div>
+
+
                                     </div>
 
                                 </div>
@@ -94,7 +119,7 @@
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label for="company" class="col-md-4 col-lg-3 col-form-label">e-mail</label>
+                                            <label for="company" class="col-md-4 col-lg-3 col-form-label">e-mail:</label>
                                             <div class="col-md-8 col-lg-9"> <input type="email"
                                                     class="form-control @error('email')is-invalid @enderror" name="email"
                                                     id="email" value="{{ old('email', $user->email ?? '') }}">
@@ -104,10 +129,11 @@
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label for="Job" class="col-md-4 col-lg-3 col-form-label">telefon</label>
+                                            <label for="Job" class="col-md-4 col-lg-3 col-form-label">telefon:</label>
                                             <div class="col-md-8 col-lg-9"> <input type="text"
-                                                    class="form-control @error('phone')is-invalid @enderror" name="phone"
-                                                    id="phone" value="{{ old('phone', $user->phone ?? '') }}">
+                                                    class="form-control @error('phone')is-invalid @enderror"
+                                                    name="phone" id="phone"
+                                                    value="{{ old('phone', $user->phone ?? '') }}">
                                                 @if ($errors->has('phone'))
                                                     <div class="invalid-feedback">{{ $errors->first('phone') }}</div>
                                                 @endif
@@ -119,27 +145,27 @@
                                 </div>
                                 <div class="tab-pane fade pt-3" id="profile-settings">
                                     <div class="row mb-3 profile-edit">
-                                        <label for="phone" class="col-sm-2 col-form-label fw-bold">Członek grupy:</label>
+                                        <label for="phone" class="col-sm-2 col-form-label fw-bold">Członek
+                                            grupy:</label>
                                         <div class="col-sm-10" id="userGroupsField">
                                             @if (isset($user))
                                                 @foreach ($user->groups->unique() as $group)
-                                                    <button type="button"
-                                                            class="btn btn-success mb-2 me-2">
-                                                            {{ $group->name }}</button>
+                                                    <button type="button" class="btn btn-success mb-2 me-2">
+                                                        {{ $group->name }}</button>
                                                 @endforeach
                                                 @foreach ($user->subgroups as $subgroup)
-                                                   <button
-                                                            type="button" class="btn btn-success mb-2 me-2">
-                                                            {{ $subgroup->group->name }} <span
-                                                                class="badge bg-white text-success ms-1">{{ $subgroup->name }}</span></button>
+                                                    <button type="button" class="btn btn-success mb-2 me-2">
+                                                        {{ $subgroup->group->name }} <span
+                                                            class="badge bg-white text-success ms-1">{{ $subgroup->name }}</span></button>
                                                 @endforeach
                                             @endif
                                             <button type="button" id="button-addUserToGroup"
                                                 class="btn btn-outline-success mb-2 me-2"><i
                                                     class="fa-solid fa-people-group me-2"></i>Dołącz do
                                                 grupy</button>
-                                                <button type="button" id="button-removeUserFromGroup"
-                                                class="btn btn-outline-danger mb-2 me-2"><i class="fa-solid fa-user-minus me-2"></i>Wypisz się z grupy</button>
+                                            <button type="button" id="button-removeUserFromGroup"
+                                                class="btn btn-outline-danger mb-2 me-2"><i
+                                                    class="fa-solid fa-user-minus me-2"></i>Wypisz się z grupy</button>
                                         </div>
                                     </div>
                                 </div>
@@ -148,27 +174,40 @@
                                         @method('PUT')
                                         @csrf
                                         <div class="row mb-3">
-                                            <label for="current_password" class="col-md-4 col-lg-3 col-form-label">Obecne hasło:</label>
-                                            <div class="col-md-8 col-lg-9"> <input name="current_password" type="password"
-                                                    class="form-control @error('current_password')is-invalid @enderror" id="current_password" value="{{ old('current_password') }}">
-                                                    @if ($errors->has('current_password'))
-                                                    <div class="invalid-feedback">{{ $errors->first('current_password') }}</div>
-                                                @endif</div>
+                                            <label for="current_password" class="col-md-4 col-lg-3 col-form-label">Obecne
+                                                hasło:</label>
+                                            <div class="col-md-8 col-lg-9"> <input name="current_password"
+                                                    type="password"
+                                                    class="form-control @error('current_password')is-invalid @enderror"
+                                                    id="current_password" value="{{ old('current_password') }}">
+                                                @if ($errors->has('current_password'))
+                                                    <div class="invalid-feedback">{{ $errors->first('current_password') }}
+                                                    </div>
+                                                @endif
+                                            </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label for="password" class="col-md-4 col-lg-3 col-form-label">Nowe hasło:</label>
+                                            <label for="password" class="col-md-4 col-lg-3 col-form-label">Nowe
+                                                hasło:</label>
                                             <div class="col-md-8 col-lg-9"> <input name="password" type="password"
-                                                    class="form-control @error('password')is-invalid @enderror" id="password" value="{{ old('password') }}">
-                                                    @if ($errors->has('password'))
+                                                    class="form-control @error('password')is-invalid @enderror"
+                                                    id="password" value="{{ old('password') }}">
+                                                @if ($errors->has('password'))
                                                     <div class="invalid-feedback">{{ $errors->first('password') }}</div>
-                                                @endif</div>
+                                                @endif
+                                            </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label for="password_confirmation" class="col-md-4 col-lg-3 col-form-label">Powtórz hasło:</label>
-                                            <div class="col-md-8 col-lg-9"> <input name="password_confirmation" type="password"
-                                                    class="form-control @error('password')is-invalid @enderror" id="password_confirmation" value="{{ old('password_confirmation') }}"></div>
+                                            <label for="password_confirmation"
+                                                class="col-md-4 col-lg-3 col-form-label">Powtórz hasło:</label>
+                                            <div class="col-md-8 col-lg-9"> <input name="password_confirmation"
+                                                    type="password"
+                                                    class="form-control @error('password')is-invalid @enderror"
+                                                    id="password_confirmation"
+                                                    value="{{ old('password_confirmation') }}"></div>
                                         </div>
-                                        <div class="text-center"> <button type="submit" class="btn btn-primary">Zmień hasło</button></div>
+                                        <div class="text-center"> <button type="submit" class="btn btn-primary">Zmień
+                                                hasło</button></div>
                                     </form>
                                 </div>
                             </div>

@@ -15,7 +15,7 @@
                             @endif
                             <span class="me-2"> </span>
                         </div>
-                        <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                        <i class='fa-solid fa-circle activity-badge text-success align-self-start'></i>
                         <div class="activity-content fw-bold text-dark">
                             {{ $event->name }}
                         </div>

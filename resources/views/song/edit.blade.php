@@ -25,8 +25,7 @@
                                 </div>
                                 <div class="p-2 bd-highlight">
                                     <a href="{{ url()->previous() }}"><button type="button"
-                                            class="btn btn-outline-primary"><i
-                                                class="fa-solid fa-rotate-left me-2"></i>Powrót</button></a>
+                                        class="btn btn-outline-primary"><i class="fa-solid fa-chevron-left me-sm-2"></i><span class="d-none d-sm-inline">Powrót<span></button></a>
                                 </div>
                             </div>
 
@@ -101,12 +100,11 @@
 
                                     <div class="float-end mb-3 mt-3">
                                         @if (isset($song))
-                                            <a href="{{ route('songs.play', ['Song' => $song->id]) }}"><button
-                                                    type="button" class="btn btn-outline-primary me-1"><i class="fa-solid fa-play me-2"></i>Odtwarzaj</button></a>
+                                            <a href="{{ route('songs.play', ['Song' => $song->id]) }}" class="btn btn-outline-primary me-1 me-md-3"><i class="fa-solid fa-play me-1"></i>Odtwórz</a>
                                         @endif
 
                                         @isset($song)
-                                        <a class="btn btn-outline-danger me-3 ms-2" id="buttonRemoveSong"><i class="fa-solid fa-trash me-1"></i></i>Usuń</a>
+                                        <a class="btn btn-outline-danger me-1 me-md-3" id="buttonRemoveSong"><i class="fa-solid fa-trash me-1"></i></i>Usuń</a>
                                         @endisset
 
                                         <button type="submit" class="btn btn-primary"><i
