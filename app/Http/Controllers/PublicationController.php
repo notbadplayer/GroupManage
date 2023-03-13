@@ -15,6 +15,7 @@ use DataTables;
 use DateInterval;
 use DateTime;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 

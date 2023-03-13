@@ -10,6 +10,7 @@ use App\Http\Controllers\QuestionnaireController;
 use App\Http\Controllers\SongController;
 use App\Http\Controllers\SubgroupController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -132,6 +133,11 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::post('users-send-email', [UserController::class, 'sendEmail'])->name('ajax.send.email');
 
 
+});
+
+
+Route::get('/schedulequeue', function() {
+    Artisan::call('schedule:run');
 });
 
 

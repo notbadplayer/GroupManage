@@ -369,7 +369,7 @@ function addMemberToGroup(){
 //Kliknięciee przycisku "Wypisz się z grupy":
 $('#button-removeUserFromGroup').on( 'click', function () {
 
-    let htmlRemoveFromGroupText = '<select class="form-select members" name="removeFromGroup" id="removeFromGroup" value="" style="width: 100%"><option value="">Wybierz Grupę</option>@foreach($user->groups ?? [] as $userGroup)<option value="{{ $userGroup->id }}">{{ $userGroup->name }}</option>@endforeach</select></br>';
+    let htmlRemoveFromGroupText = '<select class="form-select members" name="removeFromGroup" id="removeFromGroup" value="" style="width: 100%"><option value="">Wybierz Grupę</option>@foreach($user->groups->unique() ?? [] as $userGroup)<option value="{{ $userGroup->id }}">{{ $userGroup->name }}</option>@endforeach</select></br>';
 
 
     Swal.fire({

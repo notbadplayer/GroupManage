@@ -144,19 +144,26 @@ class UserController extends Controller
     public function destroy(User $User): RedirectResponse
     {
         Gate::authorize('admin-level');
-        $User->groups()->detach();
-        $User->subgroups()->detach();
-        $User->publications()->detach();
-        $User->notes()->detach();
-        $User->songs()->detach();
+        if(!($User->role == 'admin')){
+            $User->groups()->detach();
+            $User->subgroups()->detach();
+            $User->publications()->detach();
+            $User->notes()->detach();
+            $User->songs()->detach();
 
-        foreach ($User->answers as $answer) {
-            $answer->questionnaires()->detach();
-            $answer->forceDelete();
+            foreach ($User->answers as $answer) {
+                $answer->questionnaires()->detach();
+                $answer->forceDelete();
+            }
+
+            $User->delete();
+            return redirect()->route('users.index')
+                ->with('success', 'Użytkownik został usunięty');
+        }
+        else {
+            return redirect()->route('users.index')
+                ->with('success', 'Nie możesz usunąć administratora');
         }
 
-        $User->delete();
-        return redirect()->route('users.index')
-            ->with('success', 'Użytkownik został usunięty');
     }
 }
