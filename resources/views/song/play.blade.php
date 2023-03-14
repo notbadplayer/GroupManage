@@ -122,6 +122,15 @@
         $( "#loadingMidi" ).hide();
         $( "#midiControlButtons" ).removeClass("visually-hidden");
         $( "#midiTempoBar" ).removeClass("visually-hidden");
+
+        Player.on('endOfFile', function() {
+                console.log('koniec');
+                Player.stop();
+                $('#midibuttonPlay').html('<i class="fa-solid fa-play">')
+                $( "#playBarRange" ).val(0);
+                $( "#midiDuration" ).text(formatSeconds(Player.getSongTime()));
+                $( "#midiCurrentTime" ).text('00:00');
+            });
 	}
 
     const midiFile = '{{ $midi }}';
@@ -151,7 +160,7 @@
 });
 
 $('#midibuttonPlay').on( 'click', function () {
-    Player.isPlaying() ? Player.pause() : Player.play();
+    Player.isPlaying() ? Player.pause() : checkTracks();
     $( "#playBarRange" ).val(100 - Player.getSongPercentRemaining());
     checkPlayButton();
 });
@@ -173,7 +182,7 @@ $('#midibuttonPrev').on( 'click', function () {
     let $current = $total - $remaining;
     Player.skipToSeconds($current - 5);
     $( "#playBarRange" ).val(100 - Player.getSongPercentRemaining());
-    if($wasPlaying) Player.play();
+    if($wasPlaying) checkTracks();
     checkPlayButton();
     checkSongTime();
 });
@@ -186,7 +195,7 @@ $('#midibuttonNext').on( 'click', function () {
     let $current = $total - $remaining;
     Player.skipToSeconds($current + 5);
     $( "#playBarRange" ).val(100 - Player.getSongPercentRemaining());
-    if($wasPlaying) Player.play();
+    if($wasPlaying) checkTracks();
     checkPlayButton();
     checkSongTime();
 });
@@ -206,7 +215,8 @@ $( "#playBarRange" ).on('input change', function () {
     Player.pause();
     Player.skipToPercent($( this ).val());
     if($wasPlaying){
-        Player.play();
+        //Player.play();
+        checkTracks(); //wrzucamy tą funkcję żeby zsynchronizować aktualnie włączone głosy
     }
     checkSongTime();
     checkPlayButton();
@@ -217,7 +227,7 @@ $( "#playBarRange" ).on('input change', function () {
 $( "#midiTempoRange" ).on( 'change', function () {
     Player.pause();
     Player.setTempo($( this ).val());
-    Player.play()
+    checkTracks()
     $( "#tempo-display" ).text($( this ).val());
 });
 
@@ -230,6 +240,17 @@ function checkSongTime()
 {
     $( "#midiCurrentTime" ).text(formatSeconds(Player.getSongTime() - Player.getSongTimeRemaining()));
     $( "#midiDuration" ).text(formatSeconds(Player.getSongTimeRemaining()));
+}
+
+function checkTracks()
+{
+    Player.play()
+    $( ".trackEnabler" ).each(function() {
+        if($( this ).val() == '0'){
+            Player.disableTrack($( this ).data('track'));
+        }
+    });
+
 }
 
     </script>
