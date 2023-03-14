@@ -226,6 +226,10 @@ class SongController extends Controller
         ]);
 
         if($request['upload']){
+            //usunięcie starego pliku z serwera:
+            unlink(public_path($Song->file->location));
+            $Song->file->forceDelete();
+            //aktualizacja
             $file = (new FileController)->storeFile($request, 'song');
             $file = ($file->getData()->id);
             $Song->update([
