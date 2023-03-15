@@ -10,7 +10,6 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Nazwa</th>
-                <th scope="col">Opublikowane</th>
                 <th scope="col">Widoczność</th>
             </tr>
         </thead>
@@ -41,7 +40,6 @@
             columns: [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                 {data: 'name', name: 'name', orderable: true,},
-                {data: 'published', name: 'published'},
                 {data: 'visibility', name: 'visibility'},
             ],
         });
