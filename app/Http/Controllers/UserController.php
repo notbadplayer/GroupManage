@@ -156,7 +156,7 @@ class UserController extends Controller
                 $answer->forceDelete();
             }
 
-            $User->delete();
+            $User->forceDelete();
             return redirect()->route('users.index')
                 ->with('success', 'Użytkownik został usunięty');
         }
