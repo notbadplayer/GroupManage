@@ -72,12 +72,12 @@
                                         <div class="col-lg-3 col-md-4 label">
                                             <a class="btn btn-outline-primary mt-2" href="{{ route('logout') }}"
                                                 onclick="event.preventDefault();
-                    document.getElementById('logout-form').submit();">
+                    document.getElementById('logout-form2').submit();">
                                                 <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Wyloguj
                                                     się</span>
                                             </a>
 
-                                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                            <form id="logout-form2" action="{{ route('logout') }}" method="POST"
                                                 class="d-none">
                                                 @csrf
                                             </form>
@@ -429,7 +429,8 @@ function removeMemberFromGroup(){
 }
 
 
-
+            $('#sidebar-mainpage-nav').addClass('collapsed');
+            $('#sidebar-profile-nav').removeClass('collapsed');
 
 
     </script>

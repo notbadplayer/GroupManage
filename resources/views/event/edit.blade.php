@@ -128,5 +128,13 @@
                 placeholder: "Wszyscy"
             });
 
+
+        $('#sidebar-mainpage-nav').addClass('collapsed');
+        $('#sidebar-events-nav').removeClass('collapsed');
+        $('#events-nav').addClass('show');
+        @if(!(isset($event)))
+        $('#events-nav-add').addClass('active');
+        @endif
+
     </script>
 @endsection

@@ -168,5 +168,13 @@ Swal.fire({
                     );
 });
 
+
+$('#sidebar-mainpage-nav').addClass('collapsed');
+$('#sidebar-songs-nav').removeClass('collapsed');
+$('#player-nav').addClass('show');
+@if(!(isset($song)))
+$('#songs-nav-add').addClass('active');
+@endif
+
     </script>
 @endsection

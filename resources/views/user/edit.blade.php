@@ -357,12 +357,14 @@ $.ajax({
 }
 
 
+$('#sidebar-mainpage-nav').addClass('collapsed');
+$('#sidebar-users-nav').removeClass('collapsed');
+$('#users-nav').addClass('show');
+@if(!(isset($user)))
+$('#users-nav-add').addClass('active');
+@endif
 
-
-
-
-
-    </script>
+</script>
 
     @if (Session::has('success'))
         @include('other.statusSuccess')

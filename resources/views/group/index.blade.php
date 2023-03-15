@@ -84,6 +84,12 @@
             });
 
 
+            $('#sidebar-mainpage-nav').addClass('collapsed');
+            $('#sidebar-groups-nav').removeClass('collapsed');
+            $('#groups-nav').addClass('show');
+            $('#groups-nav-list').addClass('active');
+
+
         </script>
     </main>
     {{-- Wyświetlenie paska statusu --}}

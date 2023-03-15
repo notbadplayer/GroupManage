@@ -302,5 +302,13 @@ Swal.fire({
                     );
 });
 
+$('#sidebar-mainpage-nav').addClass('collapsed');
+$('#sidebar-groups-nav').removeClass('collapsed');
+$('#groups-nav').addClass('show');
+@if(!(isset($group)))
+$('#groups-nav-add').addClass('active');
+@endif
+
+
     </script>
 @endsection

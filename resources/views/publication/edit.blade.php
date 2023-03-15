@@ -213,5 +213,13 @@ Swal.fire({
                     );
 });
 
+
+$('#sidebar-mainpage-nav').addClass('collapsed');
+$('#sidebar-publications-nav').removeClass('collapsed');
+$('#publications-nav').addClass('show');
+@if(!(isset($publication)))
+$('#publications-nav-add').addClass('active');
+@endif
+
     </script>
 @endsection

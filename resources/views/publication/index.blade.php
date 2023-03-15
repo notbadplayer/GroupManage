@@ -60,6 +60,12 @@
                 generateActiveData();
             })
 
+
+            $('#sidebar-mainpage-nav').addClass('collapsed');
+            $('#sidebar-publications-nav').removeClass('collapsed');
+            $('#publications-nav').addClass('show');
+            $('#publications-nav-list').addClass('active');
+
         </script>
     </main>
     {{-- Wyświetlenie paska statusu --}}

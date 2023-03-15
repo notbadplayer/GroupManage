@@ -107,6 +107,12 @@
                 } );
 
             });
+
+            $('#sidebar-mainpage-nav').addClass('collapsed');
+            $('#sidebar-users-nav').removeClass('collapsed');
+            $('#users-nav').addClass('show');
+            $('#users-nav-list').addClass('active');
+
         </script>
     </main>
     {{-- Wyświetlenie paska statusu - pomyślna aktualizacja/ dodanie użytkownika --}}

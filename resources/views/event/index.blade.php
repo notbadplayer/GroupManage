@@ -85,6 +85,11 @@
 
             });
 
+            $('#sidebar-mainpage-nav').addClass('collapsed');
+            $('#sidebar-events-nav').removeClass('collapsed');
+            $('#events-nav').addClass('show');
+            $('#events-nav-list').addClass('active');
+
 
         </script>
     </main>

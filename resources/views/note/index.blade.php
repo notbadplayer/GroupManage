@@ -150,6 +150,13 @@
                                                 }
 
 
+
+            $('#sidebar-mainpage-nav').addClass('collapsed');
+            $('#sidebar-notes-nav').removeClass('collapsed');
+            $('#notes-nav').addClass('show');
+            $('#notes-nav-list').addClass('active');
+
+
         </script>
     </main>
     {{-- Wyświetlenie paska statusu --}}

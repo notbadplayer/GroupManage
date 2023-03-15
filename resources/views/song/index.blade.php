@@ -93,6 +93,12 @@
             });
 
 
+            $('#sidebar-mainpage-nav').addClass('collapsed');
+            $('#sidebar-songs-nav').removeClass('collapsed');
+            $('#player-nav').addClass('show');
+            $('#songs-nav-list').addClass('active');
+
+
         </script>
     </main>
     {{-- Wyświetlenie paska statusu --}}

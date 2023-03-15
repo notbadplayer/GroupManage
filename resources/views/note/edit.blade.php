@@ -165,6 +165,13 @@ Swal.fire({
 
 
 
+$('#sidebar-mainpage-nav').addClass('collapsed');
+$('#sidebar-notes-nav').removeClass('collapsed');
+$('#notes-nav').addClass('show');
+@if(!(isset($note)))
+$('#notes-nav-add').addClass('active');
+@endif
+
 
     </script>
 @endsection
