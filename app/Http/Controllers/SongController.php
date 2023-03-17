@@ -224,6 +224,7 @@ class SongController extends Controller
         $Song->update([
             'name' => $data['name'],
             'instrument' => $data['instrument'],
+            'category_id' => $data['category'],
             'restrictedVisibility' => (empty($groups) && empty($subgroups) && empty($users)) ? false : true,
         ]);
 
