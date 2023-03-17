@@ -11,6 +11,7 @@ class Song extends Model
 
     protected $fillable = [
         'name',
+        'instrument',
         'file_id',
         'category_id',
         'restrictedVisibility'

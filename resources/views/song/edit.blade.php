@@ -25,7 +25,9 @@
                                 </div>
                                 <div class="p-2 bd-highlight">
                                     <a href="{{ url()->previous() }}"><button type="button"
-                                        class="btn btn-outline-primary"><i class="fa-solid fa-chevron-left me-sm-2"></i><span class="d-none d-sm-inline">Powrót<span></button></a>
+                                            class="btn btn-outline-primary"><i
+                                                class="fa-solid fa-chevron-left me-sm-2"></i><span
+                                                class="d-none d-sm-inline">Powrót<span></button></a>
                                 </div>
                             </div>
 
@@ -48,7 +50,7 @@
                                     </div>
 
                                     <div class="col-md-12 profile-edit mb-3">
-                                        <label for="name" class="form-label">Widoczne dla:</label>
+                                        <label for="visibility" class="form-label">Widoczne dla:</label>
                                         <select class="form-select members @error('members')is-invalid @enderror"
                                             name="visibility[]" multiple="multiple" id="visibility"
                                             value="{{ old('members', $group->members ?? '') }}" style="width: 100%">
@@ -72,20 +74,26 @@
                                         </select>
                                     </div>
 
-                                    <div class="col-md-12 profile-edit mb-3">
-                                        <label for="category" class="form-label">Kategoria:</label>
-                                        <select class="form-select" aria-label="select kategory" name="category">
-                                            <option selected value='0'>Wybierz kategorię:</option>
-                                            @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}"
-                                                    {{ (old('category') ?? ($song->category->id ?? '')) == $category->id ? 'selected' : '' }}>
-                                                    {{ $category->name }}</option>
-                                            @endforeach
-                                        </select>
+                                    <div class="row g-3 profile-edit mb-3">
+                                        <div class="col-md-6"> <label for="category" class="form-label">Kategoria:</label>
+                                            <select class="form-select" aria-label="select kategory" id="category"
+                                                name="category">
+                                                <option selected value='0'>Wybierz kategorię:</option>
+                                                @foreach ($categories as $category)
+                                                    <option value="{{ $category->id }}"
+                                                        {{ (old('category') ?? ($song->category->id ?? '')) == $category->id ? 'selected' : '' }}>
+                                                        {{ $category->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6"> <label for="instrument"
+                                                class="form-label">Instrument:</label>
+                                            @include('song.selectInstrument')
+                                        </div>
                                     </div>
 
                                     <div class="col-md-12 profile-edit mb-3">
-                                        <label for="upload" class="form-label">Plik MIDI:</label> <input
+                                        <label for="file" class="form-label">Plik MIDI:</label> <input
                                             class="form-control @error('upload')is-invalid @enderror" type="file"
                                             id="file" name="upload">
                                         @if ($errors->has('upload'))
@@ -100,11 +108,14 @@
 
                                     <div class="float-end mb-3 mt-3">
                                         @if (isset($song))
-                                            <a href="{{ route('songs.play', ['Song' => $song->id]) }}" class="btn btn-outline-primary me-1 me-md-3"><i class="fa-solid fa-play me-1"></i>Odtwórz</a>
+                                            <a href="{{ route('songs.play', ['Song' => $song->id]) }}"
+                                                class="btn btn-outline-primary me-1 me-md-3"><i
+                                                    class="fa-solid fa-play me-1"></i>Odtwórz</a>
                                         @endif
 
                                         @isset($song)
-                                        <a class="btn btn-outline-danger me-1 me-md-3" id="buttonRemoveSong"><i class="fa-solid fa-trash me-1"></i></i>Usuń</a>
+                                            <a class="btn btn-outline-danger me-1 me-md-3" id="buttonRemoveSong"><i
+                                                    class="fa-solid fa-trash me-1"></i></i>Usuń</a>
                                         @endisset
 
                                         <button type="submit" class="btn btn-primary"><i
@@ -120,9 +131,9 @@
                 </div>
             </div>
             @isset($song)
-            <form method="post" action="{{route('songs.destroy', ['Song'=> $song->id])}}" id="deleteSongForm">
-                @csrf
-            </form>
+                <form method="post" action="{{ route('songs.destroy', ['Song' => $song->id]) }}" id="deleteSongForm">
+                    @csrf
+                </form>
             @endisset
 
 

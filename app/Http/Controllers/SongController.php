@@ -151,6 +151,7 @@ class SongController extends Controller
 
         $song = Song::create([
             'name' => $data['name'],
+            'instrument' => $data['instrument'],
             'restrictedVisibility' => (empty($groups) && empty($subgroups) && empty($users)) ? false : true,
             'file_id' => $file,
             'category_id' => $data['category']
@@ -222,6 +223,7 @@ class SongController extends Controller
 
         $Song->update([
             'name' => $data['name'],
+            'instrument' => $data['instrument'],
             'restrictedVisibility' => (empty($groups) && empty($subgroups) && empty($users)) ? false : true,
         ]);
 

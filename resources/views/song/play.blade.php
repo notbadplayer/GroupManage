@@ -21,7 +21,9 @@
                                 </div>
                                 <div class="p-2 bd-highlight">
                                     <a href="{{ url()->previous() }}"><button type="button"
-                                        class="btn btn-outline-primary"><i class="fa-solid fa-chevron-left me-sm-2"></i><span class="d-none d-sm-inline">Powrót<span></button></a>
+                                            class="btn btn-outline-primary"><i
+                                                class="fa-solid fa-chevron-left me-sm-2"></i><span
+                                                class="d-none d-sm-inline">Powrót<span></button></a>
                                 </div>
                             </div>
 
@@ -106,14 +108,26 @@
 
 
         var soundfontDir = "{{ addcslashes($soundFontDir, "\\") }}";
-        Soundfont.instrument(ac, soundfontDir+'piano.js').then(function (instrument) {
+        Soundfont.instrument(ac, soundfontDir+'{{$song->instrument}}').then(function (instrument) {
 
+var $playingNotes = [];
 
 	loadDataUri = function(dataUri) {
 		Player = new MidiPlayer.Player(function(event) {
 			if (event.name == 'Note on' && event.velocity > 0) {
-				instrument.play(event.noteName, ac.currentTime, {gain:event.velocity/100});
-			}
+				var note = instrument.play(event.noteName, ac.currentTime, {gain:event.velocity/100});
+
+                $playingNotes.push({'noteId': note.id, 'noteName': event.noteName+'_'+event.channel, 'channel':event.channel, });
+
+			} else if(event.name == 'Note off' || event.velocity == 0){
+                const found = $playingNotes.find(element => element.noteName == event.noteName+'_'+event.channel);
+                if(found){
+                    instrument.stop(0, [found.noteId])
+                    $playingNotes = $playingNotes.filter(function(item) {
+                    return item.noteId !== found.noteId
+                    })
+                }
+            }
             $( "#playBarRange" ).val(100 - Player.getSongPercentRemaining());
             checkSongTime();
 		});
@@ -124,7 +138,7 @@
         $( "#midiTempoBar" ).removeClass("visually-hidden");
 
         Player.on('endOfFile', function() {
-                console.log('koniec');
+                clearPlayingNotes()
                 Player.stop();
                 $('#midibuttonPlay').html('<i class="fa-solid fa-play">')
                 $( "#playBarRange" ).val(0);
@@ -146,6 +160,7 @@
         $( ".trackEnabler" ).on('click', function() {
         let $track = $( this ).text();
             if($( this ).val() == '1'){
+                clearNotesOnChannel($( this ).data('track'));
                 Player.disableTrack($( this ).data('track'));
                 $( this ).val('0');
                 $( this ).removeClass("btn-primary");
@@ -157,7 +172,7 @@
                 $( this ).addClass("btn-primary");
             }
         });
-});
+
 
 $('#midibuttonPlay').on( 'click', function () {
     Player.isPlaying() ? Player.pause() : checkTracks();
@@ -166,6 +181,7 @@ $('#midibuttonPlay').on( 'click', function () {
 });
 
 $('#midibuttonStop').on( 'click', function () {
+    clearPlayingNotes()
 	Player.stop();
     $('#midibuttonPlay').html('<i class="fa-solid fa-play">')
     $( "#playBarRange" ).val(0);
@@ -174,6 +190,7 @@ $('#midibuttonStop').on( 'click', function () {
 });
 
 $('#midibuttonPrev').on( 'click', function () {
+    clearPlayingNotes()
     let $remaining = Player.getSongTimeRemaining();
     let $total = Player.getSongTime();
     let $wasPlaying =   Player.isPlaying() ? true : false;
@@ -188,6 +205,7 @@ $('#midibuttonPrev').on( 'click', function () {
 });
 
 $('#midibuttonNext').on( 'click', function () {
+    clearPlayingNotes()
     let $remaining = Player.getSongTimeRemaining();
     let $total = Player.getSongTime();
     let $wasPlaying =   Player.isPlaying() ? true : false;
@@ -211,6 +229,7 @@ function checkPlayButton()
 }
 
 $( "#playBarRange" ).on('input change', function () {
+    clearPlayingNotes()
     let $wasPlaying =   Player.isPlaying() ? true : false;
     Player.pause();
     Player.skipToPercent($( this ).val());
@@ -252,6 +271,25 @@ function checkTracks()
     });
 
 }
+
+function clearPlayingNotes()
+{
+    $playingNotes = [];
+    instrument.stop();
+}
+
+function clearNotesOnChannel(channel)
+{
+    const found = $playingNotes.find(element => element.channel == channel);
+        if(found){
+            instrument.stop(0, [found.noteId])
+            $playingNotes = $playingNotes.filter(function(item) {
+            return item.noteId !== found.noteId
+            })
+        }
+}
+
+});
 
     </script>
 
