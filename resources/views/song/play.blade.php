@@ -175,7 +175,7 @@ var $playingNotes = [];
 
 
 $('#midibuttonPlay').on( 'click', function () {
-    Player.isPlaying() ? Player.pause() : checkTracks();
+    Player.isPlaying() ?  (clearPlayingNotes(), Player.pause()) : checkTracks();
     $( "#playBarRange" ).val(100 - Player.getSongPercentRemaining());
     checkPlayButton();
 });

@@ -226,6 +226,7 @@ class NoteController extends Controller
 
         $Note->update([
             'name' => $data['name'],
+            'category_id' => $data['category'],
             'restrictedVisibility' => (empty($groups) && empty($subgroups) && empty($users)) ? false : true,
         ]);
 

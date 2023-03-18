@@ -41,7 +41,7 @@
                                     <div class="col-md-12 profile-edit mb-3">
                                         <label for="name" class="form-label">Tytuł:</label> <input type="text"
                                             class="form-control @error('name')is-invalid @enderror" id="name"
-                                            name="name" value="{{ old('name', $event->name ?? '') }}">
+                                            name="name" value="{{ old('name', $event->name ?? '') }}" autocomplete="off">
                                         @if ($errors->has('name'))
                                             <div class="invalid-feedback">{{ $errors->first('name') }}</div>
                                         @endif

@@ -44,7 +44,7 @@
                                         <label for="name" class="form-label">Tytuł:</label> <input type="text"
                                             class="form-control @error('name')is-invalid @enderror" id="name"
                                             name="name" value="{{ old('name', $publication->name ?? '') }}"
-                                            @if (isset($publication) && $publication->archived) disabled @endif>
+                                            @if (isset($publication) && $publication->archived) disabled @endif autocomplete="off">
                                         @if ($errors->has('name'))
                                             <div class="invalid-feedback">{{ $errors->first('name') }}</div>
                                         @endif

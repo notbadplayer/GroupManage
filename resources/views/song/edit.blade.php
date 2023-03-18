@@ -43,7 +43,7 @@
                                     <div class="col-md-12 profile-edit mb-3">
                                         <label for="name" class="form-label">Tytuł:</label> <input type="text"
                                             class="form-control @error('name')is-invalid @enderror" id="name"
-                                            name="name" value="{{ old('name', $song->name ?? '') }}">
+                                            name="name" value="{{ old('name', $song->name ?? '') }}" autocomplete="off">
                                         @if ($errors->has('name'))
                                             <div class="invalid-feedback">{{ $errors->first('name') }}</div>
                                         @endif
@@ -78,7 +78,7 @@
                                         <div class="col-md-6"> <label for="category" class="form-label">Kategoria:</label>
                                             <select class="form-select" aria-label="select kategory" id="category"
                                                 name="category">
-                                                <option selected value='0'>Wybierz kategorię:</option>
+                                                <option selected value='0'>Nie wybrano</option>
                                                 @foreach ($categories as $category)
                                                     <option value="{{ $category->id }}"
                                                         {{ (old('category') ?? ($song->category->id ?? '')) == $category->id ? 'selected' : '' }}>
@@ -147,7 +147,6 @@
     @endif
 
 
-    {{-- Generowanie tabeli uczestników --}}
     <script type="module">
 
 
@@ -155,7 +154,13 @@
                 placeholder: "Wszyscy"
             });
 
+        $('#category').select2({
+            minimumResultsForSearch: Infinity
+        });
 
+        $('#instrument').select2({
+            minimumResultsForSearch: Infinity
+        });
 
 
 //Kliknięciee przycisku "Usuń":
