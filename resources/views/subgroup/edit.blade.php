@@ -66,8 +66,10 @@
                                     <input type="hidden" name="groupId" value="{{ $group->id }}">
 
                                     <div class="float-end mb-3 mt-3">
+                                        @isset($subgroup)
                                         <a class="btn btn-outline-danger me-3" id="buttonRemoveSubgroup"><i
                                             class="fa-solid fa-user-xmark me-1"></i>Usuń podgrupę</a>
+                                        @endisset
                                         <button type="submit" class="btn btn-primary"><i
                                                 class="fa-solid fa-check me-1"></i>Zapisz</button>
                                     </div>
