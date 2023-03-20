@@ -10,21 +10,28 @@
         <div class="accordion-body">
 
             @if (isset($publication->questionnaire) && count($publication->questionnaire->answers) > 0)
-                <a class="btn btn-outline-primary mb-3" id="questionnaireResults" href="{{route('questionnaires.results', ['Questionnaire' => $publication->questionnaire->id ]) }}" role="button">
+                <a class="btn btn-outline-primary mb-3" id="questionnaireResults"
+                    href="{{ route('questionnaires.results', ['Questionnaire' => $publication->questionnaire->id]) }}"
+                    role="button">
                     Zobacz wyniki
                 </a>
             @endif
-            <a class="btn btn-outline-primary mb-3" id="addRemoveQuestionnaire"
-                data-available="{{ isset($publication->questionnaire) && $publication->questionnaire ? '1' : '0' }}"
-                data-bs-toggle="collapse" href="#collapse1" role="button" aria-expanded="false"
-                aria-controls="collapse1">
-                @if (isset($publication->questionnaire))
-                    Usuń ankietę
-                @else
-                    Dodaj ankietę
-                @endif
-            </a>
+            @if (!$publication->archived)
+                <a class="btn btn-outline-primary mb-3" id="addRemoveQuestionnaire"
+                    data-available="{{ isset($publication->questionnaire) && $publication->questionnaire ? '1' : '0' }}"
+                    data-bs-toggle="collapse" href="#collapse1" role="button" aria-expanded="false"
+                    aria-controls="collapse1">
 
+                    @if (isset($publication->questionnaire))
+                        Usuń ankietę
+                    @else
+                        Dodaj ankietę
+                    @endif
+
+                </a>
+            @else
+                <div>Nie można edytować ankiety w archiwalnym ogłoszeniu.</div>
+            @endif
             <div class="collapse @if (isset($publication->questionnaire)) show @endif" id="collapse1">
                 <input type="hidden" id="questionnaireAvailable" name="questionnaireAvailable"
                     value="{{ isset($publication->questionnaire) && $publication->questionnaire ? '1' : '0' }}">
@@ -34,7 +41,8 @@
                     <div class="col-sm-10"> <input type="text"
                             class="form-control @error('questionnaireDescription')is-invalid @enderror"
                             name="questionnaireDescription"
-                            value="{{ old('questionnaireDescription', $publication->questionnaire->description ?? '') }}">
+                            value="{{ old('questionnaireDescription', $publication->questionnaire->description ?? '') }}"
+                            @if (isset($publication) && $publication->archived) disabled @endif>
                         @if ($errors->has('questionnaireDescription'))
                             <div class="invalid-feedback">{{ $errors->first('questionnaireDescription') }}</div>
                         @endif
@@ -44,19 +52,23 @@
                 <div class="row mb-3">
                     <label for="questionnaireDate" class="col-sm-2 col-form-label">Ważna do:</label>
                     <div class="col-sm-10"> <input type="date" class="form-control" name="questionnaireDate"
-                            value="{{ old('questionnaireDate', $publication->questionnaire->validTill ?? $questionnaireValidTill) }}">
+                            value="{{ old('questionnaireDate', $publication->questionnaire->validTill ?? $questionnaireValidTill) }}"
+                            @if (isset($publication) && $publication->archived) disabled @endif>
                     </div>
                 </div>
 
-                <fieldset class="row mb-3 @if(isset($publication->questionnaire)) d-none @endif " id="questionnaireTypeFields">
+                <fieldset class="row mb-3 @if (isset($publication->questionnaire)) d-none @endif "
+                    id="questionnaireTypeFields">
                     <legend class="col-form-label col-sm-2 pt-0">Typ odpowiedzi:</legend>
                     <div class="col-sm-10">
                         <div class="form-check"> <input class="form-check-input" type="radio" name="questionnaireType"
-                                id="questionnaireType1" value="closed" @if (old('questionnaireType') == 'closed' || ($publication->questionnaire->type ?? 'closed') == 'closed') checked @endif>
+                                id="questionnaireType1" value="closed" @if (old('questionnaireType') == 'closed' || ($publication->questionnaire->type ?? 'closed') == 'closed') checked @endif
+                                @if (isset($publication) && $publication->archived) disabled @endif>
                             <label class="form-check-label" for="questionnaireType1"> tak/nie </label>
                         </div>
                         <div class="form-check"> <input class="form-check-input" type="radio" name="questionnaireType"
-                                id="questionnaireType2" value="open" @if (old('questionnaireType') == 'open' || ($publication->questionnaire->type ?? '') == 'open') checked @endif>
+                                id="questionnaireType2" value="open" @if (old('questionnaireType') == 'open' || ($publication->questionnaire->type ?? '') == 'open') checked @endif
+                                @if (isset($publication) && $publication->archived) disabled @endif>
                             <label class="form-check-label" for="questionnaireType2"> otwarta odpowiedź </label>
                         </div>
                     </div>
