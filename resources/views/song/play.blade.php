@@ -115,7 +115,7 @@ var $playingNotes = [];
 	loadDataUri = function(dataUri) {
 		Player = new MidiPlayer.Player(function(event) {
 			if (event.name == 'Note on' && event.velocity > 0) {
-				var note = instrument.play(event.noteName, ac.currentTime, {gain:event.velocity/100});
+				var note = instrument.play(event.noteName, ac.currentTime, {gain:(2*(event.velocity/100))});
 
                 $playingNotes.push({'noteId': note.id, 'noteName': event.noteName+'_'+event.channel, 'channel':event.channel, });
 
