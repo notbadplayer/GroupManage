@@ -116,7 +116,8 @@
                                     $('#downloadNotes').select2({
                                     });
                                     $('#downloadNotes').select2({
-                                        placeholder: "Wszystkie"
+                                        placeholder: "Wszystkie",
+                                        minimumResultsForSearch: Infinity
                                     });
 
                                 }
