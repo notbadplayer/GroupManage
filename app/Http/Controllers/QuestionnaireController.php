@@ -99,7 +99,7 @@ class QuestionnaireController extends Controller
 
                 //użytkownicy grupy,którzy nie są przypisani do żadnej podgrupy.
                 if (count($group->users()->wherePivot('subgroup_id', null)->get()) > 0) {
-                    $idsWithoutGroup = $group->users()->wherePivot('subgroup_id', null)->pluck('users.id')->toArray();
+                    $idsWithoutGroup = $group->users()->wherePivot('subgroup_id', null)->pluck('users_chor.id')->toArray();
                     $withoutSubgroupEntitledUsers = count($idsWithoutGroup);
                     $withoutSubgroupVotes = count($Questionnaire->answers->whereIn('user_id', $idsWithoutGroup));
 
