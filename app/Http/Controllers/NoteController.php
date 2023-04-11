@@ -155,6 +155,8 @@ class NoteController extends Controller
 
         $note = Note::create([
             'name' => $data['name'],
+            'table' => $data['table'] ?? null,
+            'transpose' => $data['transpose'] ?? null,
             'restrictedVisibility' => (empty($groups) && empty($subgroups) && empty($users)) ? false : true,
             'file_id' => $file,
             'category_id' => $data['category']
@@ -226,6 +228,8 @@ class NoteController extends Controller
 
         $Note->update([
             'name' => $data['name'],
+            'table' => $data['table'] ?? null,
+            'transpose' => $data['transpose'] ?? null,
             'category_id' => $data['category'],
             'restrictedVisibility' => (empty($groups) && empty($subgroups) && empty($users)) ? false : true,
         ]);

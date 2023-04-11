@@ -25,13 +25,16 @@
                                 </div>
                                 <div class="p-2 bd-highlight">
                                     <a href="{{ url()->previous() }}"><button type="button"
-                                        class="btn btn-outline-primary"><i class="fa-solid fa-chevron-left me-sm-2"></i><span class="d-none d-sm-inline">Powrót<span></button></a>
+                                            class="btn btn-outline-primary"><i
+                                                class="fa-solid fa-chevron-left me-sm-2"></i><span
+                                                class="d-none d-sm-inline">Powrót<span></button></a>
                                 </div>
                             </div>
 
                             <div class="mt-2 profile">
                                 <form method="post"
-                                    action="{{ isset($note) ? route('notes.update', $note->id) : route('notes.store') }}" enctype='multipart/form-data'>
+                                    action="{{ isset($note) ? route('notes.update', $note->id) : route('notes.store') }}"
+                                    enctype='multipart/form-data'>
                                     @csrf
                                     @if (isset($note))
                                         @method('PUT')
@@ -71,41 +74,69 @@
                                         </select>
                                     </div>
 
-                                    <div class="col-md-12 profile-edit mb-3">
-                                        <label for="category" class="form-label">Kategoria:</label>
-                                        <select class="form-select" aria-label="select kategory" name="category" id="category">
-                                            <option selected value='0'>Nie wybrano</option>
-                                            @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}" {{ (old('category') ?? ($note->category->id ?? '')) == $category->id ? "selected" : "" }}>{{ $category->name }}</option>
-                                            @endforeach
-                                         </select>
+
+                                    <div class="row g-3 profile-edit mb-3">
+                                        <div class="col-md-6"> <label for="category" class="form-label">Kategoria:</label>
+                                            <select class="form-select" aria-label="select kategory" name="category"
+                                                id="category">
+                                                <option selected value='0'>Nie wybrano</option>
+                                                @foreach ($categories as $category)
+                                                    <option value="{{ $category->id }}"
+                                                        {{ (old('category') ?? ($note->category->id ?? '')) == $category->id ? 'selected' : '' }}>
+                                                        {{ $category->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="table" class="form-label">Tablica:</label>
+                                            <input type="text" class="form-control @error('table')is-invalid @enderror"
+                                                id="table" name="table" value="{{ old('table', $note->table ?? '') }}"
+                                                autocomplete="off">
+                                            @if ($errors->has('table'))
+                                                <div class="invalid-feedback">{{ $errors->first('table') }}</div>
+                                            @endif
+
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="transpose" class="form-label">Transpozycja:</label>
+                                            <input type="text" class="form-control @error('transpose')is-invalid @enderror"
+                                                id="transpose" name="transpose" value="{{ old('transpose', $note->transpose ?? '') }}"
+                                                autocomplete="off">
+                                            @if ($errors->has('transpose'))
+                                                <div class="invalid-feedback">{{ $errors->first('transpose') }}</div>
+                                            @endif
+                                        </div>
                                     </div>
 
                                     <div class="col-md-12 profile-edit mb-3">
-                                        <label for="upload" class="form-label">Plik:</label> <input class="form-control @error('upload')is-invalid @enderror" type="file" id="file" name="upload">
+                                        <label for="upload" class="form-label">Plik:</label> <input
+                                            class="form-control @error('upload')is-invalid @enderror" type="file"
+                                            id="file" name="upload">
                                         @if ($errors->has('upload'))
                                             <div class="invalid-feedback">{{ $errors->first('upload') }}</div>
                                         @endif
-                                        @if(isset($note) && $note->file)
-                                        <div class="activity-content mt-1"> Obecnie wybrany plik:  <a href="{{ $note->file->url }}" class="fw-bold text-dark">{{ $note->file->name }}</a></div>
-                                         @endif
+                                        @if (isset($note) && $note->file)
+                                            <div class="activity-content mt-1"> Obecnie wybrany plik: <a
+                                                    href="{{ $note->file->url }}"
+                                                    class="fw-bold text-dark">{{ $note->file->name }}</a></div>
+                                        @endif
                                     </div>
 
                                     <div class="float-end mb-3 mt-3">
                                         @isset($note)
-                                        <a class="btn btn-outline-danger me-3" id="buttonRemoveNote"><i class="fa-solid fa-trash me-1"></i>Usuń</a>
+                                            <a class="btn btn-outline-danger me-3" id="buttonRemoveNote"><i
+                                                    class="fa-solid fa-trash me-1"></i>Usuń</a>
                                         @endisset
-                                         <button type="submit" class="btn btn-primary"><i
+                                        <button type="submit" class="btn btn-primary"><i
                                                 class="fa-solid fa-check me-1"></i>Zapisz</button>
-                                            </div>
+                                    </div>
 
                                 </form>
 
                                 @if (isset($song))
-                                <a href="{{ route('songs.play', ['song' => $song->id]) }}"><button type="button"
-                                    class="btn btn-outline-primary"><i
-                                        class="fa-solid fa-rotate-left me-2"></i>Odtwarzaj</button></a>
-
+                                    <a href="{{ route('songs.play', ['song' => $song->id]) }}"><button type="button"
+                                            class="btn btn-outline-primary"><i
+                                                class="fa-solid fa-rotate-left me-2"></i>Odtwarzaj</button></a>
                                 @endif
 
                             </div>
@@ -116,9 +147,9 @@
             </div>
 
             @isset($note)
-            <form method="post" action="{{route('notes.destroy', ['Note'=> $note->id])}}" id="deleteNoteForm">
-                @csrf
-            </form>
+                <form method="post" action="{{ route('notes.destroy', ['Note' => $note->id]) }}" id="deleteNoteForm">
+                    @csrf
+                </form>
             @endisset
 
 
@@ -142,6 +173,12 @@
 
         $('#category').select2({
         minimumResultsForSearch: Infinity
+        });
+
+        $(window).resize(function () {
+                $('#category').select2({
+                minimumResultsForSearch: Infinity
+            });
         });
 
 

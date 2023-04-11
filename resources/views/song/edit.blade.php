@@ -162,6 +162,18 @@
             minimumResultsForSearch: Infinity
         });
 
+        $(window).resize(function () {
+                $('#category').select2({
+                minimumResultsForSearch: Infinity
+            });
+        });
+
+        $(window).resize(function () {
+                $('#instrument').select2({
+                minimumResultsForSearch: Infinity
+            });
+        });
+
 
 //Kliknięciee przycisku "Usuń":
 $('#buttonRemoveSong').on( 'click', function () {

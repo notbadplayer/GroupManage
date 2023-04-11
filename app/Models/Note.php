@@ -11,6 +11,8 @@ class Note extends Model
 
     protected $fillable = [
         'name',
+        'table',
+        'transpose',
         'file_id',
         'category_id',
         'restrictedVisibility'
