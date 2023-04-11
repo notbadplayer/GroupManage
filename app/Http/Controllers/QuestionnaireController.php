@@ -188,7 +188,7 @@ class QuestionnaireController extends Controller
             if($request->groupId && $request->unassigned)
             {
                 $group = Group::find($request->groupId);
-                $idsWithoutGroup = $group->users()->wherePivot('subgroup_id', null)->pluck('users.id')->toArray();
+                $idsWithoutGroup = $group->users()->wherePivot('subgroup_id', null)->pluck('users_chor.id')->toArray();
 
                 $questionnaire = Questionnaire::find($request->Questionnaire);
 
