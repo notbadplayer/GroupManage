@@ -17,7 +17,7 @@
                 </a>
             @endif
 
-            @if (isset($publication) && !($publication->archived))
+            @if ((isset($publication) && !($publication->archived)) || (!isset($publication)))
                 <a class="btn btn-outline-primary mb-3" id="addRemoveQuestionnaire"
                     data-available="{{ isset($publication->questionnaire) && $publication->questionnaire ? '1' : '0' }}"
                     data-bs-toggle="collapse" href="#collapse1" role="button" aria-expanded="false"
