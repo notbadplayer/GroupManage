@@ -1,3 +1,3 @@
 <?php
 
-$output = exec('curl http://chor.samgram.art/schedulequeue');
+$output = exec('curl http://jfstudio.samgram.art/schedulequeue');
